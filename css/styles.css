@@ -2181,12 +2181,69 @@ body {
    baixas para não cortar conteúdo.
    ======================================================== */
 @media (min-width: 1024px) {
-  body { padding: 24px; }
+  body { padding: 0; }
 
   .app-shell {
     max-width: 1440px;
-    height: calc(100vh - 48px);
-    height: calc(100dvh - 48px);
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #app-header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  #app-main {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+  }
+
+  #app-header[hidden] ~ #app-main { grid-column: 1 / -1; }
+
+  #app-footer {
+    grid-column: 1;
+    grid-row: 2;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 14px 10px;
+    border-top: 0;
+    border-right: 1px solid #e2eaec;
+    box-shadow: 8px 0 24px rgba(23, 50, 79, .035);
+  }
+
+  .pv-footer button {
+    width: 100%;
+    max-width: none;
+    min-height: 50px;
+    flex: 0 0 50px;
+    justify-content: flex-start;
+    padding: 10px 14px;
+    border-radius: 11px;
+  }
+
+  .pv-footer button.ativo { box-shadow: none; }
+
+  .pv-header {
+    min-height: 66px;
+    padding-inline: 30px;
+  }
+
+  #app-header > .pv-header::after {
+    content: "PaliVida";
+    margin-left: 12px;
+    color: var(--pv-text);
+    font-size: 20px;
+    font-weight: 700;
   }
 
   .app-main > :not(.pv-login-shell) {
@@ -2195,9 +2252,9 @@ body {
 
   .app-main.pv-sem-scroll { overflow-y: auto; }
 
-  .pv-header { padding-inline: 40px; }
-  .pv-footer { justify-content: space-evenly; }
-  .pv-footer button { max-width: 220px; }
+  #app-header[hidden] ~ #app-main { grid-row: 1 / -1; }
+
+  .pv-footer button::after { font-size: 12px; }
 
   /* Home: ações em grade; saudação e contatos continuam ocupando a largura. */
   .tela-home { min-height: 100%; overflow: visible; }
