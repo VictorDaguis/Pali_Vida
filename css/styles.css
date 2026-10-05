@@ -2173,6 +2173,106 @@ body {
   .tela-painel-admin { padding: 22px 18px; }
 }
 
+/* ======================================================== Desktop amplo ===
+   Em telas largas o app deixa de parecer um celular ampliado: aproveita mais
+   largura, distribui cards em colunas e mantém um limite de leitura. Abaixo
+   de 1024px, permanecem os layouts compactos definidos nas regras anteriores.
+   A Home normalmente cabe sem rolagem, mas pode rolar em janelas desktop
+   baixas para não cortar conteúdo.
+   ======================================================== */
+@media (min-width: 1024px) {
+  body { padding: 24px; }
+
+  .app-shell {
+    max-width: 1440px;
+    height: calc(100vh - 48px);
+    height: calc(100dvh - 48px);
+  }
+
+  .app-main > :not(.pv-login-shell) {
+    max-width: 1240px;
+  }
+
+  .app-main.pv-sem-scroll { overflow-y: auto; }
+
+  .pv-header { padding-inline: 40px; }
+  .pv-footer { justify-content: space-evenly; }
+  .pv-footer button { max-width: 220px; }
+
+  /* Home: ações em grade; saudação e contatos continuam ocupando a largura. */
+  .tela-home { min-height: 100%; overflow: visible; }
+
+  .tela-home .corpo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    justify-content: normal;
+    gap: 20px;
+    padding: 32px clamp(32px, 6vw, 88px);
+  }
+
+  .tela-home .titulo,
+  .tela-home .contatos { grid-column: 1 / -1; }
+
+  .tela-home .titulo { margin-bottom: 8px; }
+
+  .tela-home .botao-prontuario,
+  .tela-home .botao-duvidas,
+  .tela-home .botao-registrar {
+    width: 100%;
+    max-width: none;
+    min-height: 88px;
+    margin: 0;
+    flex: initial;
+  }
+
+  .tela-home .contatos { margin-top: 8px; }
+  .tela-home .contatos-botoes { justify-content: center; gap: 16px; }
+  .tela-home .contato-botao { max-width: 180px; min-height: 48px; }
+
+  /* Busca: dois cards por linha, com busca e estados vazios em largura total. */
+  .tela-busca { padding: 28px; }
+
+  .tela-busca .busca-container {
+    width: 100%;
+    max-width: 820px;
+    margin: 0 0 22px;
+  }
+
+  .tela-busca .botao-novo { margin: 0 0 22px; }
+  .tela-busca .aviso-wrap { width: 100%; }
+
+  #busca-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+  }
+
+  .pv-card-conteudo { width: 100%; margin: 0; }
+  #busca-lista .lista-vazia { grid-column: 1 / -1; }
+
+  /* Dashboard: gráficos em duas colunas; título e gerenciador usam a linha toda. */
+  .tela-dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 20px;
+    padding: 28px;
+  }
+
+  .tela-dashboard .titulo,
+  .tela-dashboard .erro-texto,
+  .tela-dashboard .vazio,
+  .tela-dashboard .pv-gerenciador { grid-column: 1 / -1; }
+
+  .tela-dashboard .titulo { margin: 0 0 4px; }
+  .pv-card-grafico { width: 100%; margin: 0; }
+
+  /* Formulário de contato permanece em coluna, com largura de leitura limitada. */
+  .tela-contato > .pv-card { max-width: 760px; margin-inline: auto; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .app-shell *,
   .app-shell *::before,
