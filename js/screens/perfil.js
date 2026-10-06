@@ -438,7 +438,10 @@ window.PV.screens = window.PV.screens || {};
 
   /* ============================================================= dispatcher === */
   async function perfil(main, ctx) {
-    main.innerHTML = `
+    const tela = ctx.usuario.tipo === 'paciente'
+      ? PV.ui.montarLayoutPaciente(main, 'perfil')
+      : main;
+    tela.innerHTML = `
       <div class="tela-perfil">
         <h1 class="titulo">Prontuário</h1>
         <div id="perfil-aviso"></div>

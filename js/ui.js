@@ -140,6 +140,49 @@ window.PV = window.PV || {};
     });
   }
 
+  function montarLayoutPaciente(main, rotaAtiva) {
+    main.classList.remove('pv-sem-scroll');
+    main.classList.add('pv-dashboard-paciente-main');
+    main.innerHTML = `
+      <div class="pv-dashboard-paciente">
+        <aside class="pv-dash-sidebar" aria-label="Navegação principal">
+          <a class="pv-dash-brand" href="#/home" aria-label="PaliVida — início">
+            <img src="assets/img/logo-completo.png" alt="PaliVida">
+          </a>
+          <nav class="pv-dash-nav">
+            <button type="button" data-rota="/home" class="${rotaAtiva === 'home' ? 'ativo' : ''}" ${rotaAtiva === 'home' ? 'aria-current="page"' : ''}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Início</span>
+            </button>
+            <button type="button" data-rota="/triagem" class="${rotaAtiva === 'triagem' ? 'ativo' : ''}" ${rotaAtiva === 'triagem' ? 'aria-current="page"' : ''}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3.5h6M8 9h8M8 13h8M8 17h5"/></svg><span>Triagem</span>
+            </button>
+            <button type="button" data-rota="/perfil" class="${rotaAtiva === 'perfil' ? 'ativo' : ''}" ${rotaAtiva === 'perfil' ? 'aria-current="page"' : ''}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Prontuário</span>
+            </button>
+          </nav>
+          <div class="pv-dash-sidebar-note">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+            <span>Cuidar também<br>é qualidade de vida.</span>
+          </div>
+        </aside>
+        <section class="pv-dash-workspace">
+          <header class="pv-dash-topbar">
+            <div class="pv-dash-topbar-spacer"></div>
+            <button class="pv-logout-button pv-logout-button--dashboard" type="button" data-sair aria-label="Sair da conta">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Sair</span>
+            </button>
+          </header>
+          <div class="pv-dash-content pv-dash-page-content"></div>
+        </section>
+      </div>`;
+
+    main.querySelectorAll('[data-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.rota));
+    });
+    ligarLogout(main);
+    return main.querySelector('.pv-dash-page-content');
+  }
+
   /* ========================================================= Aviso.tsx === */
   function aviso(mensagem) {
     if (!mensagem) return '';
@@ -208,6 +251,7 @@ window.PV = window.PV || {};
     footerConteudo,
     tabbar,
     ligarNavegacaoInferior,
+    montarLayoutPaciente,
     ligarLogout,
     aviso,
     spinner,

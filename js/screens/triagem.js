@@ -23,9 +23,8 @@
  * a Triagem pelo botão "+ Novo Conteúdo"/"Editar". Isso muda o contrato de
  * dados: "SinaisSintomas" e "SinaisAlerta" (que na planilha são um texto
  * único por célula) viram a lista de itens marcáveis desta tela separando
- * o texto por ";" — cada trecho entre ";" vira um checkbox. Ao editar o
- * conteúdo pelo admin, cada sinal/sintoma/alerta deve ficar em uma linha
- * separada por ";" (ex.: "Item 1; Item 2; Item 3").
+ * o texto por ";" ou quebras de linha. Ao editar o conteúdo pelo admin,
+ * cada sinal/sintoma/alerta deve ficar separado por ";" ou em uma linha.
  * Os campos "sinônimos" (busca por voz/texto) e "referências bibliográficas"
  * não existem na planilha — ficam vazios/ocultos nesta versão.
  */
@@ -33,15 +32,11 @@ window.PV = window.PV || {};
 window.PV.screens = window.PV.screens || {};
 
 (function () {
-  const { escaparHtml, svgMic, aviso, carregando } = PV.ui;
-
-  // Separador usado dentro das células sinaissintomas/sinaisalerta da
-  // planilha para demarcar cada item marcável (checkbox) da Triagem.
-  const SEPARADOR_ITENS = ';';
+  const { escaparHtml, svgMic, aviso } = PV.ui;
 
   function dividirItens(texto) {
     return String(texto || '')
-      .split(SEPARADOR_ITENS)
+      .split(/[;\n]+/)
       .map((s) => s.trim())
       .filter(Boolean);
   }
@@ -70,16 +65,19 @@ window.PV.screens = window.PV.screens || {};
     const selecionados = new Set();
     const selecionadosAlerta = new Set();
     let textoBusca = '';
-    let DADOS_CLINICOS = [];
+    const tela = ctx.usuario?.tipo === 'paciente'
+      ? PV.ui.montarLayoutPaciente(main, 'triagem')
+      : main;
+    const conteudosSemente = window.PALIVIDA_SEED?.conteudos || [];
+    let DADOS_CLINICOS = conteudosSemente.map((conteudo, indice) => paraCondicaoClinica({
+      ...conteudo,
+      id: conteudo.id ?? indice + 1,
+      descricao: conteudo.descricao ?? conteudo.texto ?? '',
+      SinaisSintomas: conteudo.SinaisSintomas ?? conteudo.sinaissintomas ?? '',
+      SinaisAlerta: conteudo.SinaisAlerta ?? conteudo.sinaisalerta ?? '',
+    }));
 
-    main.innerHTML = carregando();
-    try {
-      const conteudos = await PV.db.conteudos.listar();
-      DADOS_CLINICOS = conteudos.map(paraCondicaoClinica);
-    } catch (e) {
-      main.innerHTML = aviso({ tipo: 'erro', texto: e.message || 'Não foi possível carregar os sintomas.' });
-      return;
-    }
+    const requisicaoConteudos = PV.db.conteudos.listar({ timeoutMs: 20000 });
 
     function cardHtml(item) {
       const sintomasHtml = item.sinaisSintomas.map((s) => {
@@ -167,7 +165,7 @@ window.PV.screens = window.PV.screens || {};
         <li data-ir="${r.id}"><span>${escaparHtml(r.titulo)}</span><span class="pv-triagem-tag">${r.tipo}</span></li>`).join('')}</ul>`;
     }
 
-    main.innerHTML = `
+    tela.innerHTML = `
       <div class="tela-triagem">
         <div class="pv-triagem-intro">
           <h1 class="titulo">O que você está sentindo hoje?</h1>
@@ -177,6 +175,7 @@ window.PV.screens = window.PV.screens || {};
             <button type="button" class="pv-triagem-mic" id="triagem-mic" aria-label="Buscar por voz" title="Buscar por voz">${svgMic(false)}</button>
           </div>
           <div id="triagem-sugestoes"></div>
+          <div id="triagem-atualizacao"></div>
         </div>
 
         <div id="triagem-medidor">${medidorHtml()}</div>
@@ -245,7 +244,14 @@ window.PV.screens = window.PV.screens || {};
       sugestoesEl.innerHTML = '';
     }
 
-    listaEl.querySelectorAll('.pv-triagem-card').forEach(ligarCard);
+    function renderizarLista() {
+      listaEl.innerHTML = DADOS_CLINICOS.length
+        ? DADOS_CLINICOS.map(cardHtml).join('')
+        : '<p class="lista-vazia">Nenhum sintoma cadastrado ainda.</p>';
+      listaEl.querySelectorAll('.pv-triagem-card').forEach(ligarCard);
+    }
+
+    renderizarLista();
     ligarMedidor();
     main.querySelectorAll('[data-ir]').forEach((btn) => {
       btn.addEventListener('click', () => abrirCard(btn.dataset.ir));
@@ -284,6 +290,22 @@ window.PV.screens = window.PV.screens || {};
 
     main.querySelector('#ir-carteirinha').addEventListener('click', () => PV.router.navegar('/perfil'));
     main.querySelector('#ir-laudo').addEventListener('click', () => PV.router.navegar('/laudo'));
+
+    requisicaoConteudos.then((conteudos) => {
+      if (!main.contains(listaEl)) return;
+      DADOS_CLINICOS = conteudos.map(paraCondicaoClinica);
+      renderizarLista();
+      main.querySelector('#triagem-atualizacao').innerHTML = '';
+    }).catch((e) => {
+      if (!main.contains(listaEl)) return;
+      const mensagemLocal = DADOS_CLINICOS.length
+        ? `Não foi possível atualizar agora (${e.message || 'erro de conexão'}). Exibindo a lista local de referência.`
+        : (e.message || 'Não foi possível carregar os sintomas.');
+      main.querySelector('#triagem-atualizacao').innerHTML = aviso({
+        tipo: 'erro',
+        texto: mensagemLocal,
+      });
+    });
   }
 
   /* O wizard de identificação (antiga tela "Carteirinha") foi movido para

@@ -57,14 +57,12 @@ window.PV = window.PV || {};
   // conteudos, sintomas, pacientes, acompanhantes, administradores,
   // vinculos e registros vivem numa planilha do Google Sheets, lida/
   // escrita através deste Web App — só `contatos` (Hospital/Família/SAC da
-  // Home) continua em localStorage puro. Mantemos `await atraso()` nas
-  // funções que chamam o Apps Script por consistência de UX com o resto do
-  // arquivo (mesmo "delay" percebido em todas as telas) — a latência real
-  // da requisição HTTP já soma a isso, então esse atraso artificial
-  // poderia ser removido sem problema; optamos por mantê-lo para não
-  // alterar a sensação de carregamento das telas nesta migração.
+  // Home) continua em localStorage puro. Algumas operações ainda mantêm
+  // `await atraso()` para preservar o ritmo visual existente. A listagem de
+  // conteúdos não usa esse atraso artificial: ela é usada na Triagem e
+  // precisa iniciar a busca remota imediatamente.
 
-  async function chamarAppsScriptGet(params) {
+  async function chamarAppsScriptGet(params, timeoutMs = 8000) {
     const url = new URL(URL_APPS_SCRIPT);
     // O token vai em toda leitura (mesmo em conteudos/sintomas, onde não é
     // exigido) para simplificar: o Code.gs só valida o token nas tabelas
@@ -77,7 +75,7 @@ window.PV = window.PV || {};
 
     let resposta;
     const controlador = new AbortController();
-    const timeout = setTimeout(() => controlador.abort(), 8000);
+    const timeout = setTimeout(() => controlador.abort(), timeoutMs);
     try {
       resposta = await fetch(url.toString(), { signal: controlador.signal });
     } catch (e) {
@@ -404,15 +402,51 @@ window.PV = window.PV || {};
     },
   };
 
+  const CACHE_CONTEUDOS_TTL = 60_000;
+  let cacheConteudos = null;
+  let cacheConteudosEm = 0;
+  let requisicaoConteudos = null;
+  let versaoCacheConteudos = 0;
+
+  function invalidarCacheConteudos() {
+    versaoCacheConteudos++;
+    cacheConteudos = null;
+    cacheConteudosEm = 0;
+  }
+
   const conteudos = {
     // `conteudos` agora vive na planilha do Google Sheets (aba `conteudos`),
     // acessada via Apps Script — ver comentário "cliente Apps Script" acima.
     // normalizarConteudo() continua sendo aplicado do lado do site (não do
     // Apps Script), para manter o mesmo contrato que as telas já consomem.
-    async listar() {
-      await atraso();
-      const linhas = await chamarAppsScriptGet({ acao: 'listar', tabela: 'conteudos' });
-      return [...linhas].sort((a, b) => Number(a.id) - Number(b.id)).map(normalizarConteudo);
+    async listar({ timeoutMs = 8000 } = {}) {
+      if (cacheConteudos && Date.now() - cacheConteudosEm < CACHE_CONTEUDOS_TTL) {
+        return cacheConteudos;
+      }
+      if (requisicaoConteudos?.versao === versaoCacheConteudos) {
+        return requisicaoConteudos.promise;
+      }
+
+      const versaoDaRequisicao = versaoCacheConteudos;
+      const requisicao = { versao: versaoDaRequisicao, promise: null };
+      requisicao.promise = (async () => {
+        const linhas = await chamarAppsScriptGet(
+          { acao: 'listar', tabela: 'conteudos' },
+          timeoutMs,
+        );
+        const conteudosAtuais = [...linhas]
+          .sort((a, b) => Number(a.id) - Number(b.id))
+          .map(normalizarConteudo);
+        if (versaoDaRequisicao === versaoCacheConteudos) {
+          cacheConteudos = conteudosAtuais;
+          cacheConteudosEm = Date.now();
+        }
+        return conteudosAtuais;
+      })().finally(() => {
+        if (requisicaoConteudos === requisicao) requisicaoConteudos = null;
+      });
+      requisicaoConteudos = requisicao;
+      return requisicao.promise;
     },
     async buscar(id) {
       await atraso();
@@ -439,6 +473,7 @@ window.PV = window.PV || {};
           data_post: dados.data_post ?? new Date().toISOString().split('T')[0],
         },
       });
+      invalidarCacheConteudos();
     },
     async atualizar(id, dados) {
       await atraso();
@@ -465,6 +500,7 @@ window.PV = window.PV || {};
       });
 
       const atualizado = await chamarAppsScriptPost({ acao: 'atualizar', tabela: 'conteudos', dados: normalizado });
+      invalidarCacheConteudos();
       return normalizarConteudo(atualizado);
     },
     async remover(id) {
@@ -472,6 +508,7 @@ window.PV = window.PV || {};
       const usuario = exigirAutenticacao();
       exigirPerfil(usuario, 'administrador');
       await chamarAppsScriptPost({ acao: 'remover', tabela: 'conteudos', dados: { id } });
+      invalidarCacheConteudos();
     },
   };
 

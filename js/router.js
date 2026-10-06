@@ -42,7 +42,11 @@ window.PV = window.PV || {};
     const main = document.getElementById('app-main');
     const headerEl = document.getElementById('app-header');
     const footerEl = document.getElementById('app-footer');
-    const painelPaciente = Boolean(sessao && sessao.usuario.tipo === 'paciente' && rota === 'home');
+    const painelPaciente = Boolean(
+      sessao &&
+      sessao.usuario.tipo === 'paciente' &&
+      ['home', 'triagem', 'perfil'].includes(rota),
+    );
     document.body.classList.toggle('pv-route-login', rota === 'login' || rota === 'cadastro');
     document.body.classList.toggle('pv-route-home', rota === 'home');
     document.body.classList.toggle('pv-role-paciente', Boolean(sessao && sessao.usuario.tipo === 'paciente'));
