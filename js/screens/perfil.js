@@ -451,7 +451,7 @@ window.PV.screens = window.PV.screens || {};
         <div id="perfil-variante"></div>
 
         <div class="pv-card">
-          <button type="button" class="pv-botao-logout" id="btn-sair">Sair da conta</button>
+          <button type="button" class="pv-botao-logout" id="btn-sair" data-sair>Sair da conta</button>
           <button type="button" class="pv-botao-secundario" id="btn-resetar" style="background:none;color:var(--cinza-claro);box-shadow:none;text-decoration:underline;margin-top:18px">Restaurar dados de demonstração</button>
         </div>
       </div>`;
@@ -463,10 +463,7 @@ window.PV.screens = window.PV.screens || {};
     // Ligados já aqui (antes do await abaixo): "Sair" e "Restaurar dados" não
     // dependem dos dados da variante terminarem de carregar, e o usuário
     // pode clicar neles enquanto isso ainda está em andamento.
-    main.querySelector('#btn-sair').addEventListener('click', () => {
-      PV.session.limparSessao();
-      PV.router.navegar('/login');
-    });
+    PV.ui.ligarLogout(main);
     main.querySelector('#btn-resetar').addEventListener('click', () => {
       if (!confirm('Isso apaga tudo que foi alterado nesta demonstração (cadastros novos, registros, conteúdos) e volta aos dados iniciais. Continuar?')) return;
       PV.db.resetarDados();

@@ -40,6 +40,25 @@ preencher automaticamente):
 | Cuidador | `cuidador@palivida.local` |
 | Administrador | `admin@palivida.local` |
 
+As contas acima são contas locais de demonstração e entram sem depender do
+Apps Script. O script versionado em `apps-script/Code.gs` ainda não implementa
+autenticação para contas reais; usuários diferentes precisam de um backend de
+login configurado.
+
+Após o login, o paciente abre o painel inicial com atalhos para registrar
+sintomas, consultar o prontuário e explorar conteúdos. A navegação lateral
+também mantém acesso direto à triagem e ao prontuário. O perfil de cuidador e
+o painel de administrador continuam com suas telas próprias.
+Todas as telas autenticadas oferecem a ação **Sair**, que encerra a sessão e
+retorna à tela de login.
+
+O layout se adapta à largura da janela: em celulares e telas estreitas, a
+interface usa o formato compacto; em computadores (a partir de 900 px), o
+login ganha uma composição própria em duas colunas e o aplicativo ocupa a
+largura disponível. A Home redesenhada do cuidador também usa a grade de
+desktop nesse modo, enquanto as telas de paciente e administrador mantêm seus
+respectivos painéis.
+
 ### Resetando os dados de teste
 
 Os dados ficam em `localStorage` sob a chave `palivida_db_v1`. Para voltar

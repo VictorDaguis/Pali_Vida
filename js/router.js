@@ -42,17 +42,25 @@ window.PV = window.PV || {};
     const main = document.getElementById('app-main');
     const headerEl = document.getElementById('app-header');
     const footerEl = document.getElementById('app-footer');
+    const painelPaciente = Boolean(sessao && sessao.usuario.tipo === 'paciente' && rota === 'home');
+    document.body.classList.toggle('pv-route-login', rota === 'login' || rota === 'cadastro');
+    document.body.classList.toggle('pv-route-home', rota === 'home');
+    document.body.classList.toggle('pv-role-paciente', Boolean(sessao && sessao.usuario.tipo === 'paciente'));
+    document.body.classList.toggle('pv-role-acompanhante', Boolean(sessao && sessao.usuario.tipo === 'acompanhante'));
+    document.body.classList.toggle('pv-role-administrador', Boolean(sessao && sessao.usuario.tipo === 'administrador'));
+    document.body.classList.toggle('pv-paciente-dashboard', painelPaciente);
+    document.querySelector('.app-shell').classList.toggle('pv-paciente-dashboard', painelPaciente);
     main.innerHTML = '';
+    main.classList.remove('pv-dashboard-paciente-main');
     // Reseta a marcação de "tela sem rolagem" a cada navegação; a própria
     // tela (ex.: menuSintomas) adiciona a classe de volta se precisar.
     main.classList.remove('pv-sem-scroll');
 
     const ctx = { sub, query, sessao, usuario: sessao ? sessao.usuario : null };
 
-    // Cabeçalho e rodapé globais: escondidos só na tela de login/cadastro
-    // (telas públicas, sem sessão ainda) — em todas as outras aparecem
-    // sempre, com o logo no header e os 3 atalhos no footer.
-    if (PUBLICAS.has(rota)) {
+    // O painel de paciente desenha sua própria navegação lateral; as telas
+    // públicas também não usam o cabeçalho e o rodapé autenticados.
+    if (PUBLICAS.has(rota) || painelPaciente) {
       headerEl.hidden = true;
       footerEl.hidden = true;
       headerEl.innerHTML = '';
@@ -63,6 +71,7 @@ window.PV = window.PV || {};
       footerEl.hidden = false;
       footerEl.innerHTML = PV.ui.footerConteudo(ctx.usuario.tipo, rota);
       PV.ui.ligarNavegacaoInferior(footerEl);
+      PV.ui.ligarLogout(headerEl);
     }
 
     try {

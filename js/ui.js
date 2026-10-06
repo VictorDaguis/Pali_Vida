@@ -80,7 +80,7 @@ window.PV = window.PV || {};
   }
 
   function header() {
-    return `<div class="pv-header"><img class="pv-logo-icone" src="assets/img/logo-icone.png" alt="PaliVida"></div>`;
+    return `<div class="pv-header"><img class="pv-logo-icone" src="assets/img/logo-icone.png" alt="PaliVida"><button type="button" class="pv-logout-button" data-sair aria-label="Sair da conta"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Sair</span></button></div>`;
   }
 
   /* ======================================================== Footer.tsx ===
@@ -128,6 +128,15 @@ window.PV = window.PV || {};
   function ligarNavegacaoInferior(root) {
     root.querySelectorAll('[data-ir]').forEach((btn) => {
       btn.addEventListener('click', () => PV.router.navegar('/' + btn.dataset.ir));
+    });
+  }
+
+  function ligarLogout(root) {
+    root.querySelectorAll('[data-sair]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        PV.session.limparSessao();
+        PV.router.navegar('/login');
+      });
     });
   }
 
@@ -199,6 +208,7 @@ window.PV = window.PV || {};
     footerConteudo,
     tabbar,
     ligarNavegacaoInferior,
+    ligarLogout,
     aviso,
     spinner,
     carregando,

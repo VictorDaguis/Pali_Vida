@@ -10,270 +10,1095 @@ window.PV.screens = window.PV.screens || {};
   const { escaparHtml, aviso, carregando, spinner, svgLupa } = PV.ui;
 
   const TIPOS_CONTATO_HOME = [
-    { id: 'hospital', rotulo: 'Hospital' },
-    { id: 'familia', rotulo: 'Família' },
-    { id: 'sac', rotulo: 'SAC' },
+    { id: 'hospital', rotulo: 'Hospital / UBS', tipo: 'hospital' },
+    { id: 'familia', rotulo: 'Família', tipo: 'familia' },
+    { id: 'sac', rotulo: 'SAC', tipo: 'sac' },
   ];
 
+  /* ========================================================= Ícones Home === */
+
+  const ICONES_HOME = {
+    sintomas: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v16.5A1.5 1.5 0 0 1 17.5 21H6.5A2.5 2.5 0 0 1 4 18.5V5.5Z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M7.5 7H15.5M7.5 10.5H15.5M7.5 14H12"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M16.5 15.5v4M14.5 17.5h4"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    `,
+
+    prontuario: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="5" y="3" width="14" height="18" rx="2.5"
+          fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M9 7.5h6M9 11h6M9 14.5h3"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M15.5 16.5h.01"
+          fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    `,
+
+    conteudos: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v12.5H8A2.5 2.5 0 0 1 5.5 17V5A.5.5 0 0 1 6 4.5Z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M8.5 8h6M8.5 11.5h6M8.5 15h4"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    `,
+
+    familia: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="9" cy="8" r="3"
+          fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="17" cy="10" r="2.5"
+          fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M3.5 19c.5-3 2.5-5 5.5-5s5 2 5.5 5"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M14.5 15.5c2.5 0 4.5 1.2 5 3.5"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    `,
+
+    hospital: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 4h12v16H6z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M12 7v6M9 10h6"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M9 20v-3h6v3"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    `,
+
+    sac: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M7.5 5.5h2l1 3-1.5 1.5a10.5 10.5 0 0 0 4 4L14.5 12l3 1v2A2.5 2.5 0 0 1 15 17.5C10.3 17.5 6.5 13.7 6.5 9A2.5 2.5 0 0 1 9 6.5"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.5 4.5h4M17.5 2.5v4"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    `,
+
+    apoio: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 20s-6.5-4.2-8.5-8C1.9 8.9 3.7 5.5 7 5.5c2 0 3.2 1.2 4 2.5.8-1.3 2-2.5 4-2.5 3.3 0 5.1 3.4 3.5 6.5-2 3.8-8.5 8-8.5 8Z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    `,
+  };
+
   /* ================================================================ Home === */
+
   async function home(main, ctx) {
-    // Tela pensada para caber inteira na viewport, sem precisar rolar.
-    main.classList.add('pv-sem-scroll');
+    if (ctx.usuario.tipo === 'paciente') {
+      homePaciente(main, ctx);
+      return;
+    }
+
+    /*
+     * A Home nova pode rolar normalmente em telas menores.
+     * Não alteramos as regras de navegação existentes.
+     */
+    main.classList.remove('pv-sem-scroll');
+
     const alerta = ctx.query.alerta || 'padrao';
-    const corFundo = {
-      padrao: 'var(--alerta-padrao)', verde: 'var(--alerta-verde)',
-      amarelo: 'var(--alerta-amarelo)', vermelho: 'var(--alerta-vermelho)',
-    }[alerta] || 'var(--alerta-padrao)';
+
+    const classeAlerta = {
+      padrao: '',
+      verde: ' home-alerta-verde',
+      amarelo: ' home-alerta-amarelo',
+      vermelho: ' home-alerta-vermelho',
+    }[alerta] || '';
 
     main.innerHTML = `
-      <div class="tela-home" style="background:${corFundo}">
-        <div class="corpo">
-          <h1 class="titulo" id="home-saudacao">Bem vindo!</h1>
+      <div class="tela-home-redesign${classeAlerta}">
 
-          <button class="botao-prontuario" id="btn-prontuario" type="button">Prontuário Eletrônico</button>
-          <button class="botao-duvidas" id="btn-duvidas" type="button">Entendendo os sintomas</button>
-          <button class="botao-registrar" id="btn-registrar" type="button">Registrar sintomas de hoje</button>
+        <div class="home-conteudo">
 
-          <div class="contatos">
-            <div class="contatos-titulo">Contatos:</div>
-            <div class="contatos-botoes">
-              ${TIPOS_CONTATO_HOME.map((c) => `<button class="contato-botao" type="button" data-contato="${c.id}">${escaparHtml(c.rotulo)}</button>`).join('')}
+          <section class="home-saudacao">
+            <div class="home-saudacao-texto">
+              <span class="home-eyebrow">PaliVida</span>
+
+              <h1 id="home-saudacao">Olá!</h1>
+
+              <p>
+                Aqui você pode registrar seus sintomas,
+                acompanhar seu prontuário e acessar
+                informações importantes para o seu cuidado.
+              </p>
             </div>
-          </div>
-        </div>
-      </div>`;
+          </section>
 
-    main.querySelector('#btn-prontuario').addEventListener('click', () => PV.router.navegar('/perfil'));
-    // "Entendendo os sintomas" agora abre a tela de Triagem ("O que você
-    // está sentindo hoje?"), a mesma tela do ícone central do rodapé —
-    // deixou de levar à tela de conteúdos (/busca).
-    main.querySelector('#btn-duvidas').addEventListener('click', () => PV.router.navegar('/triagem'));
-    main.querySelector('#btn-registrar').addEventListener('click', () => PV.router.navegar('/menu-sintomas'));
-    main.querySelectorAll('[data-contato]').forEach((btn) => {
-      btn.addEventListener('click', () => PV.router.navegar(`/contato/${btn.dataset.contato}`));
-    });
+          ${
+            alerta !== 'padrao'
+              ? `
+                <section class="home-alerta">
+                  <div class="home-alerta-indicador" aria-hidden="true"></div>
+
+                  <div class="home-alerta-texto">
+                    <strong>Resultado da última triagem</strong>
+                    <span>
+                      ${
+                        alerta === 'verde'
+                          ? 'Nenhum sinal de alerta identificado.'
+                          : alerta === 'amarelo'
+                            ? 'Alguns sinais merecem atenção.'
+                            : 'Foram identificados sinais que exigem atenção.'
+                      }
+                    </span>
+                  </div>
+                </section>
+              `
+              : ''
+          }
+
+          <section class="home-acoes">
+
+            <button
+              class="home-card home-card-principal"
+              id="btn-registrar"
+              type="button"
+            >
+              <div class="home-card-icone">
+                ${ICONES_HOME.sintomas}
+              </div>
+
+              <div class="home-card-conteudo">
+                <span class="home-card-label">
+                  Acompanhe como você está
+                </span>
+
+                <h2>Registrar sintomas de hoje</h2>
+
+                <p>
+                  Conte como você está se sentindo para
+                  acompanhar sua evolução.
+                </p>
+
+                <span class="home-card-link">
+                  Começar agora
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </button>
+
+            <button
+              class="home-card home-card-prontuario"
+              id="btn-prontuario"
+              type="button"
+            >
+              <div class="home-card-icone">
+                ${ICONES_HOME.prontuario}
+              </div>
+
+              <div class="home-card-conteudo">
+                <span class="home-card-label">
+                  Meu acompanhamento
+                </span>
+
+                <h2>Prontuário</h2>
+
+                <p>
+                  Acesse seus dados, histórico e
+                  informações importantes.
+                </p>
+
+                <span class="home-card-link">
+                  Visualizar
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </button>
+
+            <button
+              class="home-card home-card-conteudos"
+              id="btn-duvidas"
+              type="button"
+            >
+              <div class="home-card-icone">
+                ${ICONES_HOME.conteudos}
+              </div>
+
+              <div class="home-card-conteudo">
+                <span class="home-card-label">
+                  Informação
+                </span>
+
+                <h2>Entendendo os sintomas</h2>
+
+                <p>
+                  Encontre informações e orientações
+                  sobre sintomas e sinais de alerta.
+                </p>
+
+                <span class="home-card-link">
+                  Explorar
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
+            </button>
+
+          </section>
+
+          <section class="home-apoio">
+
+            <div class="home-apoio-header">
+              <div>
+                <h2>Seus contatos</h2>
+                <p>
+                  Pessoas e serviços importantes para você.
+                </p>
+              </div>
+            </div>
+
+            <div class="home-contatos">
+
+              <button
+                class="home-contato"
+                data-contato="familia"
+                type="button"
+              >
+                <span class="home-contato-icone">
+                  ${ICONES_HOME.familia}
+                </span>
+
+                <span class="home-contato-info">
+                  <strong>Família</strong>
+                  <small>Contato de apoio</small>
+                </span>
+
+                <span class="home-contato-seta" aria-hidden="true">
+                  ›
+                </span>
+              </button>
+
+              <button
+                class="home-contato"
+                data-contato="hospital"
+                type="button"
+              >
+                <span class="home-contato-icone home-contato-hospital">
+                  ${ICONES_HOME.hospital}
+                </span>
+
+                <span class="home-contato-info">
+                  <strong>Hospital / UBS</strong>
+                  <small>Unidade de referência</small>
+                </span>
+
+                <span class="home-contato-seta" aria-hidden="true">
+                  ›
+                </span>
+              </button>
+
+              <button
+                class="home-contato"
+                data-contato="sac"
+                type="button"
+              >
+                <span class="home-contato-icone home-contato-sac">
+                  ${ICONES_HOME.sac}
+                </span>
+
+                <span class="home-contato-info">
+                  <strong>SAC</strong>
+                  <small>Serviço de atendimento</small>
+                </span>
+
+                <span class="home-contato-seta" aria-hidden="true">
+                  ›
+                </span>
+              </button>
+
+            </div>
+          </section>
+
+          <section class="home-mensagem">
+            <span class="home-mensagem-icone">
+              ${ICONES_HOME.apoio}
+            </span>
+
+            <div>
+              <strong>Você não está sozinho.</strong>
+
+              <p>
+                O PaliVida está aqui para apoiar sua jornada.
+              </p>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    `;
+
+    /* ---------------------------------------------------- navegação */
+
+    main
+      .querySelector('#btn-prontuario')
+      .addEventListener('click', () => {
+        PV.router.navegar('/perfil');
+      });
+
+    main
+      .querySelector('#btn-duvidas')
+      .addEventListener('click', () => {
+        PV.router.navegar('/triagem');
+      });
+
+    main
+      .querySelector('#btn-registrar')
+      .addEventListener('click', () => {
+        PV.router.navegar('/menu-sintomas');
+      });
+
+    main
+      .querySelectorAll('[data-contato]')
+      .forEach((btn) => {
+        btn.addEventListener('click', () => {
+          PV.router.navegar(`/contato/${btn.dataset.contato}`);
+        });
+      });
+
+    /* ------------------------------------------------------ nome */
 
     try {
-      const dados = ctx.usuario.tipo === 'acompanhante'
-        ? await PV.db.acompanhantes.buscar(ctx.usuario.id)
-        : await PV.db.pacientes.buscar(ctx.usuario.id);
-      const nome = dados.nome_social || dados.nome || dados.nome_completo;
+      const dados =
+        ctx.usuario.tipo === 'acompanhante'
+          ? await PV.db.acompanhantes.buscar(ctx.usuario.id)
+          : await PV.db.pacientes.buscar(ctx.usuario.id);
+
+      const nome =
+        dados.nome_social ||
+        dados.nome ||
+        dados.nome_completo;
+
       const alvo = main.querySelector('#home-saudacao');
-      if (nome && alvo) alvo.textContent = `Bem vindo, ${nome}!`;
+
+      if (nome && alvo) {
+        alvo.textContent = `Olá, ${nome}!`;
+      }
     } catch {
-      /* sem nome carregado a tela ainda funciona, com a saudação genérica */
+      /*
+       * Se não conseguir carregar os dados do usuário,
+       * a Home continua funcionando com "Olá!".
+       */
     }
   }
 
+  function iconePainel(nome) {
+    const caminhos = {
+      inicio: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+      triagem: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3.5h6M8 9h8M8 13h8M8 17h5"/>',
+      sino: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',
+      seta: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+      sol: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>',
+      usuario: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      coracao: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>',
+      folha: '<path d="M20 4c-9 0-15 4-15 11a5 5 0 0 0 5 5c7 0 11-6 10-16Z"/><path d="M3 21c3-5 7-8 13-11"/>',
+    };
+    const icone = ICONES_HOME[nome] || caminhos[nome] || '';
+    return icone.startsWith('<svg')
+      ? icone
+      : `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icone}</svg>`;
+  }
+
+  function homePaciente(main, ctx) {
+    main.classList.remove('pv-sem-scroll');
+    main.classList.add('pv-dashboard-paciente-main');
+    main.innerHTML = `
+      <div class="pv-dashboard-paciente">
+        <aside class="pv-dash-sidebar" aria-label="Navegação principal">
+          <a class="pv-dash-brand" href="#/home" aria-label="PaliVida — início">
+            <img src="assets/img/logo-completo.png" alt="PaliVida">
+          </a>
+          <nav class="pv-dash-nav">
+            <button class="ativo" type="button" data-rota="/home">${iconePainel('inicio')}<span>Início</span></button>
+            <button type="button" data-rota="/triagem">${iconePainel('triagem')}<span>Triagem</span></button>
+            <button type="button" data-rota="/perfil">${iconePainel('prontuario')}<span>Prontuário</span></button>
+          </nav>
+          <div class="pv-dash-sidebar-note">${iconePainel('coracao')}<span>Cuidar também<br>é qualidade de vida.</span></div>
+        </aside>
+
+        <section class="pv-dash-workspace">
+          <header class="pv-dash-topbar">
+            <div class="pv-dash-topbar-spacer"></div>
+            <button class="pv-dash-notification" type="button" aria-label="Abrir triagem" data-rota="/triagem">${iconePainel('sino')}<span></span></button>
+            <button class="pv-logout-button pv-logout-button--dashboard" type="button" data-sair aria-label="Sair da conta"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Sair</span></button>
+            <button class="pv-dash-profile" type="button" aria-label="Abrir prontuário" data-rota="/perfil">
+              <span class="pv-dash-avatar">${iconePainel('usuario')}</span>
+              <span class="pv-dash-profile-copy"><strong id="pv-dash-profile-name">Paciente</strong><small>Paciente</small></span>
+              <span class="pv-dash-chevron" aria-hidden="true">⌄</span>
+            </button>
+          </header>
+
+          <div class="pv-dash-content">
+            <div class="pv-dash-welcome">
+              <span class="pv-dash-wave" aria-hidden="true">👋</span>
+              <div><h1 id="pv-dash-welcome-name">Bem-vindo(a)!</h1><p>Aqui você pode registrar seus sintomas, acompanhar seu<br class="pv-dash-desktop-break"> prontuário e acessar conteúdos que podem te ajudar.</p></div>
+            </div>
+            <div id="pv-dash-aviso"></div>
+
+            <div class="pv-dash-actions">
+              <article class="pv-dash-action pv-dash-action--symptoms">
+                <span class="pv-dash-action-icon">${iconePainel('sintomas')}</span>
+                <h2>Registrar sintomas<br>de hoje</h2>
+                <p>Conte como você está se sentindo<br class="pv-dash-desktop-break"> para que possamos te ajudar melhor.</p>
+                <button type="button" data-rota="/menu-sintomas">Começar agora ${iconePainel('seta')}</button>
+                <span class="pv-dash-decoration" aria-hidden="true">${iconePainel('folha')}</span>
+              </article>
+              <article class="pv-dash-action pv-dash-action--record">
+                <span class="pv-dash-action-icon">${iconePainel('prontuario')}</span>
+                <h2>Prontuário</h2>
+                <p>Acesse seus dados, histórico<br> e informações importantes.</p>
+                <button type="button" data-rota="/perfil">Visualizar ${iconePainel('seta')}</button>
+                <span class="pv-dash-decoration" aria-hidden="true">${iconePainel('prontuario')}</span>
+              </article>
+              <article class="pv-dash-action pv-dash-action--content">
+                <span class="pv-dash-action-icon">${iconePainel('conteudos')}</span>
+                <h2>Conteúdos e orientações</h2>
+                <p>Informações e dicas que podem<br> te ajudar no dia a dia.</p>
+                <button type="button" data-rota="/busca">Explorar ${iconePainel('seta')}</button>
+                <span class="pv-dash-decoration" aria-hidden="true">${iconePainel('folha')}</span>
+              </article>
+            </div>
+
+            <section class="pv-dash-contacts">
+              <div class="pv-dash-contacts-main">
+                <div class="pv-dash-section-heading">${iconePainel('pessoas')}<div><h2>Seus contatos</h2><p>Pessoas que estão com você nessa jornada.</p></div></div>
+                <div class="pv-dash-contact-list">
+                  <button class="pv-dash-contact" type="button" data-rota="/contato/familia"><span class="pv-dash-contact-icon pv-dash-contact-icon--purple">${iconePainel('familia')}</span><span><strong>Cuidador</strong><small id="pv-dash-caregiver">Cadastre um contato</small></span><b aria-hidden="true">›</b></button>
+                  <a class="pv-dash-contact" id="pv-dash-emergency" href="#/perfil"><span class="pv-dash-contact-icon pv-dash-contact-icon--green">${iconePainel('sac')}</span><span><strong>Emergência</strong><small id="pv-dash-emergency-value">Cadastre no prontuário</small></span><b aria-hidden="true">›</b></a>
+                  <button class="pv-dash-contact" type="button" data-rota="/perfil"><span class="pv-dash-contact-icon pv-dash-contact-icon--blue">${iconePainel('hospital')}</span><span><strong>Unidade de saúde</strong><small id="pv-dash-health-unit">Cadastre no prontuário</small></span><b aria-hidden="true">›</b></button>
+                </div>
+              </div>
+              <aside class="pv-dash-reminder">${iconePainel('sol')}<h2>Lembre-se</h2><p>Em caso de falta de ar intensa, dor forte ou qualquer sinal de alerta, busque atendimento médico imediato.</p><span aria-hidden="true">${iconePainel('coracao')}</span></aside>
+            </section>
+
+            <div class="pv-dash-reassurance"><span>${iconePainel('folha')}</span><div><strong>Você não está sozinho.</strong><small>O PaliVida está aqui para te apoiar, sempre.</small></div>${iconePainel('coracao')}</div>
+          </div>
+        </section>
+      </div>`;
+
+    const painel = main.querySelector('.pv-dashboard-paciente');
+    PV.ui.ligarLogout(painel);
+    main.querySelectorAll('[data-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.rota));
+    });
+
+    function mostrarErro(erro) {
+      const alvo = painel.querySelector('#pv-dash-aviso');
+      if (painel.isConnected && alvo && !alvo.textContent) {
+        alvo.innerHTML = aviso({ tipo: 'erro', texto: erro.message || 'Não foi possível carregar os dados do painel.' });
+      }
+    }
+
+    const carregarPaciente = PV.db.pacientes.buscar(ctx.usuario.id).then((paciente) => {
+      if (!painel.isConnected) return;
+      const nome = paciente.nome_social || paciente.nome || 'Paciente';
+      painel.querySelector('#pv-dash-welcome-name').textContent = `Bem-vindo(a), ${nome}!`;
+      painel.querySelector('#pv-dash-profile-name').textContent = nome;
+      painel.querySelector('#pv-dash-emergency-value').textContent = paciente.contato_emergencia || 'Cadastre no prontuário';
+      painel.querySelector('#pv-dash-health-unit').textContent =
+        paciente.unidades_de_saude || [paciente.cidade, paciente.estado].filter(Boolean).join(' — ') || 'Cadastre no prontuário';
+      const telefone = String(paciente.contato_emergencia || '').match(/(?:\+?\d[\d\s().-]{7,}\d)/);
+      if (telefone) painel.querySelector('#pv-dash-emergency').href = `tel:${telefone[0].replace(/[^\d+]/g, '')}`;
+    }).catch(mostrarErro);
+
+    const carregarContato = PV.db.contatos.buscar('familia').then((contato) => {
+      if (!painel.isConnected) return;
+      const nomePadrao = 'Nome do familiar ou cuidador';
+      const nome = contato.nome === nomePadrao ? '' : contato.nome;
+      painel.querySelector('#pv-dash-caregiver').textContent =
+        nome ? [nome, contato.observacao].filter(Boolean).join(' · ') : 'Cadastre um contato';
+    }).catch(mostrarErro);
+
+    Promise.all([carregarPaciente, carregarContato]);
+  }
+
   /* ============================================================= Contato === */
+
   // Cada botão da Home ("Hospital", "Família", "SAC") abre esta mesma tela,
   // parametrizada pelo tipo (ctx.sub). Ela chega preenchida com um exemplo
   // genérico (PV.db.contatos.buscar) que o usuário edita e salva — os dados
   // ficam por conta de cada paciente/cuidador (ver comentário em db.js).
   async function contato(main, ctx) {
     const tipo = ctx.sub;
-    const rotulo = (TIPOS_CONTATO_HOME.find((t) => t.id === tipo) || {}).rotulo;
-    if (!rotulo) { PV.router.navegar('/home'); return; }
 
-    main.innerHTML = `<div class="pv-carregando" style="min-height:200px">${spinner()}</div>`;
+    const rotulo =
+      (TIPOS_CONTATO_HOME.find((t) => t.id === tipo) || {}).rotulo;
+
+    if (!rotulo) {
+      PV.router.navegar('/home');
+      return;
+    }
+
+    main.innerHTML = `
+      <div class="pv-carregando" style="min-height:200px">
+        ${spinner()}
+      </div>
+    `;
 
     let dados;
+
     try {
       dados = await PV.db.contatos.buscar(tipo);
     } catch (e) {
-      main.innerHTML = `<div class="tela-contato">${aviso({ tipo: 'erro', texto: e.message || 'Não foi possível carregar este contato.' })}</div>`;
+      main.innerHTML = `
+        <div class="tela-contato">
+          ${aviso({
+            tipo: 'erro',
+            texto: e.message || 'Não foi possível carregar este contato.',
+          })}
+        </div>
+      `;
       return;
     }
 
     function montar() {
       main.innerHTML = `
         <div class="tela-contato">
-          <h1 class="titulo">Contato — ${escaparHtml(rotulo)}</h1>
-          <p class="subtitulo">${dados.preenchido
-            ? 'Edite os dados abaixo sempre que precisar.'
-            : 'Preenchemos um exemplo para você — edite com os dados reais e salve.'}</p>
+
+          <h1 class="titulo">
+            Contato — ${escaparHtml(rotulo)}
+          </h1>
+
+          <p class="subtitulo">
+            ${
+              dados.preenchido
+                ? 'Edite os dados abaixo sempre que precisar.'
+                : 'Preenchemos um exemplo para você — edite com os dados reais e salve.'
+            }
+          </p>
 
           <div class="pv-card">
-            <label class="pv-campo-label" for="ct-nome">Nome</label>
-            <input class="pv-campo-input" id="ct-nome" type="text" value="${escaparHtml(dados.nome)}">
 
-            <label class="pv-campo-label" for="ct-telefone">Telefone</label>
-            <input class="pv-campo-input" id="ct-telefone" type="tel" value="${escaparHtml(dados.telefone)}">
+            <label class="pv-campo-label" for="ct-nome">
+              Nome
+            </label>
 
-            <label class="pv-campo-label" for="ct-observacao">${tipo === 'familia' ? 'Parentesco' : tipo === 'sac' ? 'Horário de atendimento' : 'Endereço / observação'}</label>
-            <input class="pv-campo-input" id="ct-observacao" type="text" value="${escaparHtml(dados.observacao)}">
+            <input
+              class="pv-campo-input"
+              id="ct-nome"
+              type="text"
+              value="${escaparHtml(dados.nome)}"
+            >
+
+            <label class="pv-campo-label" for="ct-telefone">
+              Telefone
+            </label>
+
+            <input
+              class="pv-campo-input"
+              id="ct-telefone"
+              type="tel"
+              value="${escaparHtml(dados.telefone)}"
+            >
+
+            <label class="pv-campo-label" for="ct-observacao">
+              ${
+                tipo === 'familia'
+                  ? 'Parentesco'
+                  : tipo === 'sac'
+                    ? 'Horário de atendimento'
+                    : 'Endereço / observação'
+              }
+            </label>
+
+            <input
+              class="pv-campo-input"
+              id="ct-observacao"
+              type="text"
+              value="${escaparHtml(dados.observacao)}"
+            >
 
             <div id="ct-aviso"></div>
+
             <div class="pv-contato-acoes">
-              <a class="pv-botao-secundario" id="ct-ligar" href="tel:${escaparHtml(String(dados.telefone).replace(/[^0-9+]/g, ''))}">Ligar agora</a>
-              <button type="button" class="pv-botao-primario" id="ct-salvar">Salvar</button>
+
+              <a
+                class="pv-botao-secundario"
+                id="ct-ligar"
+                href="tel:${escaparHtml(
+                  String(dados.telefone).replace(/[^0-9+]/g, ''),
+                )}"
+              >
+                Ligar agora
+              </a>
+
+              <button
+                type="button"
+                class="pv-botao-primario"
+                id="ct-salvar"
+              >
+                Salvar
+              </button>
+
             </div>
           </div>
-        </div>`;
+        </div>
+      `;
 
       const avisoEl = main.querySelector('#ct-aviso');
       const telefoneEl = main.querySelector('#ct-telefone');
       const ligarEl = main.querySelector('#ct-ligar');
+
       telefoneEl.addEventListener('input', () => {
         ligarEl.href = `tel:${telefoneEl.value.replace(/[^0-9+]/g, '')}`;
       });
 
-      main.querySelector('#ct-salvar').addEventListener('click', async () => {
-        const botao = main.querySelector('#ct-salvar');
-        const novoForm = {
-          nome: main.querySelector('#ct-nome').value.trim(),
-          telefone: main.querySelector('#ct-telefone').value.trim(),
-          observacao: main.querySelector('#ct-observacao').value.trim(),
-        };
-        botao.disabled = true;
-        try {
-          dados = await PV.db.contatos.salvar(tipo, novoForm);
-          montar();
-          main.querySelector('#ct-aviso').innerHTML = aviso({ tipo: 'sucesso', texto: 'Contato salvo!' });
-        } catch (e) {
-          botao.disabled = false;
-          avisoEl.innerHTML = aviso({ tipo: 'erro', texto: e.message || 'Erro ao salvar.' });
-        }
-      });
+      main
+        .querySelector('#ct-salvar')
+        .addEventListener('click', async () => {
+          const botao = main.querySelector('#ct-salvar');
+
+          const novoForm = {
+            nome: main.querySelector('#ct-nome').value.trim(),
+            telefone: main.querySelector('#ct-telefone').value.trim(),
+            observacao: main
+              .querySelector('#ct-observacao')
+              .value.trim(),
+          };
+
+          botao.disabled = true;
+
+          try {
+            dados = await PV.db.contatos.salvar(tipo, novoForm);
+
+            montar();
+
+            main.querySelector('#ct-aviso').innerHTML = aviso({
+              tipo: 'sucesso',
+              texto: 'Contato salvo!',
+            });
+          } catch (e) {
+            botao.disabled = false;
+
+            avisoEl.innerHTML = aviso({
+              tipo: 'erro',
+              texto: e.message || 'Erro ao salvar.',
+            });
+          }
+        });
     }
 
     montar();
   }
 
   /* =============================================================== Busca === */
+
   // Esta tela (rota /busca, "Entendendo os sintomas") é onde o admin cria/
-  // edita/exclui os itens de PV.db.conteudos (planilha do Google Sheets).
-  // Desde a migração para a planilha, esses mesmos registros também
-  // alimentam a tela de Triagem do paciente/cuidador ("O que você está
-  // sentindo hoje?", ver js/screens/triagem.js) — ou seja, "+ Novo
-  // Conteúdo"/"Editar" aqui É o editor da Triagem. Os campos "Sinais e
-  // Sintomas"/"Sinais de Alerta" precisam ter cada item separado por ";"
-  // (ex.: "Item 1; Item 2; Item 3"), porque a Triagem quebra esse texto em
-  // checkboxes individuais — ver dividirItens() em triagem.js.
-  const FORM_CONTEUDO_VAZIO = { id: null, titulo: '', descricao: '', SinaisSintomas: '', SinaisAlerta: '' };
+  // edita/exclui os itens de PV.db.conteudos.
+  const FORM_CONTEUDO_VAZIO = {
+    id: null,
+    titulo: '',
+    descricao: '',
+    SinaisSintomas: '',
+    SinaisAlerta: '',
+  };
 
   function formatarDataConteudo(valor) {
     if (!valor) return '';
-    const [ano, mes, dia] = String(valor).split('T')[0].split('-');
-    return dia && mes && ano ? `${dia}/${mes}/${ano}` : valor;
+
+    const [ano, mes, dia] =
+      String(valor)
+        .split('T')[0]
+        .split('-');
+
+    return dia && mes && ano
+      ? `${dia}/${mes}/${ano}`
+      : valor;
   }
 
   function cardConteudoHtml(c, ehAdmin) {
     return `
       <div class="pv-card-conteudo" data-id="${c.id}">
-        <div class="card-titulo">${escaparHtml(c.titulo)}</div>
-        <div class="divisor"></div>
-        <div class="card-descricao">${escaparHtml(c.descricao)}</div>
-        <div class="card-rodape">
-          <button class="botao-ler" type="button" data-ler="${c.id}">Ler mais <img src="assets/img/seta.png" alt=""></button>
-          <span class="data">${escaparHtml(formatarDataConteudo(c.data_post))}</span>
+
+        <div class="card-titulo">
+          ${escaparHtml(c.titulo)}
         </div>
-        ${ehAdmin ? `
-          <div class="acoes-admin">
-            <button class="acao-editar" type="button" data-editar="${c.id}">Editar</button>
-            <button class="acao-excluir" type="button" data-excluir="${c.id}">Excluir</button>
-          </div>` : ''}
-      </div>`;
+
+        <div class="divisor"></div>
+
+        <div class="card-descricao">
+          ${escaparHtml(c.descricao)}
+        </div>
+
+        <div class="card-rodape">
+
+          <button
+            class="botao-ler"
+            type="button"
+            data-ler="${c.id}"
+          >
+            Ler mais
+            <img src="assets/img/seta.png" alt="">
+          </button>
+
+          <span class="data">
+            ${escaparHtml(formatarDataConteudo(c.data_post))}
+          </span>
+
+        </div>
+
+        ${
+          ehAdmin
+            ? `
+              <div class="acoes-admin">
+
+                <button
+                  class="acao-editar"
+                  type="button"
+                  data-editar="${c.id}"
+                >
+                  Editar
+                </button>
+
+                <button
+                  class="acao-excluir"
+                  type="button"
+                  data-excluir="${c.id}"
+                >
+                  Excluir
+                </button>
+
+              </div>
+            `
+            : ''
+        }
+
+      </div>
+    `;
   }
 
   async function busca(main, ctx) {
-    const ehAdmin = ctx.usuario.tipo === 'administrador';
+    const ehAdmin =
+      ctx.usuario.tipo === 'administrador';
+
     let lista = [];
     let textoBusca = '';
     let mensagem = null;
-    let form = { ...FORM_CONTEUDO_VAZIO };
+    let form = {
+      ...FORM_CONTEUDO_VAZIO,
+    };
 
     main.innerHTML = `
       <div class="tela-busca">
+
         <div class="busca-container">
-          <input class="busca-input" id="busca-input" type="text" placeholder="Buscar por tema...">
-          <button class="icone-lupa" id="btn-recarregar" type="button" aria-label="Atualizar lista">${svgLupa()}</button>
+
+          <input
+            class="busca-input"
+            id="busca-input"
+            type="text"
+            placeholder="Buscar por tema..."
+          >
+
+          <button
+            class="icone-lupa"
+            id="btn-recarregar"
+            type="button"
+            aria-label="Atualizar lista"
+          >
+            ${svgLupa()}
+          </button>
+
         </div>
-        ${ehAdmin ? `<button class="botao-novo" id="btn-novo-conteudo" type="button">+ Novo Conteúdo</button>` : ''}
+
+        ${
+          ehAdmin
+            ? `
+              <button
+                class="botao-novo"
+                id="btn-novo-conteudo"
+                type="button"
+              >
+                + Novo Conteúdo
+              </button>
+            `
+            : ''
+        }
+
         <div class="aviso-wrap" id="busca-aviso"></div>
-        <div id="busca-lista">${carregando()}</div>
+
+        <div id="busca-lista">
+          ${carregando()}
+        </div>
+
       </div>
 
-      <div class="pv-modal-overlay" id="modal-conteudo" hidden>
+      <div
+        class="pv-modal-overlay"
+        id="modal-conteudo"
+        hidden
+      >
         <div class="pv-modal">
-          <label class="modal-label">Título</label>
-          <input class="modal-input" id="mc-titulo" type="text">
-          <label class="modal-label">Descrição</label>
-          <textarea class="modal-input" id="mc-descricao"></textarea>
-          <label class="modal-label">Sinais e Sintomas <span class="modal-dica">(separe cada item com ; — ex.: Item 1; Item 2; Item 3)</span></label>
-          <textarea class="modal-input" id="mc-sinais-sintomas" placeholder="Ex.: Dor contínua; Piora ao movimento; Irritabilidade"></textarea>
-          <label class="modal-label">Sinais de Alerta <span class="modal-dica">(separe cada item com ; — ex.: Item 1; Item 2; Item 3)</span></label>
-          <textarea class="modal-input" id="mc-sinais-alerta" placeholder="Ex.: Dor súbita e intensa; Falta de ar; Confusão mental"></textarea>
+
+          <label class="modal-label">
+            Título
+          </label>
+
+          <input
+            class="modal-input"
+            id="mc-titulo"
+            type="text"
+          >
+
+          <label class="modal-label">
+            Descrição
+          </label>
+
+          <textarea
+            class="modal-input"
+            id="mc-descricao"
+          ></textarea>
+
+          <label class="modal-label">
+            Sinais e Sintomas
+            <span class="modal-dica">
+              (separe cada item com ; — ex.: Item 1; Item 2; Item 3)
+            </span>
+          </label>
+
+          <textarea
+            class="modal-input"
+            id="mc-sinais-sintomas"
+            placeholder="Ex.: Dor contínua; Piora ao movimento; Irritabilidade"
+          ></textarea>
+
+          <label class="modal-label">
+            Sinais de Alerta
+            <span class="modal-dica">
+              (separe cada item com ; — ex.: Item 1; Item 2; Item 3)
+            </span>
+          </label>
+
+          <textarea
+            class="modal-input"
+            id="mc-sinais-alerta"
+            placeholder="Ex.: Dor súbita e intensa; Falta de ar; Confusão mental"
+          ></textarea>
+
           <div class="modal-botoes">
-            <button class="botao-modal botao-cancelar" id="mc-cancelar" type="button">Cancelar</button>
-            <button class="botao-modal botao-salvar" id="mc-salvar" type="button">Salvar</button>
+
+            <button
+              class="botao-modal botao-cancelar"
+              id="mc-cancelar"
+              type="button"
+            >
+              Cancelar
+            </button>
+
+            <button
+              class="botao-modal botao-salvar"
+              id="mc-salvar"
+              type="button"
+            >
+              Salvar
+            </button>
+
           </div>
         </div>
-      </div>`;
+      </div>
+    `;
 
-    const listaEl = main.querySelector('#busca-lista');
-    const avisoEl = main.querySelector('#busca-aviso');
-    const modalEl = main.querySelector('#modal-conteudo');
+    const listaEl =
+      main.querySelector('#busca-lista');
+
+    const avisoEl =
+      main.querySelector('#busca-aviso');
+
+    const modalEl =
+      main.querySelector('#modal-conteudo');
 
     function renderLista() {
-      const filtrados = lista.filter((c) => (c.titulo || '').toLowerCase().includes(textoBusca.toLowerCase()));
+      const filtrados =
+        lista.filter((c) =>
+          (c.titulo || '')
+            .toLowerCase()
+            .includes(textoBusca.toLowerCase()),
+        );
+
       if (!filtrados.length) {
-        listaEl.innerHTML = `<p class="lista-vazia">Nenhum conteúdo encontrado.</p>`;
+        listaEl.innerHTML = `
+          <p class="lista-vazia">
+            Nenhum conteúdo encontrado.
+          </p>
+        `;
       } else {
-        listaEl.innerHTML = filtrados.map((c) => cardConteudoHtml(c, ehAdmin)).join('');
+        listaEl.innerHTML =
+          filtrados
+            .map((c) =>
+              cardConteudoHtml(c, ehAdmin),
+            )
+            .join('');
       }
-      listaEl.querySelectorAll('[data-ler]').forEach((b) => b.addEventListener('click', () => PV.router.navegar('/conteudo/' + b.dataset.ler)));
+
+      listaEl
+        .querySelectorAll('[data-ler]')
+        .forEach((b) => {
+          b.addEventListener('click', () => {
+            PV.router.navegar(
+              '/conteudo/' + b.dataset.ler,
+            );
+          });
+        });
+
       if (ehAdmin) {
-        listaEl.querySelectorAll('[data-editar]').forEach((b) => b.addEventListener('click', () => abrirModal(lista.find((c) => String(c.id) === b.dataset.editar))));
-        listaEl.querySelectorAll('[data-excluir]').forEach((b) => b.addEventListener('click', () => excluir(b.dataset.excluir)));
+        listaEl
+          .querySelectorAll('[data-editar]')
+          .forEach((b) => {
+            b.addEventListener('click', () => {
+              abrirModal(
+                lista.find(
+                  (c) =>
+                    String(c.id) ===
+                    b.dataset.editar,
+                ),
+              );
+            });
+          });
+
+        listaEl
+          .querySelectorAll('[data-excluir]')
+          .forEach((b) => {
+            b.addEventListener('click', () => {
+              excluir(b.dataset.excluir);
+            });
+          });
       }
     }
 
     async function carregar() {
       listaEl.innerHTML = carregando();
+
       try {
-        lista = await PV.db.conteudos.listar();
+        lista =
+          await PV.db.conteudos.listar();
+
         renderLista();
       } catch (e) {
-        mensagem = { tipo: 'erro', texto: e.message || 'Erro ao carregar.' };
-        avisoEl.innerHTML = aviso(mensagem);
+        mensagem = {
+          tipo: 'erro',
+          texto:
+            e.message ||
+            'Erro ao carregar.',
+        };
+
+        avisoEl.innerHTML =
+          aviso(mensagem);
+
         listaEl.innerHTML = '';
       }
     }
 
     function abrirModal(conteudo) {
       form = conteudo
-        ? { id: conteudo.id, titulo: conteudo.titulo || '', descricao: conteudo.descricao || '', SinaisSintomas: conteudo.SinaisSintomas || '', SinaisAlerta: conteudo.SinaisAlerta || '' }
-        : { ...FORM_CONTEUDO_VAZIO };
-      main.querySelector('#mc-titulo').value = form.titulo;
-      main.querySelector('#mc-descricao').value = form.descricao;
-      main.querySelector('#mc-sinais-sintomas').value = form.SinaisSintomas;
-      main.querySelector('#mc-sinais-alerta').value = form.SinaisAlerta;
+        ? {
+            id: conteudo.id,
+            titulo:
+              conteudo.titulo || '',
+            descricao:
+              conteudo.descricao || '',
+            SinaisSintomas:
+              conteudo.SinaisSintomas || '',
+            SinaisAlerta:
+              conteudo.SinaisAlerta || '',
+          }
+        : {
+            ...FORM_CONTEUDO_VAZIO,
+          };
+
+      main.querySelector(
+        '#mc-titulo',
+      ).value = form.titulo;
+
+      main.querySelector(
+        '#mc-descricao',
+      ).value = form.descricao;
+
+      main.querySelector(
+        '#mc-sinais-sintomas',
+      ).value = form.SinaisSintomas;
+
+      main.querySelector(
+        '#mc-sinais-alerta',
+      ).value = form.SinaisAlerta;
+
       modalEl.hidden = false;
     }
 
     async function salvar() {
-      const botao = main.querySelector('#mc-salvar');
+      const botao =
+        main.querySelector('#mc-salvar');
+
       botao.disabled = true;
       botao.innerHTML = spinner(true);
+
       const dados = {
-        titulo: main.querySelector('#mc-titulo').value,
-        descricao: main.querySelector('#mc-descricao').value,
-        texto: main.querySelector('#mc-descricao').value,
-        SinaisSintomas: main.querySelector('#mc-sinais-sintomas').value,
-        SinaisAlerta: main.querySelector('#mc-sinais-alerta').value,
-        data_post: new Date().toISOString().split('T')[0],
+        titulo:
+          main.querySelector('#mc-titulo')
+            .value,
+
+        descricao:
+          main.querySelector('#mc-descricao')
+            .value,
+
+        texto:
+          main.querySelector('#mc-descricao')
+            .value,
+
+        SinaisSintomas:
+          main.querySelector(
+            '#mc-sinais-sintomas',
+          ).value,
+
+        SinaisAlerta:
+          main.querySelector(
+            '#mc-sinais-alerta',
+          ).value,
+
+        data_post:
+          new Date()
+            .toISOString()
+            .split('T')[0],
       };
+
       try {
-        if (form.id) await PV.db.conteudos.atualizar(form.id, dados);
-        else await PV.db.conteudos.criar(dados);
+        if (form.id) {
+          await PV.db.conteudos.atualizar(
+            form.id,
+            dados,
+          );
+        } else {
+          await PV.db.conteudos.criar(
+            dados,
+          );
+        }
+
         modalEl.hidden = true;
-        mensagem = { tipo: 'sucesso', texto: 'Conteúdo salvo.' };
-        avisoEl.innerHTML = aviso(mensagem);
+
+        mensagem = {
+          tipo: 'sucesso',
+          texto: 'Conteúdo salvo.',
+        };
+
+        avisoEl.innerHTML =
+          aviso(mensagem);
+
         await carregar();
       } catch (e) {
-        mensagem = { tipo: 'erro', texto: e.message || 'Erro ao salvar.' };
-        avisoEl.innerHTML = aviso(mensagem);
+        mensagem = {
+          tipo: 'erro',
+          texto:
+            e.message ||
+            'Erro ao salvar.',
+        };
+
+        avisoEl.innerHTML =
+          aviso(mensagem);
       } finally {
         botao.disabled = false;
         botao.textContent = 'Salvar';
@@ -283,168 +1108,628 @@ window.PV.screens = window.PV.screens || {};
     async function excluir(id) {
       try {
         await PV.db.conteudos.remover(id);
-        mensagem = { tipo: 'sucesso', texto: 'Conteúdo excluído.' };
-        avisoEl.innerHTML = aviso(mensagem);
+
+        mensagem = {
+          tipo: 'sucesso',
+          texto: 'Conteúdo excluído.',
+        };
+
+        avisoEl.innerHTML =
+          aviso(mensagem);
+
         await carregar();
       } catch (e) {
-        mensagem = { tipo: 'erro', texto: e.message || 'Erro ao excluir.' };
-        avisoEl.innerHTML = aviso(mensagem);
+        mensagem = {
+          tipo: 'erro',
+          texto:
+            e.message ||
+            'Erro ao excluir.',
+        };
+
+        avisoEl.innerHTML =
+          aviso(mensagem);
       }
     }
 
-    main.querySelector('#busca-input').addEventListener('input', (e) => { textoBusca = e.target.value; renderLista(); });
-    main.querySelector('#btn-recarregar').addEventListener('click', carregar);
-    if (ehAdmin) main.querySelector('#btn-novo-conteudo').addEventListener('click', () => abrirModal());
-    main.querySelector('#mc-cancelar').addEventListener('click', () => { modalEl.hidden = true; });
-    main.querySelector('#mc-salvar').addEventListener('click', salvar);
+    main
+      .querySelector('#busca-input')
+      .addEventListener('input', (e) => {
+        textoBusca =
+          e.target.value;
+
+        renderLista();
+      });
+
+    main
+      .querySelector('#btn-recarregar')
+      .addEventListener(
+        'click',
+        carregar,
+      );
+
+    if (ehAdmin) {
+      main
+        .querySelector(
+          '#btn-novo-conteudo',
+        )
+        .addEventListener(
+          'click',
+          () => abrirModal(),
+        );
+    }
+
+    main
+      .querySelector('#mc-cancelar')
+      .addEventListener(
+        'click',
+        () => {
+          modalEl.hidden = true;
+        },
+      );
+
+    main
+      .querySelector('#mc-salvar')
+      .addEventListener(
+        'click',
+        salvar,
+      );
 
     await carregar();
   }
 
   /* ======================================================= DashboardAdmin === */
-  const PALETA_GRAFICO = ['#E4572E', '#F3A712', '#A8C686', '#669BBC', '#29335C', '#8E6C88', '#FF6B6B', '#4ECDC4', '#C7F464', '#556270'];
-  const corPorIndice = (i) => PALETA_GRAFICO[i % PALETA_GRAFICO.length];
 
-  function calcularEstatisticas(registros, sintomas) {
-    const nomes = new Map(sintomas.map((s) => [s.id, s.nome_sintoma]));
+  const PALETA_GRAFICO = [
+    '#E4572E',
+    '#F3A712',
+    '#A8C686',
+    '#669BBC',
+    '#29335C',
+    '#8E6C88',
+    '#FF6B6B',
+    '#4ECDC4',
+    '#C7F464',
+    '#556270',
+  ];
+
+  const corPorIndice = (i) =>
+    PALETA_GRAFICO[
+      i % PALETA_GRAFICO.length
+    ];
+
+  function calcularEstatisticas(
+    registros,
+    sintomas,
+  ) {
+    const nomes = new Map(
+      sintomas.map((s) => [
+        s.id,
+        s.nome_sintoma,
+      ]),
+    );
+
     const porSintoma = new Map();
+
     registros.forEach((r) => {
       const id = Number(r.sintoma_id);
-      if (!porSintoma.has(id)) porSintoma.set(id, []);
-      porSintoma.get(id).push(Number(r.intensidade));
+
+      if (!porSintoma.has(id)) {
+        porSintoma.set(id, []);
+      }
+
+      porSintoma
+        .get(id)
+        .push(Number(r.intensidade));
     });
-    const ids = [...porSintoma.keys()];
-    const barra = (id, valor, i) => ({ label: nomes.get(id) ?? `ID ${id}`, value: Number(valor), color: corPorIndice(i) });
-    const media = (v) => v.reduce((a, b) => a + b, 0) / v.length;
-    const variancia = (v) => { const m = media(v); return v.reduce((s, x) => s + (x - m) ** 2, 0) / v.length; };
-    const mediana = (v) => { const o = [...v].sort((a, b) => a - b); const meio = Math.floor(o.length / 2); return o.length % 2 !== 0 ? o[meio] : (o[meio - 1] + o[meio]) / 2; };
+
+    const ids = [
+      ...porSintoma.keys(),
+    ];
+
+    const barra = (
+      id,
+      valor,
+      i,
+    ) => ({
+      label:
+        nomes.get(id) ??
+        `ID ${id}`,
+
+      value: Number(valor),
+
+      color:
+        corPorIndice(i),
+    });
+
+    const media = (v) =>
+      v.reduce(
+        (a, b) => a + b,
+        0,
+      ) / v.length;
+
+    const variancia = (v) => {
+      const m = media(v);
+
+      return (
+        v.reduce(
+          (s, x) =>
+            s + (x - m) ** 2,
+          0,
+        ) / v.length
+      );
+    };
+
+    const mediana = (v) => {
+      const o = [...v].sort(
+        (a, b) => a - b,
+      );
+
+      const meio =
+        Math.floor(
+          o.length / 2,
+        );
+
+      return o.length % 2 !== 0
+        ? o[meio]
+        : (
+            o[meio - 1] +
+            o[meio]
+          ) / 2;
+    };
 
     return {
-      media: ids.map((id, i) => barra(id, +media(porSintoma.get(id)).toFixed(1), i)),
-      frequencia: ids.map((id, i) => barra(id, porSintoma.get(id).length, i)),
-      mediana: ids.map((id, i) => barra(id, mediana(porSintoma.get(id)), i)),
-      variancia: ids.map((id, i) => barra(id, +variancia(porSintoma.get(id)).toFixed(2), i)),
-      desvioPadrao: ids.map((id, i) => barra(id, +Math.sqrt(variancia(porSintoma.get(id))).toFixed(2), i)),
+      media: ids.map(
+        (id, i) =>
+          barra(
+            id,
+            +media(
+              porSintoma.get(id),
+            ).toFixed(1),
+            i,
+          ),
+      ),
+
+      frequencia: ids.map(
+        (id, i) =>
+          barra(
+            id,
+            porSintoma.get(id)
+              .length,
+            i,
+          ),
+      ),
+
+      mediana: ids.map(
+        (id, i) =>
+          barra(
+            id,
+            mediana(
+              porSintoma.get(id),
+            ),
+            i,
+          ),
+      ),
+
+      variancia: ids.map(
+        (id, i) =>
+          barra(
+            id,
+            +variancia(
+              porSintoma.get(id),
+            ).toFixed(2),
+            i,
+          ),
+      ),
+
+      desvioPadrao: ids.map(
+        (id, i) =>
+          barra(
+            id,
+            +Math.sqrt(
+              variancia(
+                porSintoma.get(id),
+              ),
+            ).toFixed(2),
+            i,
+          ),
+      ),
     };
   }
 
-  function cardGraficoHtml(titulo, dados) {
-    const maximo = Math.max(...dados.map((d) => d.value), 1);
+  function cardGraficoHtml(
+    titulo,
+    dados,
+  ) {
+    const maximo = Math.max(
+      ...dados.map(
+        (d) => d.value,
+      ),
+      1,
+    );
+
     return `
       <div class="pv-card-grafico">
-        <div class="titulo-grafico">${escaparHtml(titulo)}</div>
+
+        <div class="titulo-grafico">
+          ${escaparHtml(titulo)}
+        </div>
+
         <div class="pv-grafico-barras">
-          ${dados.map((d) => `
-            <div class="pv-grafico-coluna-wrap">
-              <div class="pv-grafico-coluna" style="height:${Math.max((d.value / maximo) * 200, d.value > 0 ? 4 : 0)}px;background:${d.color}"></div>
-            </div>`).join('')}
+
+          ${dados
+            .map(
+              (d) => `
+                <div class="pv-grafico-coluna-wrap">
+
+                  <div
+                    class="pv-grafico-coluna"
+                    style="
+                      height:${Math.max(
+                        (d.value /
+                          maximo) *
+                          200,
+                        d.value >
+                        0
+                          ? 4
+                          : 0,
+                      )}px;
+                      background:${d.color};
+                    "
+                  ></div>
+
+                </div>
+              `,
+            )
+            .join('')}
+
         </div>
+
         <div class="pv-legenda">
-          ${dados.map((d) => `
-            <div class="pv-legenda-item">
-              <span class="pv-legenda-cor" style="background:${d.color}"></span>
-              <span>${escaparHtml(d.label)}: <b>${d.value}</b></span>
-            </div>`).join('')}
+
+          ${dados
+            .map(
+              (d) => `
+                <div class="pv-legenda-item">
+
+                  <span
+                    class="pv-legenda-cor"
+                    style="background:${d.color}"
+                  ></span>
+
+                  <span>
+                    ${escaparHtml(
+                      d.label,
+                    )}:
+                    <b>${d.value}</b>
+                  </span>
+
+                </div>
+              `,
+            )
+            .join('')}
+
         </div>
-      </div>`;
+
+      </div>
+    `;
   }
 
   function gerenciadorSintomasHtml() {
     return `
-      <div class="pv-gerenciador" id="gerenciador">
-        <button class="botao-expandir" id="ger-toggle" type="button">Gerenciar sintomas</button>
-        <div class="painel pv-oculto" id="ger-painel">
-          <div class="subtitulo">Lista de sintomas</div>
+      <div
+        class="pv-gerenciador"
+        id="gerenciador"
+      >
+
+        <button
+          class="botao-expandir"
+          id="ger-toggle"
+          type="button"
+        >
+          Gerenciar sintomas
+        </button>
+
+        <div
+          class="painel pv-oculto"
+          id="ger-painel"
+        >
+
+          <div class="subtitulo">
+            Lista de sintomas
+          </div>
+
           <div id="ger-lista"></div>
-          <button class="ver-mais pv-oculto" id="ger-vermais" type="button">Ver mais</button>
-          <div class="subtitulo">Adicionar novo sintoma</div>
-          <input class="input-sintoma" id="ger-novo" type="text" placeholder="Nome do sintoma">
-          <button class="botao-adicionar" id="ger-adicionar" type="button">Adicionar sintoma</button>
+
+          <button
+            class="ver-mais pv-oculto"
+            id="ger-vermais"
+            type="button"
+          >
+            Ver mais
+          </button>
+
+          <div class="subtitulo">
+            Adicionar novo sintoma
+          </div>
+
+          <input
+            class="input-sintoma"
+            id="ger-novo"
+            type="text"
+            placeholder="Nome do sintoma"
+          >
+
+          <button
+            class="botao-adicionar"
+            id="ger-adicionar"
+            type="button"
+          >
+            Adicionar sintoma
+          </button>
+
         </div>
-      </div>`;
+      </div>
+    `;
   }
 
-  function ligarGerenciadorSintomas(main, onAtualizar) {
+  function ligarGerenciadorSintomas(
+    main,
+    onAtualizar,
+  ) {
     let aberto = false;
     let verTodos = false;
     let listaSintomas = [];
 
-    const painel = main.querySelector('#ger-painel');
-    const listaEl = main.querySelector('#ger-lista');
-    const btnVerMais = main.querySelector('#ger-vermais');
+    const painel =
+      main.querySelector(
+        '#ger-painel',
+      );
+
+    const listaEl =
+      main.querySelector(
+        '#ger-lista',
+      );
+
+    const btnVerMais =
+      main.querySelector(
+        '#ger-vermais',
+      );
 
     async function carregar() {
-      try { listaSintomas = await PV.db.sintomas.listar(); } catch { listaSintomas = []; }
+      try {
+        listaSintomas =
+          await PV.db.sintomas.listar();
+      } catch {
+        listaSintomas = [];
+      }
+
       render();
     }
 
     function render() {
-      const visiveis = verTodos ? listaSintomas : listaSintomas.slice(0, 3);
-      listaEl.innerHTML = visiveis.map((s) => `
-        <div class="item-sintoma">
-          <span class="nome-sintoma">${escaparHtml(s.nome_sintoma)}</span>
-          <button class="botao-remover" type="button" data-remover="${s.id}">Remover</button>
-        </div>`).join('');
-      listaEl.querySelectorAll('[data-remover]').forEach((b) => b.addEventListener('click', async () => {
-        await PV.db.sintomas.remover(b.dataset.remover);
-        await carregar();
-        onAtualizar();
-      }));
-      btnVerMais.classList.toggle('pv-oculto', listaSintomas.length <= 3);
-      btnVerMais.textContent = verTodos ? 'Ver menos' : 'Ver mais';
+      const visiveis =
+        verTodos
+          ? listaSintomas
+          : listaSintomas.slice(
+              0,
+              3,
+            );
+
+      listaEl.innerHTML =
+        visiveis
+          .map(
+            (s) => `
+              <div class="item-sintoma">
+
+                <span class="nome-sintoma">
+                  ${escaparHtml(
+                    s.nome_sintoma,
+                  )}
+                </span>
+
+                <button
+                  class="botao-remover"
+                  type="button"
+                  data-remover="${s.id}"
+                >
+                  Remover
+                </button>
+
+              </div>
+            `,
+          )
+          .join('');
+
+      listaEl
+        .querySelectorAll(
+          '[data-remover]',
+        )
+        .forEach((b) => {
+          b.addEventListener(
+            'click',
+            async () => {
+              await PV.db.sintomas.remover(
+                b.dataset.remover,
+              );
+
+              await carregar();
+              onAtualizar();
+            },
+          );
+        });
+
+      btnVerMais.classList.toggle(
+        'pv-oculto',
+        listaSintomas.length <= 3,
+      );
+
+      btnVerMais.textContent =
+        verTodos
+          ? 'Ver menos'
+          : 'Ver mais';
     }
 
-    main.querySelector('#ger-toggle').addEventListener('click', () => {
-      aberto = !aberto;
-      main.querySelector('#ger-toggle').textContent = aberto ? 'Fechar gerenciamento de sintomas' : 'Gerenciar sintomas';
-      painel.classList.toggle('pv-oculto', !aberto);
-      if (aberto) carregar();
-    });
-    btnVerMais.addEventListener('click', () => { verTodos = !verTodos; render(); });
-    main.querySelector('#ger-adicionar').addEventListener('click', async () => {
-      const campo = main.querySelector('#ger-novo');
-      if (!campo.value.trim()) return;
-      await PV.db.sintomas.criar(campo.value.trim());
-      campo.value = '';
-      await carregar();
-      onAtualizar();
-    });
+    main
+      .querySelector('#ger-toggle')
+      .addEventListener(
+        'click',
+        () => {
+          aberto = !aberto;
+
+          main.querySelector(
+            '#ger-toggle',
+          ).textContent = aberto
+            ? 'Fechar gerenciamento de sintomas'
+            : 'Gerenciar sintomas';
+
+          painel.classList.toggle(
+            'pv-oculto',
+            !aberto,
+          );
+
+          if (aberto) {
+            carregar();
+          }
+        },
+      );
+
+    btnVerMais.addEventListener(
+      'click',
+      () => {
+        verTodos = !verTodos;
+        render();
+      },
+    );
+
+    main
+      .querySelector('#ger-adicionar')
+      .addEventListener(
+        'click',
+        async () => {
+          const campo =
+            main.querySelector(
+              '#ger-novo',
+            );
+
+          if (!campo.value.trim()) {
+            return;
+          }
+
+          await PV.db.sintomas.criar(
+            campo.value.trim(),
+          );
+
+          campo.value = '';
+
+          await carregar();
+          onAtualizar();
+        },
+      );
   }
 
-  async function dashboardAdmin(main, ctx) {
-    main.innerHTML = carregando('Carregando...');
+  async function dashboardAdmin(
+    main,
+    ctx,
+  ) {
+    main.innerHTML =
+      carregando(
+        'Carregando...',
+      );
 
     let registros = [];
     let sintomas = [];
     let erro = null;
+
     try {
-      [registros, sintomas] = await Promise.all([PV.db.registros.listar(), PV.db.sintomas.listar()]);
+      [
+        registros,
+        sintomas,
+      ] = await Promise.all([
+        PV.db.registros.listar(),
+        PV.db.sintomas.listar(),
+      ]);
     } catch (e) {
-      erro = e.message || 'Não foi possível carregar os dados.';
+      erro =
+        e.message ||
+        'Não foi possível carregar os dados.';
     }
 
-    const estat = calcularEstatisticas(registros, sintomas);
-    const temDados = registros.length > 0;
+    const estat =
+      calcularEstatisticas(
+        registros,
+        sintomas,
+      );
+
+    const temDados =
+      registros.length > 0;
 
     main.innerHTML = `
       <div class="tela-dashboard">
-        <h1 class="titulo">Dashboard</h1>
-        ${erro ? `<p class="erro-texto">${escaparHtml(erro)}</p>` : ''}
-        ${temDados ? `
-          ${cardGraficoHtml('Média de intensidade', estat.media)}
-          ${cardGraficoHtml('Frequência de registros', estat.frequencia)}
-          ${cardGraficoHtml('Mediana da intensidade', estat.mediana)}
-          ${cardGraficoHtml('Variância da intensidade', estat.variancia)}
-          ${cardGraficoHtml('Desvio padrão da intensidade', estat.desvioPadrao)}
-        ` : `<p class="vazio">Ainda não há registros de sintomas.</p>`}
-        ${gerenciadorSintomasHtml()}
-      </div>`;
 
-    ligarGerenciadorSintomas(main, () => PV.router.renderizar());
+        <h1 class="titulo">
+          Dashboard
+        </h1>
+
+        ${
+          erro
+            ? `
+              <p class="erro-texto">
+                ${escaparHtml(erro)}
+              </p>
+            `
+            : ''
+        }
+
+        ${
+          temDados
+            ? `
+              ${cardGraficoHtml(
+                'Média de intensidade',
+                estat.media,
+              )}
+
+              ${cardGraficoHtml(
+                'Frequência de registros',
+                estat.frequencia,
+              )}
+
+              ${cardGraficoHtml(
+                'Mediana da intensidade',
+                estat.mediana,
+              )}
+
+              ${cardGraficoHtml(
+                'Variância da intensidade',
+                estat.variancia,
+              )}
+
+              ${cardGraficoHtml(
+                'Desvio padrão da intensidade',
+                estat.desvioPadrao,
+              )}
+            `
+            : `
+              <p class="vazio">
+                Ainda não há registros de sintomas.
+              </p>
+            `
+        }
+
+        ${gerenciadorSintomasHtml()}
+
+      </div>
+    `;
+
+    ligarGerenciadorSintomas(
+      main,
+      () =>
+        PV.router.renderizar(),
+    );
   }
 
   PV.screens.home = home;
   PV.screens.contato = contato;
   PV.screens.busca = busca;
-  PV.screens.dashboardAdmin = dashboardAdmin;
+  PV.screens.dashboardAdmin =
+    dashboardAdmin;
 })();

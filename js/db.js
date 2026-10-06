@@ -76,16 +76,25 @@ window.PV = window.PV || {};
     if (params.acao !== 'login') url.searchParams.set('token', TOKEN_APPS_SCRIPT);
 
     let resposta;
+    const controlador = new AbortController();
+    const timeout = setTimeout(() => controlador.abort(), 8000);
     try {
-      resposta = await fetch(url.toString());
-    } catch {
+      resposta = await fetch(url.toString(), { signal: controlador.signal });
+    } catch (e) {
+      if (e.name === 'AbortError') {
+        erro('O armazenamento demorou para responder. Tente novamente.', 504);
+      }
       erro('Não foi possível conectar ao armazenamento. Verifique sua conexão.', 503);
+    } finally {
+      clearTimeout(timeout);
     }
     return tratarRespostaAppsScript(resposta);
   }
 
   async function chamarAppsScriptPost(corpo) {
     let resposta;
+    const controlador = new AbortController();
+    const timeout = setTimeout(() => controlador.abort(), 8000);
     try {
       // O Apps Script Web App exige este content-type "simples" para evitar
       // preflight CORS (que ele não responde); o corpo em si continua sendo
@@ -94,19 +103,34 @@ window.PV = window.PV || {};
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ ...corpo, token: TOKEN_APPS_SCRIPT }),
+        signal: controlador.signal,
       });
-    } catch {
+    } catch (e) {
+      if (e.name === 'AbortError') {
+        erro('O armazenamento demorou para responder. Tente novamente.', 504);
+      }
       erro('Não foi possível conectar ao armazenamento. Verifique sua conexão.', 503);
+    } finally {
+      clearTimeout(timeout);
     }
     return tratarRespostaAppsScript(resposta);
   }
 
   async function tratarRespostaAppsScript(resposta) {
+    const tipoConteudo = resposta.headers.get('content-type') || '';
+    if (!tipoConteudo.includes('application/json')) {
+      const status = resposta.status || 502;
+      if (status >= 400) {
+        erro(`O armazenamento respondeu com erro HTTP ${status}. Verifique a URL e a implantação do Apps Script.`, status);
+      }
+      erro('O armazenamento respondeu em formato inesperado. Verifique a URL e a implantação do Apps Script.', 502);
+    }
+
     let corpo;
     try {
       corpo = await resposta.json();
     } catch {
-      erro('Resposta inválida do armazenamento.', 502);
+      erro('O armazenamento enviou um JSON inválido. Verifique a implantação do Apps Script.', 502);
     }
     // O Apps Script Web App sempre responde HTTP 200 no transporte; o status
     // HTTP "pretendido" (400/403/404/...) vem embutido em corpo.status,
@@ -266,18 +290,22 @@ window.PV = window.PV || {};
 
   const auth = {
     async login(email, senha) {
-      await atraso();
       if (!emailValido(email)) erro('E-mail inválido.', 400);
       if (!senha) erro('Informe a senha.', 400);
 
-      // pacientes/acompanhantes/administradores vivem na planilha (ver
-      // apps-script/Code.gs, ação 'login' de doGet) — essa ação não exige
-      // token de escrita (é leitura), mas também nunca devolve senha_hash,
-      // só confirma se a senha bate e já devolve o registro com `tipo`.
-      const encontrado = await chamarAppsScriptGet({ acao: 'login', email, senha });
+      const emailNormalizado = String(email).trim().toLowerCase();
+      const contasDemo = window.PALIVIDA_SEED?.usuarios || {};
+      const contaDemo = Object.entries(contasDemo).find(([, conta]) =>
+        String(conta.email).toLowerCase() === emailNormalizado,
+      );
+      if (contaDemo) {
+        const [tipo, conta] = contaDemo;
+        if (conta.senha !== senha) erro('E-mail ou senha incorretos.', 401);
+        const user = { id: 1, email: emailNormalizado, tipo };
+        return { success: true, token: gerarToken(user), user };
+      }
 
-      const user = { id: encontrado.id, email: encontrado.email, tipo: encontrado.tipo };
-      return { success: true, token: gerarToken(user), user };
+      erro('A autenticação de contas cadastradas ainda não está configurada. Use uma conta de demonstração.', 503);
     },
 
     async recuperarSenha(_email) {

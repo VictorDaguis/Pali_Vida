@@ -19,15 +19,12 @@ window.PV.screens = window.PV.screens || {};
           <button type="button" class="botao" id="btn-conteudos">Gerenciar conteúdos</button>
         </div>
 
-        <button type="button" class="botao-sair" id="btn-sair">Sair</button>
+        <button type="button" class="botao-sair" id="btn-sair" data-sair>Sair</button>
       </div>`;
 
     main.querySelector('#btn-dashboard').addEventListener('click', () => PV.router.navegar('/home'));
     main.querySelector('#btn-conteudos').addEventListener('click', () => PV.router.navegar('/busca'));
-    main.querySelector('#btn-sair').addEventListener('click', () => {
-      PV.session.limparSessao();
-      PV.router.navegar('/login');
-    });
+    PV.ui.ligarLogout(main);
   }
 
   PV.screens.painelAdmin = painelAdmin;

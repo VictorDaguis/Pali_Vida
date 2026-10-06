@@ -119,6 +119,11 @@ Ver Parte 5 do prompt de implementação original — resumindo:
 
 ## Limitações conhecidas
 
+- Este `Code.gs` não implementa a ação `acao=login`. No site, somente as
+  contas de demonstração definidas em `js/data.js` autenticam localmente.
+  Para aceitar pacientes, cuidadores ou administradores reais, é necessário
+  implementar e publicar um serviço de autenticação apropriado; não basta
+  trocar a URL da implantação.
 - O token é uma string fixa embutida no `js/db.js` do site (código público,
   visível a quem inspecionar a página) — não é segurança forte, apenas
   evita escrita casual/acidental por quem não conhece a URL nem o token.
