@@ -1,0 +1,1056 @@
+:root.pv-dark-mode {
+  color-scheme: dark;
+  --azul: #a6d8f0;
+  --azul-medio: #69c7d8;
+  --azul-claro: #3d6078;
+  --azul-botao: #147b96;
+  --creme: #111d29;
+  --areia: #162532;
+  --areia-clara: #1a2b39;
+  --branco-quente: #eef5f8;
+  --marrom: #e0eaf0;
+  --verde-escuro: #d6e9d1;
+  --cinza: #dce6ec;
+  --cinza-claro: #b3c2cd;
+  --destaque: #13829a;
+  --alerta-padrao: #111d29;
+
+  --pv-auth-bg: #101b27;
+  --pv-auth-surface: #1b2a38;
+  --pv-auth-primary: #43a8c0;
+  --pv-auth-primary-2: #27bac1;
+  --pv-auth-text: #e3eff5;
+  --pv-auth-muted: #a6bdcc;
+  --pv-auth-border: #385264;
+  --pv-auth-mint: #243c43;
+  --pv-auth-mint-2: #203842;
+  --pv-auth-focus: #48c0cb;
+  --pv-auth-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+}
+
+html.pv-dark-mode,
+html.pv-dark-mode body {
+  color-scheme: dark;
+  background: #0d1721;
+}
+
+html.pv-dark-mode body { color: #e0eaf0; }
+html.pv-dark-mode .app-shell,
+html.pv-dark-mode .app-main,
+html.pv-dark-mode .tela-auth,
+html.pv-dark-mode .tela-perfil,
+html.pv-dark-mode .tela-menu-sintomas,
+html.pv-dark-mode .tela-triagem,
+html.pv-dark-mode .tela-carteirinha,
+html.pv-dark-mode .tela-contato,
+html.pv-dark-mode .tela-dashboard,
+html.pv-dark-mode .tela-sinal,
+html.pv-dark-mode .pv-painel-hoje,
+html.pv-dark-mode .pv-dashboard-shell,
+html.pv-dark-mode .pv-dash-workspace {
+  color: #e0eaf0;
+  background-color: #111d29;
+}
+
+html.pv-dark-mode .pv-header,
+html.pv-dark-mode .pv-footer {
+  color: #e0eaf0;
+  background: #152330;
+  border-color: #2a3d4c;
+}
+
+html.pv-dark-mode .pv-footer button.ativo { box-shadow: inset 0 2px 0 #59bdd0; }
+html.pv-dark-mode .pv-footer img { filter: brightness(0) invert(.84); opacity: .68; }
+html.pv-dark-mode .pv-footer button.ativo img { opacity: 1; }
+
+html.pv-dark-mode .pv-theme-toggle,
+html.pv-dark-mode .pv-logout-button {
+  border-color: #3a5365;
+  color: #d8e7ef;
+  background: #1d2d3b;
+}
+html.pv-dark-mode .pv-theme-toggle:hover,
+html.pv-dark-mode .pv-logout-button:hover {
+  border-color: #4d9eae;
+  color: #b1edf0;
+  background: #253b49;
+}
+html.pv-dark-mode .pv-theme-icon--moon { display: none; }
+html.pv-dark-mode .pv-theme-icon--sun { display: block; }
+
+html.pv-dark-mode input:not([type="checkbox"]):not([type="radio"]),
+html.pv-dark-mode textarea,
+html.pv-dark-mode select {
+  border-color: #40596b;
+  color: #e0eaf0;
+  background-color: #1a2a38;
+  color-scheme: dark;
+}
+html.pv-dark-mode input::placeholder,
+html.pv-dark-mode textarea::placeholder { color: #9aafbd; opacity: 1; }
+
+html.pv-dark-mode .pv-card,
+html.pv-dark-mode .pv-item-vinculo,
+html.pv-dark-mode .pv-modal,
+html.pv-dark-mode .pv-modal-intensidade,
+html.pv-dark-mode .pv-painel-hoje,
+html.pv-dark-mode .pv-carteirinha-card,
+html.pv-dark-mode .pv-card-grafico,
+html.pv-dark-mode .pv-gerenciador,
+html.pv-dark-mode .pv-card-conteudo,
+html.pv-dark-mode .pv-triagem-card,
+html.pv-dark-mode .pv-triagem-medidor,
+html.pv-dark-mode .pv-triagem-sugestoes,
+html.pv-dark-mode .tela-sinal .card,
+html.pv-dark-mode .tela-sinal .aviso-topo {
+  border-color: #304655;
+  color: #e0eaf0;
+  background-color: #1a2937;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+}
+
+html.pv-dark-mode .pv-dash-sidebar {
+  border-color: #2a3d4c;
+  background: #152330;
+}
+html.pv-dark-mode .pv-dash-nav button { color: #a9bdca; }
+html.pv-dark-mode .pv-dash-nav button:hover,
+html.pv-dark-mode .pv-dash-nav button.ativo,
+html.pv-dark-mode .pv-dashboard-admin .pv-dash-nav button[aria-current="page"] {
+  color: #85d9e1;
+  background: #203b47;
+}
+html.pv-dark-mode .pv-dash-workspace {
+  background: radial-gradient(ellipse at 65% 0%, rgba(45, 88, 105, .18), transparent 52%), #111d29;
+}
+html.pv-dark-mode .pv-dash-profile {
+  border-color: #344a5b;
+  color: #dceaf1;
+  background: #1a2a38;
+}
+html.pv-dark-mode .pv-dash-avatar {
+  color: #a5e5eb;
+  background: #254451;
+}
+html.pv-dark-mode .pv-dash-profile-copy small,
+html.pv-dark-mode .pv-dash-sidebar-note,
+html.pv-dark-mode .pv-admin-role-badge,
+html.pv-dark-mode .pv-caregiver-role-badge { color: #a3b7c5; }
+html.pv-dark-mode .pv-dash-welcome h1,
+html.pv-dark-mode .pv-dash-action:not(.pv-dash-action--symptoms) h2,
+html.pv-dark-mode .pv-dash-section-heading h2 { color: #dceaf1; }
+html.pv-dark-mode .pv-dash-welcome p,
+html.pv-dark-mode .pv-dash-section-heading p,
+html.pv-dark-mode .pv-dash-contact small,
+html.pv-dark-mode .pv-dash-reminder p { color: #a5b8c5; }
+html.pv-dark-mode .pv-dash-action--record {
+  border-color: #403e64;
+  color: #e0dcff;
+  background: linear-gradient(135deg, #25283b, #29243e);
+}
+html.pv-dark-mode .pv-dash-action--content {
+  border-color: #315749;
+  color: #c8f1df;
+  background: linear-gradient(135deg, #1d332e, #1b3c35);
+}
+html.pv-dark-mode .pv-dash-action--record > button,
+html.pv-dark-mode .pv-dash-action--content > button {
+  border-color: #465969;
+  color: #dceaf1;
+  background: #233442;
+}
+html.pv-dark-mode .pv-dash-contacts {
+  border-color: #304655;
+  background: #192936;
+  box-shadow: none;
+}
+html.pv-dark-mode .pv-dash-contact {
+  border-color: #344a5a;
+  color: #dceaf1;
+  background: #1d2e3b;
+  box-shadow: none;
+}
+html.pv-dark-mode .pv-dash-contact-icon--purple { color: #d2c8ff; background: #3a3152; }
+html.pv-dark-mode .pv-dash-contact-icon--green { color: #a9e9d2; background: #254b42; }
+html.pv-dark-mode .pv-dash-contact-icon--blue { color: #b8d3ff; background: #293e5d; }
+html.pv-dark-mode .pv-dash-reminder {
+  border-color: #304655;
+  color: #8de1e9;
+  background: linear-gradient(140deg, #1d3541, #1b303a);
+}
+html.pv-dark-mode .pv-dash-reassurance {
+  border-color: #304655;
+  background: linear-gradient(100deg, #1c3039, #1b3031);
+}
+html.pv-dark-mode .pv-dash-reassurance strong { color: #e0eaf0; }
+html.pv-dark-mode .pv-dash-reassurance small { color: #a5b8c5; }
+html.pv-dark-mode .pv-dash-notification { color: #a8c4d3; }
+
+html.pv-dark-mode .tela-home-redesign {
+  color: #e0eaf0;
+  background: #111d29;
+}
+html.pv-dark-mode .home-saudacao h1,
+html.pv-dark-mode .home-mensagem strong,
+html.pv-dark-mode .home-apoio-header h2,
+html.pv-dark-mode .home-contato-info strong { color: #e0eaf0; }
+html.pv-dark-mode .home-saudacao p,
+html.pv-dark-mode .home-alerta-texto span,
+html.pv-dark-mode .home-apoio-header p,
+html.pv-dark-mode .home-contato-info small,
+html.pv-dark-mode .home-mensagem p { color: #a5b8c5; }
+html.pv-dark-mode .home-alerta,
+html.pv-dark-mode .home-card:not(.home-card-principal),
+html.pv-dark-mode .home-apoio,
+html.pv-dark-mode .home-contato {
+  border-color: #304655;
+  color: #e0eaf0;
+  background: #1a2937;
+  box-shadow: none;
+}
+html.pv-dark-mode .home-card-prontuario { background: linear-gradient(135deg, #202b3c, #28263d); }
+html.pv-dark-mode .home-card-conteudos { background: linear-gradient(135deg, #1b302d, #1d3933); }
+html.pv-dark-mode .home-card-prontuario .home-card-icone { color: #d1c6ff; background: #413663; }
+html.pv-dark-mode .home-card-conteudos .home-card-icone { color: #b8f0d8; background: #31594c; }
+html.pv-dark-mode .home-contato-icone { color: #8de0e8; background: #23444e; }
+html.pv-dark-mode .home-contato-hospital { color: #b8d3ff; background: #293e5d; }
+html.pv-dark-mode .home-contato-sac { color: #d2c8ff; background: #3a3152; }
+html.pv-dark-mode .home-mensagem {
+  border-color: #304d55;
+  background: linear-gradient(90deg, #1a3038, #1a302e);
+}
+html.pv-dark-mode .home-mensagem-icone { color: #8de0e8; background: #24454b; }
+
+html.pv-dark-mode .tela-perfil,
+html.pv-dark-mode .tela-carteirinha,
+html.pv-dark-mode .tela-contato,
+html.pv-dark-mode .tela-triagem,
+html.pv-dark-mode .tela-laudo,
+html.pv-dark-mode .tela-conteudo-detalhe,
+html.pv-dark-mode .tela-definicao,
+html.pv-dark-mode .tela-busca,
+html.pv-dark-mode .tela-dashboard,
+html.pv-dark-mode .tela-sinal {
+  color: #e0eaf0;
+  background: #111d29;
+}
+html.pv-dark-mode .tela-perfil .titulo,
+html.pv-dark-mode .tela-perfil .subtitulo,
+html.pv-dark-mode .tela-perfil .pv-card .subtitulo,
+html.pv-dark-mode .tela-carteirinha .titulo,
+html.pv-dark-mode .tela-carteirinha .subtitulo,
+html.pv-dark-mode .tela-contato .titulo,
+html.pv-dark-mode .tela-contato .subtitulo,
+html.pv-dark-mode .tela-triagem .titulo,
+html.pv-dark-mode .tela-triagem .subtitulo,
+html.pv-dark-mode .tela-laudo .titulo,
+html.pv-dark-mode .tela-laudo .subtitulo,
+html.pv-dark-mode .tela-dashboard .titulo,
+html.pv-dark-mode .tela-sinal .titulo,
+html.pv-dark-mode .tela-sinal .descricao,
+html.pv-dark-mode .pv-campo-label,
+html.pv-dark-mode .pv-carteirinha-campo .campo-label {
+  color: #d8e8f0;
+}
+html.pv-dark-mode .pv-campo-input,
+html.pv-dark-mode .pv-campo-select,
+html.pv-dark-mode .pv-carteirinha-campo .campo,
+html.pv-dark-mode .pv-carteirinha-card,
+html.pv-dark-mode .pv-carteirinha-aviso,
+html.pv-dark-mode .pv-codigo-readonly {
+  border-color: #40596b;
+  color: #e0eaf0;
+  background-color: #1a2a38;
+}
+html.pv-dark-mode .pv-carteirinha-progresso-barra,
+html.pv-dark-mode .pv-carteirinha-card .linhas { background-color: #263947; }
+html.pv-dark-mode .pv-carteirinha-card .topo { color: #edf6fa; }
+html.pv-dark-mode .pv-item-vinculo { border-color: #344a5a; background: #1d2e3b; }
+html.pv-dark-mode .pv-botao-primario,
+html.pv-dark-mode .pv-botao-secundario,
+html.pv-dark-mode .pv-botao-perigo,
+html.pv-dark-mode .pv-botao-logout { color: #f4f8fa; }
+html.pv-dark-mode .pv-botao-logout { background: #685017; }
+
+html.pv-dark-mode .pv-modal .modal-input {
+  border-color: #40596b;
+  color: #e0eaf0;
+  background: #1a2a38;
+}
+html.pv-dark-mode .pv-modal .modal-dica { color: #a5b8c5; }
+html.pv-dark-mode .pv-modal-intensidade .sintoma,
+html.pv-dark-mode .pv-slider-marcadores,
+html.pv-dark-mode .pv-painel-hoje-vazio,
+html.pv-dark-mode .pv-painel-hoje-hora { color: #c2d1da; }
+html.pv-dark-mode .pv-painel-hoje-item,
+html.pv-dark-mode .pv-painel-hoje-lista { color: #e0eaf0; }
+
+html.pv-dark-mode .pv-card-sintoma {
+  border-color: #405463;
+  color: #e0eaf0;
+  background: #1b2b39;
+}
+html.pv-dark-mode .pv-triagem-intro,
+html.pv-dark-mode .pv-triagem-card,
+html.pv-dark-mode .pv-triagem-medidor {
+  border-color: #354c5b;
+  color: #e0eaf0;
+  background: #1a2937;
+}
+html.pv-dark-mode .pv-triagem-titulo,
+html.pv-dark-mode .pv-triagem-medidor-cabecalho,
+html.pv-dark-mode .pv-triagem-rotulo,
+html.pv-dark-mode .pv-triagem-refs summary { color: #c5e5f0; }
+html.pv-dark-mode .pv-triagem-subtitulo,
+html.pv-dark-mode .pv-triagem-definicao,
+html.pv-dark-mode .pv-triagem-refs { color: #b1c2cd; }
+html.pv-dark-mode .pv-triagem-check,
+html.pv-dark-mode .pv-triagem-sugestoes {
+  border-color: #405665;
+  color: #dce8ee;
+  background: #223442;
+}
+html.pv-dark-mode .pv-triagem-sugestoes li { border-color: #354b5a; color: #dce8ee; }
+html.pv-dark-mode .pv-triagem-card.aberto .pv-triagem-corpo { border-color: #354b5a; }
+html.pv-dark-mode .pv-triagem-alerta-secao { border-color: #69533e; background: #342b25; }
+html.pv-dark-mode .pv-triagem-check.selecionado { border-color: #478f75; color: #c0edd8; background: #203b34; }
+html.pv-dark-mode .pv-triagem-check.selecionado.alerta { border-color: #a75b5b; color: #ffd4d1; background: #432b30; }
+html.pv-dark-mode .pv-triagem-link {
+  border: 1px solid #3b6877;
+  color: #eaf7f8;
+  background: #205168;
+}
+html.pv-dark-mode .pv-triagem-links button:hover,
+html.pv-dark-mode .pv-triagem-limpar:hover { background: #294552; }
+
+html.pv-dark-mode .tela-conteudo-detalhe .titulo-principal,
+html.pv-dark-mode .tela-conteudo-detalhe .label-secao,
+html.pv-dark-mode .tela-definicao .titulo,
+html.pv-dark-mode .tela-definicao .titulo-definicao { color: #b9def0; }
+html.pv-dark-mode .tela-conteudo-detalhe .card,
+html.pv-dark-mode .pv-card-conteudo,
+html.pv-dark-mode .tela-definicao .conteudo {
+  color: #e0eaf0;
+  background: #1a2937;
+}
+html.pv-dark-mode .tela-conteudo-detalhe .texto-corpo,
+html.pv-dark-mode .tela-definicao .titulo-secao,
+html.pv-dark-mode .tela-definicao .texto-secao { color: #e0eaf0; }
+html.pv-dark-mode .tela-definicao .sublinhado { background: #304655; }
+html.pv-dark-mode .tela-busca .busca-container,
+html.pv-dark-mode .tela-busca .lista-vazia,
+html.pv-dark-mode .pv-card-conteudo .card-titulo,
+html.pv-dark-mode .pv-card-conteudo .card-descricao,
+html.pv-dark-mode .pv-card-conteudo .acoes-admin { color: #dce8ee; }
+html.pv-dark-mode .pv-card-conteudo .divisor,
+html.pv-dark-mode .pv-card-grafico .pv-legenda { border-color: #354b5a; }
+html.pv-dark-mode .pv-dashboard-paciente .pv-card-conteudo .botao-ler {
+  border-color: #365969;
+  color: #a9e1e4;
+  background: #1b3541;
+}
+html.pv-dark-mode .pv-dashboard-paciente .pv-card-conteudo .botao-ler:hover {
+  border-color: #4b8c97;
+  background: #23434f;
+}
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador .item-sintoma {
+  border-color: #354b5a;
+  color: #dce8ee;
+  background: #223442;
+}
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador .subtitulo,
+html.pv-dark-mode .pv-dashboard-admin .pv-card-grafico .titulo-grafico,
+html.pv-dark-mode .pv-dashboard-admin .tela-perfil > .titulo { color: #dce8ee; }
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador .input-sintoma {
+  border-color: #40596b;
+  color: #e0eaf0;
+  background: #1a2a38;
+}
+html.pv-dark-mode .pv-dashboard-admin .pv-dash-contacts,
+html.pv-dark-mode .pv-dashboard-admin .pv-card-grafico,
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador,
+html.pv-dark-mode .pv-dashboard-admin .pv-card-conteudo,
+html.pv-dark-mode .pv-dashboard-admin .tela-busca .busca-container {
+  border-color: #304655;
+  background-color: #1a2937;
+}
+html.pv-dark-mode .pv-dashboard-admin .tela-dashboard > .vazio {
+  border-color: #304655;
+  color: #b8cbd7;
+  background: #1a2937;
+}
+
+html.pv-dark-mode body:has(.pv-login-page) {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(40, 118, 130, .18), transparent 28%),
+    radial-gradient(circle at 88% 78%, rgba(98, 77, 160, .12), transparent 25%),
+    #101b27;
+}
+html.pv-dark-mode .pv-login-page {
+  color: #e3eff5;
+  background: transparent;
+}
+html.pv-dark-mode .pv-login-card,
+html.pv-dark-mode .pv-login-recovery-card {
+  border: 1px solid #354b5a;
+  color: #e3eff5;
+  background: rgba(27, 42, 56, .97);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+}
+html.pv-dark-mode .pv-login-card h2,
+html.pv-dark-mode .pv-login-form > label,
+html.pv-dark-mode .pv-login-recovery-card > label,
+html.pv-dark-mode .pv-register-heading,
+html.pv-dark-mode .pv-register-form label { color: #e3eff5; }
+html.pv-dark-mode .pv-login-intro,
+html.pv-dark-mode .pv-register-intro,
+html.pv-dark-mode .pv-login-secure div span,
+html.pv-dark-mode .pv-login-demo p { color: #aec1ce; }
+html.pv-dark-mode .pv-login-input,
+html.pv-dark-mode .pv-register-input {
+  border-color: #40596b;
+  color: #edf5f8;
+  background: #162632;
+}
+html.pv-dark-mode .pv-login-input::placeholder,
+html.pv-dark-mode .pv-register-input::placeholder { color: #91a9b9; }
+html.pv-dark-mode .pv-login-input-icon,
+html.pv-dark-mode .pv-login-eye,
+html.pv-dark-mode .pv-login-forgot,
+html.pv-dark-mode .pv-register-back { color: #a8c4d3; }
+html.pv-dark-mode .pv-login-register {
+  border-color: #34788b;
+  color: #9ce2e6;
+  background: #1c3741;
+}
+html.pv-dark-mode .pv-login-secure,
+html.pv-dark-mode .pv-login-demo,
+html.pv-dark-mode .pv-register-brand-note {
+  border-color: #354b5a;
+  background: #20323d;
+}
+html.pv-dark-mode .pv-login-secure strong,
+html.pv-dark-mode .pv-login-demo summary,
+html.pv-dark-mode .pv-register-brand-note strong { color: #d8e9f0; }
+html.pv-dark-mode .pv-login-divider span { background: #405461; }
+html.pv-dark-mode .pv-login-divider b { color: #96acba; }
+html.pv-dark-mode .pv-register-progress li { color: #a9bdca; }
+html.pv-dark-mode .pv-register-progress li > span:first-child { border-color: #486170; background: #223541; }
+html.pv-dark-mode .pv-register-progress li.ativo > span:first-child,
+html.pv-dark-mode .pv-register-progress li.concluido > span:first-child { color: #fff; background: #158fa5; }
+html.pv-dark-mode .pv-login-message:empty { background: transparent; }
+
+@media (max-width: 760px) {
+  .pv-theme-toggle:not(.pv-theme-toggle--auth) {
+    width: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 0;
+  }
+  .pv-theme-toggle:not(.pv-theme-toggle--auth) [data-theme-label] { display: none; }
+  .pv-theme-toggle--auth { top: 12px; right: 12px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.pv-dark-mode body,
+  html.pv-dark-mode .app-shell,
+  html.pv-dark-mode .pv-card,
+  html.pv-dark-mode .pv-theme-toggle {
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+  }
+}
+
+/* PaliVida dark palette: deep navy, calm slate surfaces and restrained teal. */
+:root.pv-dark-mode {
+  --azul: #b9dced;
+  --azul-medio: #75cbd3;
+  --azul-claro: #496879;
+  --azul-botao: #187f91;
+  --creme: #101e2a;
+  --areia: #152633;
+  --areia-clara: #192d3a;
+  --branco: #192c3a;
+  --branco-quente: #e9f1f5;
+  --marrom: #d5e1e8;
+  --cinza: #d3e0e7;
+  --cinza-claro: #a9bdc9;
+  --destaque: #17889a;
+
+  --pv-auth-bg: #0d1924;
+  --pv-auth-surface: #172a38;
+  --pv-auth-primary: #278da3;
+  --pv-auth-primary-2: #38aeb5;
+  --pv-auth-text: #e6f0f4;
+  --pv-auth-muted: #a7bdc9;
+  --pv-auth-border: #304b5a;
+  --pv-auth-mint: #203c41;
+  --pv-auth-mint-2: #1c3540;
+  --pv-auth-focus: #64c7cf;
+  --pv-auth-shadow: 0 24px 70px rgba(0, 0, 0, .34);
+}
+
+html.pv-dark-mode,
+html.pv-dark-mode body {
+  background: #0b1722;
+}
+
+html.pv-dark-mode body,
+html.pv-dark-mode .app-main,
+html.pv-dark-mode .app-shell,
+html.pv-dark-mode .pv-dashboard-shell,
+html.pv-dark-mode .pv-dash-workspace,
+html.pv-dark-mode .tela-home-redesign,
+html.pv-dark-mode .tela-perfil,
+html.pv-dark-mode .tela-menu-sintomas,
+html.pv-dark-mode .tela-triagem,
+html.pv-dark-mode .tela-carteirinha,
+html.pv-dark-mode .tela-contato,
+html.pv-dark-mode .tela-laudo,
+html.pv-dark-mode .tela-conteudo-detalhe,
+html.pv-dark-mode .tela-definicao,
+html.pv-dark-mode .tela-busca,
+html.pv-dark-mode .tela-dashboard,
+html.pv-dark-mode .tela-sinal {
+  color: #e2edf2;
+  background-color: #101e2a;
+}
+
+html.pv-dark-mode .pv-dash-workspace {
+  background: radial-gradient(ellipse at 65% 0%, rgba(43, 102, 119, .13), transparent 55%), #101e2a;
+}
+
+html.pv-dark-mode .pv-dash-sidebar,
+html.pv-dark-mode .pv-header,
+html.pv-dark-mode .pv-footer {
+  border-color: #263d4b;
+  background: #132431;
+}
+
+html.pv-dark-mode .pv-dash-profile,
+html.pv-dark-mode .pv-theme-toggle,
+html.pv-dark-mode .pv-logout-button {
+  border-color: #35505f;
+  color: #dce9ef;
+  background: #1a2e3c;
+}
+
+html.pv-dark-mode .pv-dash-profile:hover,
+html.pv-dark-mode .pv-theme-toggle:hover,
+html.pv-dark-mode .pv-logout-button:hover {
+  border-color: #4c8994;
+  color: #b4e9e9;
+  background: #203846;
+}
+
+html.pv-dark-mode .pv-dash-nav button { color: #a9bdc8; }
+html.pv-dark-mode .pv-dash-nav button:hover,
+html.pv-dark-mode .pv-dash-nav button.ativo,
+html.pv-dark-mode .pv-dashboard-admin .pv-dash-nav button[aria-current="page"] {
+  color: #8ad6dc;
+  background: #1c3945;
+}
+
+html.pv-dark-mode .pv-dash-profile-copy small,
+html.pv-dark-mode .pv-dash-sidebar-note,
+html.pv-dark-mode .pv-admin-role-badge,
+html.pv-dark-mode .pv-caregiver-role-badge,
+html.pv-dark-mode .home-saudacao p,
+html.pv-dark-mode .home-apoio-header p,
+html.pv-dark-mode .home-contato-info small,
+html.pv-dark-mode .home-mensagem p,
+html.pv-dark-mode .pv-dash-welcome p,
+html.pv-dark-mode .pv-dash-section-heading p,
+html.pv-dark-mode .pv-dash-contact small,
+html.pv-dark-mode .pv-dash-reminder p {
+  color: #a9bdc8;
+}
+
+html.pv-dark-mode .pv-card,
+html.pv-dark-mode .pv-item-vinculo,
+html.pv-dark-mode .pv-modal,
+html.pv-dark-mode .pv-modal-intensidade,
+html.pv-dark-mode .pv-painel-hoje,
+html.pv-dark-mode .pv-carteirinha-card,
+html.pv-dark-mode .pv-card-grafico,
+html.pv-dark-mode .pv-gerenciador,
+html.pv-dark-mode .pv-card-conteudo,
+html.pv-dark-mode .pv-triagem-card,
+html.pv-dark-mode .pv-triagem-medidor,
+html.pv-dark-mode .pv-triagem-sugestoes,
+html.pv-dark-mode .tela-sinal .card,
+html.pv-dark-mode .tela-sinal .aviso-topo,
+html.pv-dark-mode .home-alerta,
+html.pv-dark-mode .home-apoio {
+  border-color: #2b4351;
+  color: #e2edf2;
+  background: #172a38;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .16);
+}
+
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-card,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil > .pv-card,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil #perfil-variante > .pv-card,
+html.pv-dark-mode .pv-dashboard-admin .tela-perfil .pv-card,
+html.pv-dark-mode .pv-dashboard-admin .pv-card-grafico,
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador,
+html.pv-dark-mode .pv-dashboard-admin .pv-card-conteudo,
+html.pv-dark-mode .pv-dashboard-admin .tela-busca .busca-container {
+  border-color: #2b4351;
+  color: #e2edf2;
+  background: #172a38;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .16);
+}
+
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador .item-sintoma,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-item-vinculo,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-item-vinculo {
+  border-color: #304b5a;
+  color: #dce8ee;
+  background: #1b3040;
+}
+
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador .subtitulo,
+html.pv-dark-mode .pv-dashboard-admin .pv-card-grafico .titulo-grafico,
+html.pv-dark-mode .pv-dashboard-admin .tela-perfil > .titulo,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil > .titulo,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil > .titulo,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-card .subtitulo,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-card .subtitulo,
+html.pv-dark-mode .pv-dashboard-admin .tela-perfil .pv-card .subtitulo,
+html.pv-dark-mode .pv-campo-label,
+html.pv-dark-mode .pv-carteirinha-campo .campo-label,
+html.pv-dark-mode .tela-triagem .titulo,
+html.pv-dark-mode .tela-triagem .subtitulo,
+html.pv-dark-mode .tela-laudo .titulo,
+html.pv-dark-mode .tela-laudo .subtitulo,
+html.pv-dark-mode .tela-contato .titulo,
+html.pv-dark-mode .tela-contato .subtitulo,
+html.pv-dark-mode .tela-dashboard .titulo,
+html.pv-dark-mode .tela-carteirinha .titulo,
+html.pv-dark-mode .tela-carteirinha .subtitulo {
+  color: #d8e8ef;
+}
+
+html.pv-dark-mode input:not([type="checkbox"]):not([type="radio"]),
+html.pv-dark-mode textarea,
+html.pv-dark-mode select,
+html.pv-dark-mode .pv-modal .modal-input,
+html.pv-dark-mode .pv-dashboard-admin .pv-gerenciador .input-sintoma,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-campo-input,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-campo-select,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-carteirinha-campo .campo,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-campo-input,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-campo-select,
+html.pv-dark-mode .pv-dashboard-admin .tela-perfil .pv-campo-input,
+html.pv-dark-mode .pv-dashboard-admin .tela-perfil .pv-campo-select {
+  border-color: #385464;
+  color: #e4edf2;
+  background-color: #1c3241;
+  color-scheme: dark;
+}
+
+html.pv-dark-mode input::placeholder,
+html.pv-dark-mode textarea::placeholder { color: #9eb3bf; opacity: 1; }
+
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-campo-input:focus,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-campo-select:focus,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-carteirinha-campo .campo:focus {
+  border-color: #58bac4;
+  background-color: #203948;
+  outline: 3px solid rgba(88, 186, 196, .18);
+}
+
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-campo-label {
+  color: #e3edf2;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+html.pv-dark-mode .pv-codigo-readonly,
+html.pv-dark-mode .pv-dashboard-cuidador .tela-perfil .pv-codigo-readonly,
+html.pv-dark-mode .pv-dashboard-paciente .tela-perfil .pv-campo-input.pv-codigo-readonly {
+  border-color: #304b5a;
+  color: #bdcfd9;
+  background: #1a2d3a;
+}
+
+html.pv-dark-mode .pv-dash-welcome h1,
+html.pv-dark-mode .pv-dash-section-heading h2,
+html.pv-dark-mode .home-saudacao h1,
+html.pv-dark-mode .home-apoio-header h2,
+html.pv-dark-mode .home-contato-info strong,
+html.pv-dark-mode .home-mensagem strong,
+html.pv-dark-mode .tela-perfil .titulo,
+html.pv-dark-mode .tela-perfil .subtitulo {
+  color: #e1edf2;
+}
+
+html.pv-dark-mode .home-card:not(.home-card-principal),
+html.pv-dark-mode .home-contato,
+html.pv-dark-mode .pv-dash-contact {
+  border-color: #304b5a;
+  color: #e0eaf0;
+  background: #1b2e3c;
+  box-shadow: none;
+}
+
+html.pv-dark-mode .home-card-prontuario,
+html.pv-dark-mode .pv-dash-action--record {
+  border-color: #354c5b;
+  color: #e2edf2;
+  background: linear-gradient(135deg, #1c2e3b, #203543);
+}
+
+html.pv-dark-mode .home-card-conteudos,
+html.pv-dark-mode .pv-dash-action--content {
+  border-color: #31504f;
+  color: #d7eeee;
+  background: linear-gradient(135deg, #1a302f, #1c3535);
+}
+
+html.pv-dark-mode .home-mensagem,
+html.pv-dark-mode .pv-dash-reassurance {
+  border-color: #2d4b53;
+  background: linear-gradient(100deg, #1a303a, #1b3235);
+}
+
+html.pv-dark-mode .pv-triagem-card,
+html.pv-dark-mode .pv-triagem-medidor,
+html.pv-dark-mode .pv-triagem-sugestoes,
+html.pv-dark-mode .pv-triagem-check,
+html.pv-dark-mode .pv-card-sintoma {
+  border-color: #304b5a;
+  color: #dce8ee;
+  background: #1b3040;
+}
+
+html.pv-dark-mode .tela-triagem .pv-triagem-intro {
+  border-color: #304b5a;
+  background: linear-gradient(135deg, #172b39, #1a303e);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .16);
+}
+
+html.pv-dark-mode .pv-triagem-busca-wrap {
+  border-color: #476171;
+  background: #233a49;
+  box-shadow: inset 0 0 0 1px rgba(161, 198, 211, .08);
+}
+
+html.pv-dark-mode .tela-triagem .pv-triagem-busca,
+html.pv-dark-mode .tela-triagem .pv-triagem-busca:focus {
+  border: 0;
+  color: #f4f8fa;
+  background: transparent !important;
+  caret-color: #77d6da;
+}
+
+html.pv-dark-mode .tela-triagem .pv-triagem-busca::placeholder {
+  color: #c3d5de;
+  opacity: 1;
+}
+
+html.pv-dark-mode .pv-triagem-busca-wrap:focus-within {
+  border-color: #60c2cb;
+  box-shadow: 0 0 0 3px rgba(96, 194, 203, .2);
+}
+
+html.pv-dark-mode .pv-triagem-mic {
+  color: #b8e9eb;
+  background: #284957;
+}
+
+html.pv-dark-mode .pv-triagem-cabecalho::before {
+  border: 1px solid #78c7c9;
+  color: #173e4b;
+  background: #c8edeb;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+html.pv-dark-mode .pv-triagem-seta {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border-radius: 9px;
+  color: #174c5e;
+  background: #d8eff0;
+}
+
+html.pv-dark-mode .pv-triagem-card.aberto .pv-triagem-seta {
+  color: #103d4b;
+  background: #a9dcdd;
+}
+
+html.pv-dark-mode .pv-triagem-titulo,
+html.pv-dark-mode .pv-triagem-medidor-cabecalho,
+html.pv-dark-mode .pv-triagem-rotulo,
+html.pv-dark-mode .pv-triagem-refs summary {
+  color: #c8e2eb;
+}
+
+html.pv-dark-mode .tela-conteudo-detalhe .card,
+html.pv-dark-mode .tela-definicao .conteudo {
+  border-color: #2b4351;
+  color: #e0eaf0;
+  background: #172a38;
+}
+
+html.pv-dark-mode .tela-conteudo-detalhe .texto-corpo,
+html.pv-dark-mode .tela-definicao .titulo-secao,
+html.pv-dark-mode .tela-definicao .texto-secao {
+  color: #dce8ee;
+}
+
+html.pv-dark-mode .pv-login-card,
+html.pv-dark-mode .pv-login-recovery-card {
+  border-color: #2d4655;
+  background: #172a38;
+}
+
+html.pv-dark-mode .pv-login-input,
+html.pv-dark-mode .pv-register-input {
+  border-color: #385464;
+  background: #1c3241;
+}
+
+html.pv-dark-mode .pv-login-secure,
+html.pv-dark-mode .pv-login-demo,
+html.pv-dark-mode .pv-register-brand-note {
+  border-color: #2e4a57;
+  background: #1c313d;
+}
+
+html.pv-dark-mode .pv-login-register {
+  border-color: #347b88;
+  color: #b3e5e6;
+  background: #1c3942;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-dash-page-content > .tela-menu-sintomas {
+  border-color: #2c4656;
+  color: #e0eaf0;
+  background:
+    radial-gradient(circle at 100% 0, rgba(47, 145, 158, .12), transparent 34%),
+    linear-gradient(145deg, #152634, #111f2c);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .16);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-menu-sintomas .titulo,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-modal-intensidade .titulo,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-cabecalho,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-conteudo-detalhe .titulo-principal,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-conteudo-detalhe .label-secao,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .titulo,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .titulo-definicao,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .titulo-secao,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-sinal .titulo {
+  color: #c4e3ef;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-botao-relatorio-hoje {
+  border-color: #355969;
+  color: #a9e1e4;
+  background: #1d3947;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-botao-relatorio-hoje:hover {
+  border-color: #4d8790;
+  background: #244652;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-card-sintoma {
+  border-color: #304b5b;
+  color: #e1edf2;
+  background: #1b3040;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .12);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-card-sintoma:hover {
+  border-color: #4b9ba5;
+  background: #203b49;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, .2);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-botao-sem-sintoma,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-sinal .botao-voltar {
+  color: #f5fbfc;
+  background: linear-gradient(120deg, #126b82, #16889b);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, .2);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje {
+  border-color: #304b5b;
+  color: #e0eaf0;
+  background: #152633;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-cabecalho {
+  border-color: #304b5b;
+  background: #1b3040;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-cabecalho button {
+  color: #b5cad5;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-item {
+  border-color: #304b5b;
+  color: #e0eaf0;
+  background: #1b3040;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-nome { color: #e0eaf0; }
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-hora,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-painel-hoje-vazio { color: #b6c8d2; }
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato {
+  border-color: #2c4656;
+  color: #e0eaf0;
+  background:
+    radial-gradient(circle at 100% 0, rgba(47, 145, 158, .12), transparent 34%),
+    linear-gradient(145deg, #152634, #111f2c);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .16);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .titulo { color: #c4e3ef; }
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .subtitulo { color: #b1c2cd; }
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato > .pv-card {
+  border-color: #304b5b;
+  color: #e0eaf0;
+  background: #172a38;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-campo-label { color: #d8e8ef; }
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-campo-input {
+  border-color: #3b5666;
+  color: #e4edf2;
+  background: #1c3241;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-campo-input::placeholder { color: #9eb3bf; }
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-campo-input:focus {
+  border-color: #58bac4;
+  outline-color: rgba(88, 186, 196, .2);
+  background: #203948;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-contato-acoes .pv-botao-secundario {
+  border-color: #3b6877;
+  color: #a9e1e4;
+  background: #1b3541;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-contato-acoes .pv-botao-secundario:hover {
+  border-color: #4b8c97;
+  background: #23434f;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-contato .pv-contato-acoes .pv-botao-primario {
+  color: #f5fbfc;
+  background: linear-gradient(120deg, #126b82, #16889b);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-modal-intensidade {
+  border-color: #304b5b;
+  color: #e0eaf0;
+  background: #172a38;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .4);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-modal-intensidade .sintoma,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-slider-marcadores {
+  color: #bdced8;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-slider-valor { color: #87d8df; }
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-modal-intensidade .confirmar { background: #147b91; }
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-modal-intensidade .cancelar {
+  border-color: #3b5362;
+  color: #d2e0e7;
+  background: #223542;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-conteudo-detalhe .card,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .conteudo,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-sinal .card,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-sinal .aviso-topo {
+  border-color: #304b5b;
+  color: #e0eaf0;
+  background: #172a38;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-conteudo-detalhe .texto-corpo,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .peso-normal,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .texto-secao,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-sinal .descricao {
+  color: #c6d5de;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-definicao .sublinhado { background: #304b5b; }
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-conteudo-detalhe .botao-voltar {
+  border-color: #3b6474;
+  color: #a9e1e4;
+  background: #1b3541;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-conteudo-detalhe .link-leitura-facil { color: #83d5dc; }
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-sinal { background: #111f2c !important; }
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-card,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-visualizador {
+  border-color: #304b5b;
+  color: #e0eaf0;
+  background: #172a38;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-info h3,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-visualizador-cabecalho h4 {
+  color: #c4e3ef;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-info p,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-aviso-mobile {
+  color: #b1c2cd;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-acoes #laudo-abrir {
+  color: #f5fbfc;
+  background: linear-gradient(120deg, #126b82, #16889b);
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-acoes #laudo-fechar,
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .tela-laudo > #laudo-ir-triagem {
+  border-color: #3b6877;
+  color: #a9e1e4;
+  background: #1b3541;
+}
+
+html.pv-dark-mode :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-laudo-frame-wrap {
+  border-color: #304b5b;
+  background: #101e2a;
+}
+
+@media (max-width: 760px) {
+  html.pv-dark-mode .pv-dash-sidebar {
+    border-top-color: #2a3d4c;
+    background: rgba(21, 35, 48, .98);
+    box-shadow: 0 -5px 18px rgba(0, 0, 0, .22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-card-sintoma,
+  :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-botao-relatorio-hoje,
+  :is(.pv-dashboard-cuidador, .pv-dashboard-paciente) .pv-botao-sem-sintoma {
+    transition: none;
+  }
+}
