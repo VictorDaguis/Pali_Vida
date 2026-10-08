@@ -17,131 +17,254 @@ window.PV.screens = window.PV.screens || {};
   async function login(main, ctx) {
     let modoRecuperar = false;
     function templateLogin() {
+
       return `
-        <div class="pv-login-page">
-
-          <div class="pv-login-bg-shape pv-login-bg-shape-1"></div>
-          <div class="pv-login-bg-shape pv-login-bg-shape-2"></div>
-          <div class="pv-login-art" aria-hidden="true">
-            <div class="pv-login-art-orbit pv-login-art-orbit--large"></div>
-            <div class="pv-login-art-orbit pv-login-art-orbit--small"></div>
-            <div class="pv-login-art-mark">+</div>
-            <div class="pv-login-art-card">
-              <span class="pv-login-art-card-icon">+</span>
-              <span><strong>Cuidado contínuo</strong><small>Um passo de cada vez.</small></span>
-              <span class="pv-login-art-card-dot"></span>
-            </div>
-          </div>
-
-          <div class="pv-login-layout">
-
-            <!-- ================================================= Desktop / tablet -->
-            <section class="pv-login-brand-panel">
-              <img
-                class="pv-login-brand-logo"
-                src="assets/img/logo-completo.png"
-                alt="PaliVida"
+    
+        <div class="pv-login-lovable">
+    
+          <!-- =====================================================
+               LADO ESQUERDO
+               ===================================================== -->
+    
+          <aside class="pv-login-brand">
+    
+            <div class="pv-login-brand-top">
+    
+              <a
+                href="#/login"
+                class="pv-login-logo"
+                aria-label="PaliVida"
               >
-
-              <span class="pv-login-tagline">
-                CUIDADO&nbsp;&nbsp;•&nbsp;&nbsp;CONFORTO&nbsp;&nbsp;•&nbsp;&nbsp;SEMPRE
-              </span>
-
-              <h1>Você não está<br>sozinho.</h1>
-
+    
+                <span class="pv-login-logo-icon">
+                  P
+                </span>
+    
+                <span class="pv-login-logo-text">
+                  PaliVida
+                </span>
+    
+              </a>
+    
+            </div>
+    
+    
+            <div class="pv-login-brand-middle">
+    
+              <div class="pv-login-brand-symbol">
+    
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+    
+                  <path
+                    d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                  />
+    
+                </svg>
+    
+              </div>
+    
+    
+              <h1>
+                Cuidado que acolhe.<br>
+                Informação que<br>
+                aproxima.
+              </h1>
+    
+    
               <p>
-                O PaliVida está aqui para apoiar você e sua família
-                em cada etapa da sua jornada.
+                Um espaço simples e seguro para acompanhar
+                o cuidado, no seu tempo.
               </p>
-
-            </section>
-
-            <!-- ================================================= Login -->
-            <section class="pv-login-card-wrap">
-              <div class="pv-login-card">
-
-                <div class="pv-login-card-brand">
-                  <img src="assets/img/logo-completo.png" alt="PaliVida">
-                  <span class="pv-login-tagline">
-                    CUIDADO&nbsp;&nbsp;•&nbsp;&nbsp;CONFORTO&nbsp;&nbsp;•&nbsp;&nbsp;SEMPRE
-                  </span>
-                </div>
-
-                <div class="pv-login-status" aria-hidden="true">
-                  <span>9:41</span>
-                  <span class="pv-login-status-icons">
-                    <svg viewBox="0 0 48 18">
-                      <path d="M2 15V11m5 4V8m5 7V5" />
-                      <path d="M17 7c4-4 9-4 13 0m-10 3c2-2 5-2 7 0m-4 4h.1" />
-                      <rect x="36" y="3" width="10" height="12" rx="2" />
-                      <path d="M47 7v4" />
-                    </svg>
-                  </span>
-                </div>
-
-                <div class="pv-login-mobile-brand">
-                  <img
-                    src="assets/img/logo-completo.png"
-                    alt="PaliVida"
-                  >
-
-                  <span class="pv-login-tagline">
-                    CUIDADO&nbsp;&nbsp;•&nbsp;&nbsp;CONFORTO&nbsp;&nbsp;•&nbsp;&nbsp;SEMPRE
-                  </span>
-                </div>
-
-                <span class="pv-login-eyebrow pv-login-desktop-eyebrow">BEM-VINDO DE VOLTA</span>
-
-                <h2 class="pv-login-desktop-heading">Entrar</h2>
-                <h2 class="pv-login-mobile-heading">Bem-vindo(a)!</h2>
-
-                <p class="pv-login-intro pv-login-desktop-intro">
+    
+            </div>
+    
+    
+            <div class="pv-login-brand-bottom">
+    
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+    
+                <path
+                  d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z"
+                />
+    
+                <path
+                  d="m8.5 12 2.2 2.2 4.8-5"
+                />
+    
+              </svg>
+    
+              <span>
+                Ambiente de demonstração protegido
+              </span>
+    
+            </div>
+    
+          </aside>
+    
+    
+          <!-- =====================================================
+               LADO DIREITO
+               ===================================================== -->
+    
+          <main class="pv-login-content">
+    
+            <div class="pv-login-form-area">
+    
+    
+              <div class="pv-login-form-header">
+    
+                <span class="pv-login-eyebrow">
+                  BEM-VINDO DE VOLTA
+                </span>
+    
+                <h2>
+                  Entrar
+                </h2>
+    
+                <p>
                   Acesse sua conta para continuar no PaliVida.
                 </p>
-                <p class="pv-login-intro pv-login-mobile-intro">
-                  Faça seu login para continuar<br class="pv-login-mobile-break"> no PaliVida.
-                </p>
-
-                <div class="pv-login-form">
-
-                  <label for="login-email">E-mail</label>
-
+    
+              </div>
+    
+    
+              <div class="pv-login-form">
+    
+    
+                <!-- E-MAIL -->
+    
+                <div class="pv-login-field">
+    
+                  <label for="login-email">
+                    E-mail
+                  </label>
+    
                   <div class="pv-login-input-wrap">
-                    <span class="pv-login-input-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                        <path d="m5.5 7 6.5 5 6.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    
+                    <span
+                      class="pv-login-input-icon"
+                      aria-hidden="true"
+                    >
+    
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+    
+                        <rect
+                          x="4"
+                          y="5"
+                          width="16"
+                          height="14"
+                          rx="2"
+                        />
+    
+                        <path
+                          d="m5 7 7 5 7-5"
+                        />
+    
                       </svg>
+    
                     </span>
-
+    
+    
                     <input
                       class="pv-login-input"
                       id="login-email"
                       type="email"
-                      placeholder="Digite o seu e-mail"
+                      placeholder="Digite seu e-mail"
                       autocomplete="email"
                       value="${escaparHtml(ctx.query.email || '')}"
                     >
+    
                   </div>
-
-                  <label for="login-senha">Senha</label>
-
+    
+                </div>
+    
+    
+                <!-- SENHA -->
+    
+                <div class="pv-login-field">
+    
+                  <div class="pv-login-label-row">
+    
+                    <label for="login-senha">
+                      Senha
+                    </label>
+    
+                    <button
+                      class="pv-login-forgot"
+                      id="link-esqueci"
+                      type="button"
+                    >
+                      Esqueceu sua senha?
+                    </button>
+    
+                  </div>
+    
+    
                   <div class="pv-login-input-wrap">
-                    <span class="pv-login-input-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                        <path d="M8 10V7.5A4 4 0 0 1 12 3.5a4 4 0 0 1 4 4V10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    
+                    <span
+                      class="pv-login-input-icon"
+                      aria-hidden="true"
+                    >
+    
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+    
+                        <rect
+                          x="5"
+                          y="10"
+                          width="14"
+                          height="10"
+                          rx="2"
+                        />
+    
+                        <path
+                          d="M8 10V7a4 4 0 0 1 8 0v3"
+                        />
+    
                       </svg>
+    
                     </span>
-
+    
+    
                     <input
                       class="pv-login-input pv-login-password-input"
                       id="login-senha"
                       type="password"
-                      placeholder="Digite a sua senha"
+                      placeholder="Digite sua senha"
                       autocomplete="current-password"
                     >
-
+    
+    
                     <button
                       class="pv-login-eye"
                       id="login-toggle-password"
@@ -149,166 +272,376 @@ window.PV.screens = window.PV.screens || {};
                       aria-label="Mostrar senha"
                       aria-pressed="false"
                     >
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                        <circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+    
+                        <path
+                          d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"
+                        />
+    
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="2.5"
+                        />
+    
                       </svg>
+    
                     </button>
+    
                   </div>
-
-                  <button
-                    class="pv-login-forgot"
-                    id="link-esqueci"
-                    type="button"
-                  >
-                    Esqueceu sua senha?
-                  </button>
-
-                  <div
-                    class="pv-login-message"
-                    id="login-aviso"
-                    aria-live="polite"
-                  ></div>
-
-                  <button
-                    class="pv-login-primary"
-                    id="btn-entrar"
-                    type="button"
-                  >
-                    <span>Entrar</span>
-                    <span class="pv-login-arrow" aria-hidden="true">→</span>
-                  </button>
-
-                  <div class="pv-login-divider">
-                    <span></span>
-                    <b>ou</b>
-                    <span></span>
-                  </div>
-
-                  <button
-                    class="pv-login-register"
-                    id="link-cadastro"
-                    type="button"
-                  >
-                    <span class="pv-login-register-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M6.5 17.5 4 20v-4.5A7.5 7.5 0 1 1 11.5 23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M14 10h5M16.5 7.5v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                      </svg>
-                    </span>
-                    <span>Cadastrar-se</span>
-                  </button>
-
-                  <div class="pv-login-secure">
-                    <span class="pv-login-secure-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                        <path d="m8.5 12 2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </span>
-
-                    <div>
-                      <strong>Acesso seguro</strong>
-                      <span>Seus dados estão protegidos.</span>
-                    </div>
-
-                    <span class="pv-login-secure-lock" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <rect x="6.5" y="10" width="11" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                        <path d="M9 10V7.5a3 3 0 0 1 6 0V10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                      </svg>
-                    </span>
-                  </div>
-
-                  <details class="pv-login-demo">
-                    <summary>Entrar com uma conta de demonstração</summary>
-                    <p>Escolha um perfil para acessar o sistema:</p>
-                    <div class="pv-login-demo-actions">
-                      <button type="button" data-demo-account="paciente">Paciente</button>
-                      <button type="button" data-demo-account="administrador">Administrador</button>
-                      <button type="button" data-demo-account="acompanhante">Cuidador</button>
-                    </div>
-                    <small>Senha para as três contas: <code>palivida123</code></small>
-                  </details>
-
+    
                 </div>
+    
+    
+                <!-- AVISO -->
+    
+                <div
+                  class="pv-login-message"
+                  id="login-aviso"
+                  aria-live="polite"
+                ></div>
+    
+    
+                <!-- ENTRAR -->
+    
+                <button
+                  class="pv-auth-action-primary"
+                  id="btn-entrar"
+                  type="button"
+                >
+    
+                  <span>
+                    Entrar
+                  </span>
+    
+                  <span aria-hidden="true">
+                    →
+                  </span>
+    
+                </button>
+    
+    
+                <!-- DIVISOR -->
+    
+                <div class="pv-login-divider">
+    
+                  <span></span>
+    
+                  <small>
+                    ou
+                  </small>
+    
+                  <span></span>
+    
+                </div>
+    
+    
+                <!-- CADASTRO -->
+    
+                <button
+                  class="pv-auth-action-secondary"
+                  id="link-cadastro"
+                  type="button"
+                >
+    
+                  <span>
+                    Criar uma nova conta
+                  </span>
+    
+                  <span
+                    class="pv-login-secondary-icon"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+    
+                </button>
+    
+    
+                <!-- SEGURANÇA -->
+    
+                <div class="pv-login-security">
+    
+                  <span class="pv-login-security-icon">
+    
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+    
+                      <path
+                        d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z"
+                      />
+    
+                      <path
+                        d="m8.5 12 2.2 2.2 4.8-5"
+                      />
+    
+                    </svg>
+    
+                  </span>
+    
+                  <div>
+    
+                    <strong>
+                      Acesso seguro
+                    </strong>
+    
+                    <small>
+                      Seus dados são protegidos.
+                    </small>
+    
+                  </div>
+    
+                </div>
+    
+    
+                <!-- DEMO -->
+    
+                <details class="pv-login-demo">
+    
+                  <summary>
+                    Entrar com uma conta de demonstração
+                  </summary>
+    
+                  <p>
+                    Escolha um perfil para acessar o sistema:
+                  </p>
+    
+                  <div class="pv-login-demo-actions">
+    
+                    <button
+                      type="button"
+                      data-demo-account="paciente"
+                    >
+                      Paciente
+                    </button>
+    
+                    <button
+                      type="button"
+                      data-demo-account="administrador"
+                    >
+                      Administrador
+                    </button>
+    
+                    <button
+                      type="button"
+                      data-demo-account="acompanhante"
+                    >
+                      Cuidador
+                    </button>
+    
+                  </div>
+    
+                  <small>
+                    Senha para as três contas:
+                    <code>palivida123</code>
+                  </small>
+    
+                </details>
+    
+    
               </div>
-            </section>
-
-          </div>
+    
+            </div>
+    
+          </main>
+    
         </div>
+    
       `;
     }
 
     function templateRecuperar() {
+
       return `
-        <div class="pv-login-page">
-          <div class="pv-login-bg-shape pv-login-bg-shape-1"></div>
-          <div class="pv-login-bg-shape pv-login-bg-shape-2"></div>
-
-          <div class="pv-login-recovery-wrap">
-            <div class="pv-login-recovery-card">
-
-              <div class="pv-login-recovery-brand">
-                <img src="assets/img/logo-completo.png" alt="PaliVida">
-                <span class="pv-login-tagline">
-                  CUIDADO&nbsp;&nbsp;•&nbsp;&nbsp;CONFORTO&nbsp;&nbsp;•&nbsp;&nbsp;SEMPRE
-                </span>
-              </div>
-
-              <span class="pv-login-eyebrow">RECUPERAÇÃO DE ACESSO</span>
-              <h2>Recuperar senha</h2>
-
-              <p class="pv-login-intro">
-                Informe o e-mail cadastrado e enviaremos as instruções para redefinir a sua senha.
-              </p>
-
-              <label for="rec-email">E-mail</label>
-
-              <div class="pv-login-input-wrap">
-                <span class="pv-login-input-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                    <path d="m5.5 7 6.5 5 6.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
-
-                <input
-                  class="pv-login-input"
-                  id="rec-email"
-                  type="email"
-                  placeholder="seuemail@exemplo.com"
-                  autocomplete="email"
-                >
-              </div>
-
-              <div class="pv-login-message" id="rec-aviso" aria-live="polite"></div>
-
-              <button class="pv-login-primary" id="rec-enviar" type="button">
-                <span>Enviar instruções</span>
-                <span class="pv-login-arrow" aria-hidden="true">→</span>
-              </button>
-
-              <button class="pv-login-back" id="rec-voltar" type="button">
-                ← Voltar ao login
-              </button>
-
-              <div class="pv-login-secure pv-login-secure-recovery">
-                <span class="pv-login-secure-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    <path d="m8.5 12 2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </span>
-                <div>
-                  <strong>Privacidade e segurança</strong>
-                  <span>Seu acesso é tratado de forma protegida.</span>
-                </div>
-              </div>
-
+    
+        <div class="pv-auth-lovable pv-auth-recovery">
+    
+          <main class="pv-auth-main pv-auth-main-centered">
+    
+            <div class="pv-auth-mobile-logo">
+    
+              <img
+                src="assets/img/logo-completo.png"
+                alt="PaliVida"
+              >
+    
+              <span>
+                CUIDADO • CONFORTO • SEMPRE
+              </span>
+    
             </div>
-          </div>
+    
+    
+            <section class="pv-auth-card pv-auth-recovery-card">
+    
+              <div class="pv-auth-card-header">
+    
+                <span class="pv-auth-eyebrow">
+                  RECUPERAÇÃO DE ACESSO
+                </span>
+    
+                <h2>
+                  Recuperar senha
+                </h2>
+    
+                <p>
+                  Informe o e-mail cadastrado e enviaremos
+                  as instruções para redefinir sua senha.
+                </p>
+    
+              </div>
+    
+    
+              <div class="pv-auth-form">
+    
+    
+                <div class="pv-auth-field">
+    
+                  <label for="rec-email">
+                    E-mail
+                  </label>
+    
+                  <div class="pv-auth-input-wrap">
+    
+                    <span
+                      class="pv-auth-input-icon"
+                      aria-hidden="true"
+                    >
+    
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+    
+                        <rect
+                          x="4"
+                          y="5"
+                          width="16"
+                          height="14"
+                          rx="2"
+                        />
+    
+                        <path
+                          d="m5 7 7 5 7-5"
+                        />
+    
+                      </svg>
+    
+                    </span>
+    
+                    <input
+                      class="pv-auth-input"
+                      id="rec-email"
+                      type="email"
+                      placeholder="seuemail@exemplo.com"
+                      autocomplete="email"
+                    >
+    
+                  </div>
+    
+                </div>
+    
+    
+                <div
+                  class="pv-auth-message"
+                  id="rec-aviso"
+                  aria-live="polite"
+                ></div>
+    
+    
+                <button
+                  class="pv-auth-primary"
+                  id="rec-enviar"
+                  type="button"
+                >
+    
+                  <span>
+                    Enviar instruções
+                  </span>
+    
+                  <span aria-hidden="true">
+                    →
+                  </span>
+    
+                </button>
+    
+    
+                <button
+                  class="pv-auth-back"
+                  id="rec-voltar"
+                  type="button"
+                >
+                  ← Voltar ao login
+                </button>
+    
+    
+                <div class="pv-auth-security">
+    
+                  <span class="pv-auth-security-icon">
+    
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+    
+                      <path
+                        d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z"
+                      />
+    
+                      <path
+                        d="m8.5 12 2.2 2.2 4.8-5"
+                      />
+    
+                    </svg>
+    
+                  </span>
+    
+                  <div>
+    
+                    <strong>
+                      Privacidade e segurança
+                    </strong>
+    
+                    <small>
+                      Seu acesso é tratado de forma protegida.
+                    </small>
+    
+                  </div>
+    
+                </div>
+    
+    
+              </div>
+    
+            </section>
+    
+          </main>
+    
         </div>
+    
       `;
     }
 
@@ -535,72 +868,482 @@ window.PV.screens = window.PV.screens || {};
     let mensagem = null;
 
     function telaEtapa1() {
+
       return `
-        ${headerLogin()}
-        <div class="tela-auth tela-cadastro">
-          <h1 class="titulo">Cadastre-se</h1>
-          <p class="subtitulo" style="max-width:340px;margin-left:auto;margin-right:auto;font-style:italic;font-weight:400">
-            Os demais dados (saúde, contatos, equipe de cuidado) você preenche depois, com calma, no Prontuário Eletrônico.
-          </p>
-          <button class="botao-enviar" id="btn-iniciar" type="button" style="width:85%;max-width:480px">
-            Iniciar meu cadastro
-          </button>
-          <button class="botao-voltar" id="btn-voltar-login" type="button" style="width:85%;max-width:480px">
-            Voltar ao Login
-          </button>
-        </div>`;
+    
+        <div class="pv-cadastro-lovable">
+    
+          <!-- =====================================================
+               LADO ESQUERDO
+               ===================================================== -->
+    
+          <aside class="pv-cadastro-brand">
+    
+            <div class="pv-cadastro-brand-top">
+    
+              <a
+                href="#/login"
+                class="pv-cadastro-logo"
+                aria-label="PaliVida"
+              >
+    
+                <span class="pv-cadastro-logo-icon">
+                  P
+                </span>
+    
+                <span class="pv-cadastro-logo-text">
+                  PaliVida
+                </span>
+    
+              </a>
+    
+            </div>
+    
+    
+            <div class="pv-cadastro-brand-middle">
+    
+              <div class="pv-cadastro-brand-symbol">
+    
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+    
+                  <path
+                    d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                  />
+    
+                </svg>
+    
+              </div>
+    
+    
+              <h1>
+                Cuidado que acolhe.<br>
+                Informação que<br>
+                aproxima.
+              </h1>
+    
+    
+              <p>
+                Um espaço simples e seguro para acompanhar
+                o cuidado, no seu tempo.
+              </p>
+    
+            </div>
+    
+    
+            <div class="pv-cadastro-brand-bottom">
+    
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+    
+                <path
+                  d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z"
+                />
+    
+                <path
+                  d="m8.5 12 2.2 2.2 4.8-5"
+                />
+    
+              </svg>
+    
+              <span>
+                Ambiente de demonstração protegido
+              </span>
+    
+            </div>
+    
+          </aside>
+    
+    
+          <!-- =====================================================
+               LADO DIREITO
+               ===================================================== -->
+    
+          <div class="pv-cadastro-content">
+    
+            <div class="pv-cadastro-form-area">
+    
+              <button
+              type="button"
+              class="pv-cadastro-voltar-topo"
+              id="btn-voltar-login-topo"
+              >
+                ←&nbsp; Voltar
+              </button>
+    
+    
+              <div class="pv-cadastro-step-icon">
+    
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+    
+                  <circle
+                    cx="12"
+                    cy="8"
+                    r="4"
+                  />
+    
+                  <path
+                    d="M4 21a8 8 0 0 1 16 0"
+                  />
+    
+                  <path
+                    d="M19 5v5M16.5 7.5h5"
+                  />
+    
+                </svg>
+    
+              </div>
+    
+    
+              <span class="pv-cadastro-eyebrow">
+                NOVO ACESSO
+              </span>
+    
+    
+              <h2>
+                Cadastre-se
+              </h2>
+    
+    
+              <p class="pv-cadastro-description">
+                Comece criando seu acesso. Informações adicionais
+                de saúde, contatos e equipe de cuidado poderão ser
+                preenchidas depois no prontuário.
+              </p>
+    
+    
+              <button
+                type="button"
+                class="pv-cadastro-primary"
+                id="btn-iniciar"
+              >
+    
+                <span>
+                  Iniciar cadastro
+                </span>
+    
+                <span aria-hidden="true">
+                  →
+                </span>
+    
+              </button>
+    
+    
+              <button
+                type="button"
+                class="pv-cadastro-secondary"
+                id="btn-voltar-login"
+              >
+                Voltar ao login
+              </button>
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+      `;
+
     }
 
-    function campoTexto(label, campo, opts = {}) {
+    function campoTexto(label, campo, opcoes = {}) {
       const {
         placeholder = '',
-        tipo: tipoInput = 'text',
+        tipo = 'text',
         maxlength = '',
-      } = opts;
-
+      } = opcoes;
+    
       return `
-        <label class="campo-label" for="c-${campo}">
-          ${label}
-        </label>
-
-        <input
-          class="campo"
-          id="c-${campo}"
-          type="${tipoInput}"
-          placeholder="${escaparHtml(placeholder)}"
-          ${maxlength ? `maxlength="${maxlength}"` : ''}
-          value="${escaparHtml(form[campo])}"
-        >`;
+        <div class="pv-cadastro-field">
+          <label class="campo-label" for="c-${campo}">
+            ${escaparHtml(label)}
+          </label>
+    
+          <input
+            id="c-${campo}"
+            class="campo"
+            type="${escaparHtml(tipo)}"
+            placeholder="${escaparHtml(placeholder)}"
+            value="${escaparHtml(form[campo] || '')}"
+            ${maxlength ? `maxlength="${escaparHtml(String(maxlength))}"` : ''}
+            autocomplete="off"
+          >
+        </div>
+      `;
     }
 
     function telaEtapa2() {
+
       return `
-        ${headerLogin()}
-        <div class="tela-auth tela-cadastro">
-          <h1 class="titulo">Criar acesso</h1>
-
-          <div class="form">
-            ${campoTexto('Nome completo *', 'nome', { placeholder: 'Seu nome' })}
-            ${campoTexto('Nome social', 'nome_social', { placeholder: 'Nome social (opcional)' })}
-            ${campoTexto('Telefone *', 'telefone', { placeholder: '(00) 00000-0000', maxlength: 15 })}
-            ${campoTexto('E-mail *', 'email', { placeholder: 'seuemail@exemplo.com', tipo: 'email' })}
-            ${campoTexto('Senha *', 'senha', { placeholder: 'Crie uma senha', tipo: 'password' })}
-            ${campoTexto('Confirmar senha *', 'confirmarSenha', { placeholder: 'Repita a senha', tipo: 'password' })}
-
-            <p class="obrigatorio">* Campo obrigatório</p>
-            <div id="cad-aviso">
-              ${mensagem ? aviso(mensagem) : ''}
+    
+        <div class="pv-cadastro-lovable">
+    
+          <!-- =====================================================
+               LADO ESQUERDO
+               ===================================================== -->
+    
+          <aside class="pv-cadastro-brand">
+    
+            <div class="pv-cadastro-brand-top">
+    
+              <a
+                href="#/login"
+                class="pv-cadastro-logo"
+                aria-label="PaliVida"
+              >
+    
+                <span class="pv-cadastro-logo-icon">
+                  P
+                </span>
+    
+                <span class="pv-cadastro-logo-text">
+                  PaliVida
+                </span>
+    
+              </a>
+    
             </div>
-          </div>
-
-          <button class="botao-enviar" id="btn-finalizar" type="button">
-            Finalizar cadastro
-          </button>
-
-          <button class="botao-voltar" id="btn-voltar-etapa" type="button">
-            Voltar
-          </button>
-        </div>`;
+    
+    
+            <div class="pv-cadastro-brand-middle">
+    
+              <div class="pv-cadastro-brand-symbol">
+    
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+    
+                  <path
+                    d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                  />
+    
+                </svg>
+    
+              </div>
+    
+    
+              <h1>
+                Cuidado que acolhe.<br>
+                Informação que<br>
+                aproxima.
+              </h1>
+    
+    
+              <p>
+                Um espaço simples e seguro para acompanhar
+                o cuidado, no seu tempo.
+              </p>
+    
+            </div>
+    
+    
+            <div class="pv-cadastro-brand-bottom">
+    
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+    
+                <path
+                  d="M12 3.5 20 6v5.5c0 4.6-3.1 7.8-8 9-4.9-1.2-8-4.4-8-9V6l8-2.5Z"
+                />
+    
+                <path
+                  d="m8.5 12 2.2 2.2 4.8-5"
+                />
+    
+              </svg>
+    
+              <span>
+                Ambiente de demonstração protegido
+              </span>
+    
+            </div>
+    
+          </aside>
+    
+    
+          <!-- =====================================================
+               LADO DIREITO
+               ===================================================== -->
+    
+          <div class="pv-cadastro-content">
+    
+            <div class="pv-cadastro-form-area">
+    
+              <button
+                type="button"
+                class="pv-cadastro-voltar-topo"
+                id="btn-voltar-etapa"
+              >
+                ←&nbsp; Voltar
+              </button>
+    
+    
+              <span class="pv-cadastro-eyebrow">
+                ETAPA 2 DE 2
+              </span>
+    
+    
+              <h2>
+                Criar acesso
+              </h2>
+    
+    
+              <div class="pv-cadastro-fields">
+    
+    
+                ${campoTexto(
+                  'Nome completo',
+                  'nome',
+                  {
+                    placeholder: 'Seu nome'
+                  }
+                )}
+    
+    
+                ${campoTexto(
+                  'Nome social',
+                  'nome_social',
+                  {
+                    placeholder: ''
+                  }
+                )}
+    
+                <span class="pv-cadastro-optional">
+                  Opcional
+                </span>
+    
+    
+                ${campoTexto(
+                  'Telefone',
+                  'telefone',
+                  {
+                    placeholder: '(00) 00000-0000',
+                    maxlength: 15
+                  }
+                )}
+    
+    
+                ${campoTexto(
+                  'E-mail',
+                  'email',
+                  {
+                    placeholder: 'seuemail@exemplo.com',
+                    tipo: 'email'
+                  }
+                )}
+    
+    
+                <div class="pv-cadastro-password-grid">
+    
+                  <div>
+    
+                    ${campoTexto(
+                      'Senha',
+                      'senha',
+                      {
+                        placeholder: '',
+                        tipo: 'password'
+                      }
+                    )}
+    
+                    <small class="pv-cadastro-help">
+                      Mínimo de 6 caracteres
+                    </small>
+    
+                  </div>
+    
+    
+                  <div>
+    
+                    ${campoTexto(
+                      'Confirmar senha',
+                      'confirmarSenha',
+                      {
+                        placeholder: '',
+                        tipo: 'password'
+                      }
+                    )}
+    
+                  </div>
+    
+                </div>
+    
+    
+                <p class="pv-cadastro-required">
+                  * Campo obrigatório
+                </p>
+    
+    
+                <div
+                  id="cad-aviso"
+                  class="pv-auth-message"
+                >
+                  ${mensagem ? aviso(mensagem) : ''}
+                </div>
+    
+    
+                <button
+                  class="pv-cadastro-primary"
+                  id="btn-finalizar"
+                  type="button"
+                >
+    
+                  <span>
+                    Concluir cadastro
+                  </span>
+    
+                  <span aria-hidden="true">
+                    →
+                  </span>
+    
+                </button> 
+    
+    
+              </div>
+    
+            </div>
+    
+           </div>
+    
+        </div>
+    
+      `;
     }
 
     function ligarCamposTexto() {
@@ -619,38 +1362,91 @@ window.PV.screens = window.PV.screens || {};
     }
 
     function montar() {
+
       if (etapa === 1) {
+    
         main.innerHTML = telaEtapa1();
-
-        main
-          .querySelector('#btn-iniciar')
-          .addEventListener('click', () => {
+    
+    
+        const btnIniciar =
+          main.querySelector('#btn-iniciar');
+    
+        if (btnIniciar) {
+    
+          btnIniciar.addEventListener('click', () => {
+    
             etapa = 2;
+    
             montar();
+    
           });
-
-        main
-          .querySelector('#btn-voltar-login')
-          .addEventListener('click', () => {
+    
+        }
+    
+    
+        const btnVoltarLogin =
+          main.querySelector('#btn-voltar-login');
+    
+        const btnVoltarTopo =
+          main.querySelector('#btn-voltar-login-topo');
+    
+    
+        if (btnVoltarLogin) {
+    
+          btnVoltarLogin.addEventListener('click', () => {
+    
             PV.router.navegar('/login');
+    
           });
-
+    
+        }
+    
+    
+        if (btnVoltarTopo) {
+    
+          btnVoltarTopo.addEventListener('click', () => {
+    
+            PV.router.navegar('/login');
+    
+          });
+    
+        }
+    
+    
         return;
       }
-
+    
+    
       main.innerHTML = telaEtapa2();
+    
       ligarCamposTexto();
-
-      main
-        .querySelector('#btn-voltar-etapa')
-        .addEventListener('click', () => {
+    
+    
+      const btnVoltarEtapa =
+        main.querySelector('#btn-voltar-etapa');
+    
+      if (btnVoltarEtapa) {
+    
+        btnVoltarEtapa.addEventListener('click', () => {
+    
           etapa = 1;
+    
           montar();
+    
         });
-
-      main
-        .querySelector('#btn-finalizar')
-        .addEventListener('click', enviar);
+    
+      }
+    
+    
+      const btnFinalizar =
+        main.querySelector('#btn-finalizar');
+    
+      if (btnFinalizar) {
+    
+        btnFinalizar.addEventListener('click', enviar);
+    
+      }
+    
     }
 
     async function enviar() {
@@ -698,7 +1494,10 @@ window.PV.screens = window.PV.screens || {};
 
         main.querySelector('#cad-aviso').innerHTML = aviso(mensagem);
         botao.disabled = false;
-        botao.textContent = 'Finalizar cadastro';
+        botao.innerHTML = `
+      <span>Concluir cadastro</span>
+      <span aria-hidden="true">→</span>
+      `;
       } finally {
         enviando = false;
       }

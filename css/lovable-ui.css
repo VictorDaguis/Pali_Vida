@@ -1,0 +1,9052 @@
+/* ================================================================
+   PaliVida — Design System
+   Conversão da identidade visual do protótipo Lovable
+   para CSS puro.
+
+   Este arquivo controla apenas:
+   - identidade visual
+   - componentes
+   - espaçamento
+   - responsividade
+   - estados visuais
+
+   Não contém regras de negócio.
+   ================================================================ */
+
+
+/* ================================================================
+   1. FONTES
+   ================================================================ */
+
+   @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+
+   /* ================================================================
+      2. DESIGN TOKENS
+      ================================================================ */
+   
+   :root {
+   
+     /* ----------------------------- Identidade */
+   
+     --pv-primary: #176A91;
+     --pv-primary-strong: #0D587A;
+     --pv-primary-soft: #EAF5F8;
+   
+     --pv-teal: #13A6B9;
+     --pv-teal-dark: #078A9D;
+     --pv-teal-soft: #E2F6F7;
+   
+     --pv-purple: #7251DE;
+     --pv-purple-soft: #EEE9FF;
+   
+     --pv-mint: #DDF5EF;
+     --pv-mint-soft: #EFFAF7;
+   
+     /* ----------------------------- Background */
+   
+     --pv-background: #F5FAFB;
+     --pv-background-soft: #F8FCFD;
+   
+     --pv-surface: #FFFFFF;
+     --pv-surface-soft: #FBFDFE;
+   
+     /* ----------------------------- Texto */
+   
+     --pv-text: #173F61;
+     --pv-text-strong: #123A5C;
+   
+     --pv-text-muted: #6F8799;
+     --pv-text-light: #8BA1B1;
+   
+     /* ----------------------------- Bordas */
+   
+     --pv-border: #D8E6EC;
+     --pv-border-soft: #E7EFF2;
+     --pv-border-focus: #4EB9C6;
+   
+     /* ----------------------------- Estados */
+   
+     --pv-success: #2D9B67;
+     --pv-success-soft: #E5F6EC;
+   
+     --pv-warning: #D19A20;
+     --pv-warning-soft: #FFF4D9;
+   
+     --pv-danger: #C65353;
+     --pv-danger-soft: #FCE9E9;
+   
+     --pv-info: #4C77D8;
+     --pv-info-soft: #EAF0FE;
+   
+     /* ----------------------------- Tipografia */
+   
+     --pv-font-body: 'Figtree', sans-serif;
+     --pv-font-heading: 'Outfit', sans-serif;
+   
+     /* ----------------------------- Radius */
+   
+     --pv-radius-xs: 8px;
+     --pv-radius-sm: 12px;
+     --pv-radius-md: 16px;
+     --pv-radius-lg: 22px;
+     --pv-radius-xl: 28px;
+     --pv-radius-pill: 999px;
+   
+     /* ----------------------------- Sombras */
+   
+     --pv-shadow-xs:
+       0 2px 8px rgba(23, 63, 97, .04);
+   
+     --pv-shadow-sm:
+       0 6px 18px rgba(23, 63, 97, .05);
+   
+     --pv-shadow-md:
+       0 12px 30px rgba(23, 63, 97, .08);
+   
+     --pv-shadow-lg:
+       0 22px 55px rgba(23, 63, 97, .11);
+   
+     /* ----------------------------- Espaçamentos */
+   
+     --pv-space-1: 4px;
+     --pv-space-2: 8px;
+     --pv-space-3: 12px;
+     --pv-space-4: 16px;
+     --pv-space-5: 20px;
+     --pv-space-6: 24px;
+     --pv-space-7: 28px;
+     --pv-space-8: 32px;
+     --pv-space-9: 40px;
+     --pv-space-10: 48px;
+     --pv-space-11: 56px;
+     --pv-space-12: 64px;
+   }
+   
+   
+   /* ================================================================
+      3. BASE
+      ================================================================ */
+   
+   html {
+     box-sizing: border-box;
+     scroll-behavior: smooth;
+   }
+   
+   *,
+   *::before,
+   *::after {
+     box-sizing: inherit;
+   }
+   
+   button,
+   input,
+   textarea,
+   select {
+     font-family: inherit;
+   }
+   
+   body {
+     font-family: var(--pv-font-body);
+     color: var(--pv-text);
+   }
+   
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6 {
+     font-family: var(--pv-font-heading);
+   }
+   
+   button {
+     cursor: pointer;
+   }
+   
+   
+   /* ================================================================
+      4. ACESSIBILIDADE / FOCO
+      ================================================================ */
+   
+   button:focus-visible,
+   a:focus-visible,
+   input:focus-visible,
+   textarea:focus-visible,
+   select:focus-visible {
+     outline: 3px solid rgba(19, 166, 185, .22);
+     outline-offset: 2px;
+   }
+   
+   
+   /* ================================================================
+      5. CONTAINER
+      ================================================================ */
+   
+   .pv-container {
+     width: 100%;
+     max-width: 1180px;
+     margin-left: auto;
+     margin-right: auto;
+   }
+   
+   
+   /* ================================================================
+      6. CABEÇALHO DE PÁGINA
+      ================================================================ */
+   
+   .pv-page-header {
+     margin-bottom: var(--pv-space-7);
+   }
+   
+   .pv-page-eyebrow {
+     display: block;
+     margin-bottom: 5px;
+   
+     color: var(--pv-teal-dark);
+   
+     font-size: 11px;
+     font-weight: 700;
+   
+     letter-spacing: .10em;
+     text-transform: uppercase;
+   }
+   
+   .pv-page-title {
+     margin: 0;
+   
+     color: var(--pv-text-strong);
+   
+     font-family: var(--pv-font-heading);
+   
+     font-size: clamp(28px, 4vw, 42px);
+     line-height: 1.08;
+     font-weight: 600;
+   
+     letter-spacing: -.035em;
+   }
+   
+   .pv-page-subtitle {
+     max-width: 700px;
+   
+     margin-top: 10px;
+   
+     color: var(--pv-text-muted);
+   
+     font-size: 14px;
+     line-height: 1.65;
+   }
+   
+   
+   /* ================================================================
+      7. CARD
+      ================================================================ */
+   
+   .pv-card-modern {
+     border: 1px solid var(--pv-border-soft);
+   
+     border-radius: var(--pv-radius-lg);
+   
+     background: var(--pv-surface);
+   
+     box-shadow: var(--pv-shadow-sm);
+   
+     transition:
+       box-shadow .18s ease,
+       transform .18s ease;
+   }
+   
+   .pv-card-modern:hover {
+     box-shadow: var(--pv-shadow-md);
+   }
+   
+   
+   /* ================================================================
+      8. BOTÃO PRIMÁRIO
+      ================================================================ */
+   
+   .pv-btn-primary {
+     min-height: 48px;
+   
+     display: inline-flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     gap: 9px;
+   
+     padding: 0 20px;
+   
+     border: 0;
+   
+     border-radius: var(--pv-radius-md);
+   
+     background:
+       linear-gradient(
+         90deg,
+         var(--pv-primary),
+         var(--pv-teal)
+       );
+   
+     color: #FFFFFF;
+   
+     font-size: 14px;
+     font-weight: 700;
+   
+     box-shadow:
+       0 8px 20px rgba(19, 166, 185, .16);
+   
+     transition:
+       transform .18s ease,
+       box-shadow .18s ease,
+       opacity .18s ease;
+   }
+   
+   .pv-btn-primary:hover:not(:disabled) {
+     transform: translateY(-1px);
+   
+     box-shadow:
+       0 12px 28px rgba(19, 166, 185, .22);
+   }
+   
+   .pv-btn-primary:active {
+     transform: translateY(0);
+   }
+   
+   .pv-btn-primary:disabled {
+     opacity: .6;
+     cursor: wait;
+   }
+   
+   
+   /* ================================================================
+      9. BOTÃO SECUNDÁRIO
+      ================================================================ */
+   
+   .pv-btn-secondary {
+     min-height: 48px;
+   
+     display: inline-flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     gap: 9px;
+   
+     padding: 0 20px;
+   
+     border: 1px solid var(--pv-border-focus);
+   
+     border-radius: var(--pv-radius-md);
+   
+     background: var(--pv-surface);
+   
+     color: var(--pv-primary);
+   
+     font-size: 14px;
+     font-weight: 700;
+   
+     transition:
+       background .18s ease,
+       border-color .18s ease,
+       transform .18s ease;
+   }
+   
+   .pv-btn-secondary:hover {
+     background: var(--pv-primary-soft);
+   
+     border-color: var(--pv-teal);
+   }
+   
+   .pv-btn-secondary:active {
+     transform: translateY(1px);
+   }
+   
+   
+   /* ================================================================
+      10. BOTÃO GHOST
+      ================================================================ */
+   
+   .pv-btn-ghost {
+     min-height: 44px;
+   
+     display: inline-flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     gap: 8px;
+   
+     padding: 0 14px;
+   
+     border: 0;
+   
+     border-radius: var(--pv-radius-sm);
+   
+     background: transparent;
+   
+     color: var(--pv-primary);
+   
+     font-size: 13px;
+     font-weight: 700;
+   }
+   
+   .pv-btn-ghost:hover {
+     background: var(--pv-primary-soft);
+   }
+   
+   
+   /* ================================================================
+      11. CAMPO
+      ================================================================ */
+   
+   .pv-field {
+     width: 100%;
+   
+     min-height: 50px;
+   
+     padding: 0 15px;
+   
+     border: 1px solid var(--pv-border);
+   
+     border-radius: var(--pv-radius-sm);
+   
+     background: var(--pv-surface);
+   
+     color: var(--pv-text);
+   
+     font-size: 14px;
+   
+     outline: none;
+   
+     transition:
+       border-color .18s ease,
+       box-shadow .18s ease,
+       background .18s ease;
+   }
+   
+   .pv-field::placeholder {
+     color: #9AB0BF;
+   }
+   
+   .pv-field:hover {
+     border-color: #BFD6DF;
+   }
+   
+   .pv-field:focus {
+     border-color: var(--pv-border-focus);
+   
+     box-shadow:
+       0 0 0 4px rgba(19,166,185,.10);
+   }
+   
+   .pv-field:disabled {
+     background: #F4F7F8;
+     cursor: not-allowed;
+   }
+   
+   
+   /* ================================================================
+      12. LABEL
+      ================================================================ */
+   
+   .pv-field-label {
+     display: block;
+   
+     margin-bottom: 7px;
+   
+     color: var(--pv-text);
+   
+     font-size: 13px;
+     font-weight: 700;
+   }
+   
+   
+   /* ================================================================
+      13. BADGES
+      ================================================================ */
+   
+   .pv-badge {
+     display: inline-flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     min-height: 28px;
+   
+     padding: 0 10px;
+   
+     border-radius: var(--pv-radius-pill);
+   
+     font-size: 11px;
+     font-weight: 700;
+   }
+   
+   .pv-badge-success {
+     background: var(--pv-success-soft);
+     color: var(--pv-success);
+   }
+   
+   .pv-badge-warning {
+     background: var(--pv-warning-soft);
+     color: var(--pv-warning);
+   }
+   
+   .pv-badge-danger {
+     background: var(--pv-danger-soft);
+     color: var(--pv-danger);
+   }
+   
+   .pv-badge-info {
+     background: var(--pv-info-soft);
+     color: var(--pv-info);
+   }
+   
+   .pv-badge-neutral {
+     background: #EEF3F6;
+     color: #698092;
+   }
+   
+   
+   /* ================================================================
+      14. STATUS DOT
+      ================================================================ */
+   
+   .pv-status-dot {
+     width: 9px;
+     height: 9px;
+   
+     display: inline-block;
+   
+     border-radius: 50%;
+   }
+   
+   .pv-status-dot-success {
+     background: var(--pv-success);
+   }
+   
+   .pv-status-dot-warning {
+     background: var(--pv-warning);
+   }
+   
+   .pv-status-dot-danger {
+     background: var(--pv-danger);
+   }
+   
+   .pv-status-dot-info {
+     background: var(--pv-info);
+   }
+   
+   
+   /* ================================================================
+      15. ALERTAS
+      ================================================================ */
+   
+   .pv-alert-modern {
+     display: flex;
+   
+     align-items: flex-start;
+   
+     gap: 12px;
+   
+     padding: 14px 16px;
+   
+     border-radius: var(--pv-radius-md);
+   
+     border: 1px solid var(--pv-border);
+   }
+   
+   .pv-alert-success {
+     background: var(--pv-success-soft);
+   
+     border-color: #CBEAD8;
+   
+     color: var(--pv-success);
+   }
+   
+   .pv-alert-warning {
+     background: var(--pv-warning-soft);
+   
+     border-color: #F0DEA9;
+   
+     color: #9A7415;
+   }
+   
+   .pv-alert-danger {
+     background: var(--pv-danger-soft);
+   
+     border-color: #F0CACA;
+   
+     color: var(--pv-danger);
+   }
+   
+   .pv-alert-info {
+     background: var(--pv-info-soft);
+   
+     border-color: #D4DDF6;
+   
+     color: var(--pv-info);
+   }
+   
+   
+   /* ================================================================
+      16. ÍCONE
+      ================================================================ */
+   
+   .pv-icon-circle {
+     width: 44px;
+     height: 44px;
+   
+     flex: 0 0 auto;
+   
+     display: flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     border-radius: 14px;
+   
+     background: var(--pv-primary-soft);
+   
+     color: var(--pv-primary);
+   }
+   
+   .pv-icon-circle svg {
+     width: 22px;
+     height: 22px;
+   }
+   
+   
+   /* ================================================================
+      17. GRID
+      ================================================================ */
+   
+   .pv-grid {
+     display: grid;
+     gap: var(--pv-space-4);
+   }
+   
+   .pv-grid-2 {
+     grid-template-columns:
+       repeat(
+         2,
+         minmax(0, 1fr)
+       );
+   }
+   
+   .pv-grid-3 {
+     grid-template-columns:
+       repeat(
+         3,
+         minmax(0, 1fr)
+       );
+   }
+   
+   .pv-grid-4 {
+     grid-template-columns:
+       repeat(
+         4,
+         minmax(0, 1fr)
+       );
+   }
+   
+   
+   /* ================================================================
+      18. STACK
+      ================================================================ */
+   
+   .pv-stack-1 {
+     display: flex;
+   
+     flex-direction: column;
+   
+     gap: var(--pv-space-2);
+   }
+   
+   .pv-stack-2 {
+     display: flex;
+   
+     flex-direction: column;
+   
+     gap: var(--pv-space-3);
+   }
+   
+   .pv-stack-3 {
+     display: flex;
+   
+     flex-direction: column;
+   
+     gap: var(--pv-space-4);
+   }
+   
+   .pv-stack-4 {
+     display: flex;
+   
+     flex-direction: column;
+   
+     gap: var(--pv-space-6);
+   }
+   
+   
+   /* ================================================================
+      19. DIVISOR
+      ================================================================ */
+   
+   .pv-divider {
+     width: 100%;
+     height: 1px;
+   
+     background:
+       var(--pv-border-soft);
+   }
+   
+   
+   /* ================================================================
+      20. EMPTY STATE
+      ================================================================ */
+   
+   .pv-empty {
+     min-height: 220px;
+   
+     padding: var(--pv-space-8);
+   
+     display: flex;
+   
+     flex-direction: column;
+   
+     align-items: center;
+     justify-content: center;
+   
+     text-align: center;
+   
+     border:
+       1px dashed
+       var(--pv-border);
+   
+     border-radius: var(--pv-radius-lg);
+   
+     background:
+       var(--pv-surface-soft);
+   }
+   
+   .pv-empty-icon {
+     width: 52px;
+     height: 52px;
+   
+     margin-bottom: 14px;
+   
+     display: flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     border-radius: 17px;
+   
+     background: var(--pv-primary-soft);
+   
+     color: var(--pv-primary);
+   }
+   
+   .pv-empty h3 {
+     margin: 0;
+   
+     color: var(--pv-text-strong);
+   
+     font-size: 17px;
+   }
+   
+   .pv-empty p {
+     max-width: 420px;
+   
+     margin-top: 7px;
+   
+     color: var(--pv-text-muted);
+   
+     font-size: 13px;
+     line-height: 1.55;
+   }
+   
+   
+   /* ================================================================
+      21. LOADING
+      ================================================================ */
+   
+   .pv-loading {
+     min-height: 180px;
+   
+     display: flex;
+   
+     align-items: center;
+     justify-content: center;
+   }
+   
+   .pv-loading-spinner {
+     width: 30px;
+     height: 30px;
+   
+     border:
+       3px solid
+       #D7EDF0;
+   
+     border-top-color:
+       var(--pv-teal);
+   
+     border-radius: 50%;
+   
+     animation:
+       pv-spin .8s linear infinite;
+   }
+   
+   @keyframes pv-spin {
+   
+     to {
+       transform: rotate(360deg);
+     }
+   
+   }
+   
+   
+   /* ================================================================
+      22. TABELA
+      ================================================================ */
+   
+   .pv-table-wrap {
+     width: 100%;
+   
+     overflow-x: auto;
+   
+     border:
+       1px solid
+       var(--pv-border-soft);
+   
+     border-radius:
+       var(--pv-radius-lg);
+   
+     background:
+       var(--pv-surface);
+   }
+   
+   .pv-table {
+     width: 100%;
+   
+     border-collapse: collapse;
+   
+     font-size: 13px;
+   }
+   
+   .pv-table th {
+     padding: 13px 16px;
+   
+     border-bottom:
+       1px solid
+       var(--pv-border);
+   
+     background: #F7FAFB;
+   
+     color: #587188;
+   
+     font-size: 11px;
+     font-weight: 700;
+   
+     text-align: left;
+   
+     white-space: nowrap;
+   }
+   
+   .pv-table td {
+     padding: 14px 16px;
+   
+     border-bottom:
+       1px solid
+       #EDF2F4;
+   
+     color: var(--pv-text);
+   
+     vertical-align: middle;
+   }
+   
+   .pv-table tr:last-child td {
+     border-bottom: 0;
+   }
+   
+   .pv-table tbody tr:hover td {
+     background: #FAFCFD;
+   }
+   
+   
+   /* ================================================================
+      23. NAVEGAÇÃO MOBILE
+      ================================================================ */
+   
+   .pv-nav-item {
+     min-width: 58px;
+   
+     display: flex;
+   
+     flex-direction: column;
+   
+     align-items: center;
+     justify-content: center;
+   
+     gap: 4px;
+   
+     border: 0;
+   
+     background: transparent;
+   
+     color: #7D93A3;
+   
+     font-size: 10px;
+     font-weight: 600;
+   }
+   
+   .pv-nav-item svg {
+     width: 21px;
+     height: 21px;
+   }
+   
+   .pv-nav-item.ativo,
+   .pv-nav-item.active {
+     color: var(--pv-primary);
+   }
+   
+   
+   /* ================================================================
+      24. SIDEBAR
+      ================================================================ */
+   
+   .pv-sidebar {
+     width: 248px;
+   
+     flex:
+       0 0
+       248px;
+   
+     min-height: 100vh;
+   
+     padding: 26px 16px;
+   
+     background: #FFFFFF;
+   
+     border-right:
+       1px solid
+       var(--pv-border-soft);
+   }
+   
+   .pv-sidebar-brand {
+     padding: 7px 10px 28px;
+   }
+   
+   .pv-sidebar-brand img {
+     width: 170px;
+   
+     height: auto;
+   }
+   
+   .pv-sidebar-nav {
+     display: flex;
+   
+     flex-direction: column;
+   
+     gap: 5px;
+   }
+   
+   .pv-sidebar-item {
+     min-height: 46px;
+   
+     display: flex;
+   
+     align-items: center;
+   
+     gap: 12px;
+   
+     padding: 0 13px;
+   
+     border: 0;
+   
+     border-radius: 13px;
+   
+     background: transparent;
+   
+     color: #71889A;
+   
+     font-size: 13px;
+     font-weight: 600;
+   
+     text-align: left;
+   }
+   
+   .pv-sidebar-item:hover {
+     background: #F4F9FA;
+   
+     color:
+       var(--pv-primary);
+   }
+   
+   .pv-sidebar-item.ativo,
+   .pv-sidebar-item.active {
+     background:
+       var(--pv-primary-soft);
+   
+     color:
+       var(--pv-primary);
+   
+     font-weight: 700;
+   }
+   
+   .pv-sidebar-item svg {
+     width: 20px;
+     height: 20px;
+   }
+   
+   
+   /* ================================================================
+      25. TOPBAR
+      ================================================================ */
+   
+   .pv-topbar {
+     min-height: 72px;
+   
+     display: flex;
+   
+     align-items: center;
+   
+     justify-content: space-between;
+   
+     padding: 0 28px;
+   
+     border-bottom:
+       1px solid
+       var(--pv-border-soft);
+   
+     background:
+       rgba(
+         255,
+         255,
+         255,
+         .92
+       );
+   
+     backdrop-filter:
+       blur(12px);
+   
+     position: sticky;
+   
+     top: 0;
+   
+     z-index: 20;
+   }
+   
+   .pv-topbar-title {
+     color:
+       var(--pv-text-strong);
+   
+     font-family:
+       var(--pv-font-heading);
+   
+     font-size: 20px;
+     font-weight: 600;
+   }
+   
+   .pv-topbar-actions {
+     display: flex;
+   
+     align-items: center;
+   
+     gap: 10px;
+   }
+   
+   
+   /* ================================================================
+      26. AVATAR
+      ================================================================ */
+   
+   .pv-avatar {
+     width: 40px;
+     height: 40px;
+   
+     flex: 0 0 auto;
+   
+     display: flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     border-radius: 50%;
+   
+     background:
+       linear-gradient(
+         135deg,
+         #DDF5EF,
+         #E4F5FA
+       );
+   
+     color:
+       var(--pv-primary);
+   
+     font-family:
+       var(--pv-font-heading);
+   
+     font-size: 14px;
+     font-weight: 700;
+   }
+   
+   
+   /* ================================================================
+      27. STATUS / SEMÁFORO
+      ================================================================ */
+   
+   .pv-status-card {
+     padding: 22px;
+   
+     border-radius:
+       var(--pv-radius-lg);
+   
+     border:
+       1px solid
+       var(--pv-border-soft);
+   
+     background:
+       var(--pv-surface);
+   }
+   
+   .pv-status-card-verde {
+     background:
+       linear-gradient(
+         135deg,
+         #FFFFFF,
+         #EFFAF4
+       );
+   
+     border-color:
+       #D3EDE0;
+   }
+   
+   .pv-status-card-amarelo {
+     background:
+       linear-gradient(
+         135deg,
+         #FFFFFF,
+         #FFF9EA
+       );
+   
+     border-color:
+       #F0E4BF;
+   }
+   
+   .pv-status-card-vermelho {
+     background:
+       linear-gradient(
+         135deg,
+         #FFFFFF,
+         #FFF2F2
+       );
+   
+     border-color:
+       #F0D4D4;
+   }
+   
+   .pv-status-indicador {
+     width: 12px;
+     height: 12px;
+   
+     display: inline-block;
+   
+     margin-right: 7px;
+   
+     border-radius: 50%;
+   }
+   
+   .pv-status-verde {
+     background: #5DB77E;
+   }
+   
+   .pv-status-amarelo {
+     background: #D8A626;
+   }
+   
+   .pv-status-vermelho {
+     background: #C95353;
+   }
+   
+   
+   /* ================================================================
+      28. ESCALA DE INTENSIDADE
+      ================================================================ */
+   
+   .pv-intensidade {
+     display: grid;
+   
+     grid-template-columns:
+       repeat(
+         11,
+         minmax(0, 1fr)
+       );
+   
+     gap: 5px;
+   }
+   
+   .pv-intensidade-item {
+     min-width: 0;
+   
+     aspect-ratio: 1;
+   
+     display: flex;
+   
+     align-items: center;
+     justify-content: center;
+   
+     border:
+       1px solid
+       var(--pv-border);
+   
+     border-radius: 11px;
+   
+     background: #FFFFFF;
+   
+     color: #55758F;
+   
+     font-size: 13px;
+     font-weight: 700;
+   }
+   
+   .pv-intensidade-item:hover {
+     border-color:
+       var(--pv-teal);
+   
+     background:
+       var(--pv-teal-soft);
+   }
+   
+   .pv-intensidade-item.ativo {
+     border-color:
+       var(--pv-primary);
+   
+     background:
+       linear-gradient(
+         135deg,
+         var(--pv-primary),
+         var(--pv-teal)
+       );
+   
+     color: #FFFFFF;
+   }
+   
+   
+   /* ================================================================
+      29. CHIP
+      ================================================================ */
+   
+   .pv-chip-modern {
+     display: inline-flex;
+   
+     align-items: center;
+   
+     min-height: 32px;
+   
+     padding: 0 12px;
+   
+     border:
+       1px solid
+       var(--pv-border);
+   
+     border-radius:
+       var(--pv-radius-pill);
+   
+     background: #FFFFFF;
+   
+     color: #607B90;
+   
+     font-size: 12px;
+     font-weight: 600;
+   }
+   
+   .pv-chip-modern.ativo,
+   .pv-chip-modern.active {
+     border-color:
+       #BEE3E7;
+   
+     background:
+       var(--pv-teal-soft);
+   
+     color:
+       var(--pv-primary);
+   }
+   
+   
+   /* ================================================================
+      30. SEARCH
+      ================================================================ */
+   
+   .pv-search {
+     position: relative;
+   
+     width: 100%;
+   }
+   
+   .pv-search input {
+     width: 100%;
+   
+     min-height: 50px;
+   
+     padding:
+       0
+       46px
+       0
+       46px;
+   
+     border:
+       1px solid
+       var(--pv-border);
+   
+     border-radius:
+       var(--pv-radius-md);
+   
+     background: #FFFFFF;
+   
+     color:
+       var(--pv-text);
+   
+     font-size: 14px;
+   
+     outline: none;
+   }
+   
+   .pv-search input:focus {
+     border-color:
+       var(--pv-border-focus);
+   
+     box-shadow:
+       0 0 0 4px
+       rgba(
+         19,
+         166,
+         185,
+         .08
+       );
+   }
+   
+   .pv-search-icon {
+     position: absolute;
+   
+     left: 15px;
+   
+     top: 50%;
+   
+     width: 20px;
+     height: 20px;
+   
+     transform:
+       translateY(-50%);
+   
+     color:
+       #6D90AA;
+   
+     pointer-events: none;
+   }
+   
+   .pv-search-icon svg {
+     width: 100%;
+     height: 100%;
+   }
+   
+   
+   /* ================================================================
+      31. MODAL
+      ================================================================ */
+   
+   .pv-modal-modern {
+     position: fixed;
+   
+     inset: 0;
+   
+     z-index: 100;
+   
+     display: flex;
+   
+     align-items: center;
+   
+     justify-content: center;
+   
+     padding: 20px;
+   
+     background:
+       rgba(
+         16,
+         49,
+         72,
+         .30
+       );
+   
+     backdrop-filter:
+       blur(4px);
+   }
+   
+   .pv-modal-modern-card {
+     width:
+       min(
+         560px,
+         100%
+       );
+   
+     max-height:
+       calc(
+         100vh - 40px
+       );
+   
+     overflow-y: auto;
+   
+     padding: 26px;
+   
+     border-radius:
+       var(--pv-radius-xl);
+   
+     background:
+       #FFFFFF;
+   
+     box-shadow:
+       var(--pv-shadow-lg);
+   }
+   
+   
+   /* ================================================================
+      32. ANIMAÇÕES
+      ================================================================ */
+   
+   @media (prefers-reduced-motion: no-preference) {
+   
+     .pv-card-modern,
+     .pv-btn-primary,
+     .pv-btn-secondary,
+     .pv-sidebar-item,
+     .pv-chip-modern,
+     .pv-table tbody tr {
+   
+       transition:
+         transform .18s ease,
+         box-shadow .18s ease,
+         background .18s ease,
+         border-color .18s ease,
+         color .18s ease;
+     }
+   
+   }
+   
+   
+   /* ================================================================
+      33. TABLET
+      ================================================================ */
+   
+   @media (max-width: 899px) {
+   
+     .pv-sidebar {
+       width: 220px;
+       flex-basis: 220px;
+     }
+   
+     .pv-grid-4 {
+       grid-template-columns:
+         repeat(
+           2,
+           minmax(0, 1fr)
+         );
+     }
+   
+     .pv-grid-3 {
+       grid-template-columns:
+         repeat(
+           2,
+           minmax(0, 1fr)
+         );
+     }
+   
+     .pv-topbar {
+       padding:
+         0
+         20px;
+     }
+   
+   }
+   
+   
+   /* ================================================================
+      34. MOBILE
+      ================================================================ */
+   
+   @media (max-width: 699px) {
+   
+     .pv-container {
+       width: 100%;
+     }
+   
+     .pv-page-header {
+       margin-bottom: 22px;
+     }
+   
+     .pv-page-title {
+       font-size: 28px;
+     }
+   
+     .pv-page-subtitle {
+       font-size: 13px;
+     }
+   
+     .pv-grid-2,
+     .pv-grid-3,
+     .pv-grid-4 {
+   
+       grid-template-columns:
+         1fr;
+     }
+   
+     .pv-table-wrap {
+       border-radius: 15px;
+     }
+   
+     .pv-table {
+       min-width: 680px;
+     }
+   
+     .pv-card-modern {
+       border-radius: 19px;
+     }
+   
+     .pv-sidebar {
+       display: none;
+     }
+   
+     .pv-topbar {
+       min-height: 62px;
+   
+       padding:
+         0
+         16px;
+     }
+   
+     .pv-topbar-title {
+       font-size: 18px;
+     }
+   
+     .pv-intensidade {
+       gap: 4px;
+     }
+   
+     .pv-intensidade-item {
+       border-radius: 9px;
+       font-size: 11px;
+     }
+   
+     .pv-btn-primary,
+     .pv-btn-secondary {
+       width: 100%;
+     }
+   
+   }
+   
+   
+   /* ================================================================
+      35. MOBILE PEQUENO
+      ================================================================ */
+   
+   @media (max-width: 390px) {
+   
+     .pv-page-title {
+       font-size: 25px;
+     }
+   
+     .pv-card-modern {
+       border-radius: 17px;
+     }
+   
+     .pv-intensidade-item {
+       font-size: 10px;
+     }
+   
+   }
+   
+   
+   /* ================================================================
+      36. DESKTOP AMPLO
+      ================================================================ */
+   
+   @media (min-width: 1200px) {
+   
+     .pv-page-title {
+       font-size: 40px;
+     }
+   
+   }
+
+
+   /* ================================================================
+   37. HOME PACIENTE — LOVABLE
+   ================================================================ */
+
+.pv-dashboard-paciente-main {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0;
+  }
+  
+  .pv-home-layout {
+    width: 100%;
+    min-height: 100vh;
+  
+    display: flex;
+  
+    background:
+      var(--pv-background);
+  }
+  
+  .pv-home-workspace {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .pv-home-content {
+    width: 100%;
+    max-width: 1180px;
+  
+    margin: 0 auto;
+  
+    padding:
+      42px
+      36px
+      48px;
+  }
+  
+  
+  /* ----------------------------- Sidebar */
+  
+  .pv-sidebar {
+    position: sticky;
+    top: 0;
+  
+    align-self: flex-start;
+  
+    height: 100vh;
+  }
+  
+  .pv-sidebar-brand a {
+    display: inline-flex;
+  }
+  
+  .pv-sidebar-brand img {
+    display: block;
+  }
+  
+  .pv-home-sidebar-note {
+    margin-top: auto;
+  
+    display: flex;
+  
+    align-items: flex-start;
+  
+    gap: 10px;
+  
+    padding: 18px 12px;
+  
+    color:
+      var(--pv-text-muted);
+  
+    font-size: 12px;
+  
+    line-height: 1.5;
+  }
+  
+  .pv-home-sidebar-note svg {
+    width: 18px;
+    height: 18px;
+  
+    flex: 0 0 auto;
+  
+    color:
+      var(--pv-teal);
+  }
+  
+  
+  /* ----------------------------- Topbar */
+  
+  .pv-topbar {
+    z-index: 20;
+  }
+  
+  .pv-topbar-actions {
+    gap: 12px;
+  }
+  
+  .pv-home-icon-button {
+    width: 42px;
+    height: 42px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    border: 0;
+  
+    border-radius: 13px;
+  
+    background:
+      transparent;
+  
+    color:
+      #7890A1;
+  }
+  
+  .pv-home-icon-button:hover {
+    background:
+      var(--pv-primary-soft);
+  
+    color:
+      var(--pv-primary);
+  }
+  
+  .pv-home-icon-button svg {
+    width: 21px;
+    height: 21px;
+  }
+  
+  .pv-home-profile {
+    min-height: 46px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 9px;
+  
+    padding: 0 8px;
+  
+    border: 0;
+  
+    background:
+      transparent;
+  
+    color:
+      var(--pv-text);
+  
+    text-align: left;
+  }
+  
+  .pv-home-profile-copy {
+    display: flex;
+  
+    flex-direction: column;
+  
+    line-height: 1.2;
+  }
+  
+  .pv-home-profile-copy strong {
+    color:
+      var(--pv-text-strong);
+  
+    font-size: 13px;
+  
+    font-weight: 700;
+  }
+  
+  .pv-home-profile-copy small {
+    margin-top: 3px;
+  
+    color:
+      var(--pv-text-light);
+  
+    font-size: 10px;
+  }
+  
+  .pv-home-logout {
+    min-height: 40px;
+  
+    display: inline-flex;
+  
+    align-items: center;
+  
+    gap: 7px;
+  
+    padding: 0 11px;
+  
+    border: 0;
+  
+    border-radius: 11px;
+  
+    background:
+      transparent;
+  
+    color:
+      #788F9F;
+  
+    font-size: 12px;
+  
+    font-weight: 600;
+  }
+  
+  .pv-home-logout:hover {
+    background:
+      var(--pv-danger-soft);
+  
+    color:
+      var(--pv-danger);
+  }
+  
+  .pv-home-logout svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  
+  /* ----------------------------- Boas-vindas */
+  
+  .pv-home-welcome {
+    min-height: 150px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    justify-content: space-between;
+  
+    gap: 24px;
+  
+    margin-bottom: 28px;
+  
+    padding:
+      30px
+      32px;
+  
+    border:
+      1px solid
+      var(--pv-border-soft);
+  
+    border-radius:
+      var(--pv-radius-xl);
+  
+    background:
+      linear-gradient(
+        135deg,
+        #FFFFFF 0%,
+        #F6FBFC 100%
+      );
+  
+    box-shadow:
+      var(--pv-shadow-xs);
+  }
+  
+  .pv-home-welcome h1 {
+    margin: 0;
+  
+    color:
+      var(--pv-text-strong);
+  
+    font-size:
+      clamp(28px, 4vw, 38px);
+  
+    line-height: 1.08;
+  
+    font-weight: 600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-home-welcome p {
+    max-width: 650px;
+  
+    margin:
+      10px 0 0;
+  
+    color:
+      var(--pv-text-muted);
+  
+    font-size: 14px;
+  
+    line-height: 1.6;
+  }
+  
+  .pv-home-welcome-icon {
+    width: 76px;
+    height: 76px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    flex: 0 0 auto;
+  
+    border-radius: 24px;
+  
+    background:
+      var(--pv-mint);
+  
+    font-size: 34px;
+  }
+  
+  
+  /* ----------------------------- Ações */
+  
+  .pv-home-actions {
+    display: grid;
+  
+    grid-template-columns:
+      1.15fr
+      .925fr
+      .925fr;
+  
+    gap: 18px;
+  
+    margin-bottom: 22px;
+  }
+  
+  .pv-home-action {
+    position: relative;
+  
+    min-height: 275px;
+  
+    display: flex;
+  
+    flex-direction: column;
+  
+    padding: 25px;
+  
+    overflow: hidden;
+  
+    border:
+      1px solid
+      var(--pv-border-soft);
+  
+    border-radius:
+      var(--pv-radius-lg);
+  
+    background:
+      #FFFFFF;
+  
+    box-shadow:
+      var(--pv-shadow-sm);
+  }
+  
+  .pv-home-action:hover {
+    transform:
+      translateY(-2px);
+  
+    box-shadow:
+      var(--pv-shadow-md);
+  }
+  
+  .pv-home-action-primary {
+    background:
+      linear-gradient(
+        145deg,
+        #EAF7F8 0%,
+        #FFFFFF 72%
+      );
+  
+    border-color:
+      #D3EBEF;
+  }
+  
+  .pv-home-action-icon {
+    width: 48px;
+    height: 48px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    margin-bottom: 18px;
+  
+    border-radius: 15px;
+  
+    background:
+      var(--pv-primary-soft);
+  
+    color:
+      var(--pv-primary);
+  }
+  
+  .pv-home-action-primary
+  .pv-home-action-icon {
+    background:
+      var(--pv-teal-soft);
+  
+    color:
+      var(--pv-teal-dark);
+  }
+  
+  .pv-home-action-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .pv-home-action-content {
+    position: relative;
+  
+    z-index: 2;
+  
+    display: flex;
+  
+    flex-direction: column;
+  
+    height: 100%;
+  }
+  
+  .pv-home-action-label {
+    margin-bottom: 7px;
+  
+    color:
+      var(--pv-teal-dark);
+  
+    font-size: 10px;
+  
+    font-weight: 700;
+  
+    letter-spacing: .08em;
+  
+    text-transform:
+      uppercase;
+  }
+  
+  .pv-home-action h2 {
+    margin: 0;
+  
+    max-width: 330px;
+  
+    color:
+      var(--pv-text-strong);
+  
+    font-size: 22px;
+  
+    line-height: 1.15;
+  
+    font-weight: 600;
+  
+    letter-spacing:
+      -.025em;
+  }
+  
+  .pv-home-action p {
+    max-width: 330px;
+  
+    margin:
+      10px 0 18px;
+  
+    color:
+      var(--pv-text-muted);
+  
+    font-size: 13px;
+  
+    line-height: 1.55;
+  }
+  
+  .pv-home-action-link {
+    margin-top: auto;
+  
+    align-self: flex-start;
+  
+    display: inline-flex;
+  
+    align-items: center;
+  
+    gap: 8px;
+  
+    padding: 0;
+  
+    border: 0;
+  
+    background:
+      transparent;
+  
+    color:
+      var(--pv-primary);
+  
+    font-size: 13px;
+  
+    font-weight: 700;
+  }
+  
+  .pv-home-action-link:hover {
+    color:
+      var(--pv-teal-dark);
+  }
+  
+  .pv-home-action-link svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .pv-home-action-decoration {
+    position: absolute;
+  
+    right: -8px;
+    bottom: -13px;
+  
+    color:
+      rgba(23,106,145,.06);
+  
+    pointer-events: none;
+  }
+  
+  .pv-home-action-decoration svg {
+    width: 100px;
+    height: 100px;
+  }
+  
+  
+  /* ----------------------------- Contatos */
+  
+  .pv-home-support {
+    display: grid;
+  
+    grid-template-columns:
+      minmax(0, 1.45fr)
+      minmax(260px, .65fr);
+  
+    gap: 18px;
+  
+    margin-top: 18px;
+  }
+  
+  .pv-home-contacts {
+    padding:
+      24px;
+  
+    border:
+      1px solid
+      var(--pv-border-soft);
+  
+    border-radius:
+      var(--pv-radius-lg);
+  
+    background:
+      #FFFFFF;
+  
+    box-shadow:
+      var(--pv-shadow-xs);
+  }
+  
+  .pv-home-section-heading {
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 13px;
+  
+    margin-bottom: 18px;
+  }
+  
+  .pv-home-section-heading h2 {
+    margin: 0;
+  
+    color:
+      var(--pv-text-strong);
+  
+    font-size: 19px;
+  
+    font-weight: 600;
+  }
+  
+  .pv-home-section-heading p {
+    margin: 3px 0 0;
+  
+    color:
+      var(--pv-text-muted);
+  
+    font-size: 12px;
+  }
+  
+  .pv-home-contact-list {
+    display: flex;
+  
+    flex-direction: column;
+  
+    gap: 8px;
+  }
+  
+  .pv-home-contact {
+    width: 100%;
+  
+    min-height: 64px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 12px;
+  
+    padding:
+      9px
+      12px;
+  
+    border:
+      1px solid
+      transparent;
+  
+    border-radius:
+      14px;
+  
+    background:
+      #F9FBFC;
+  
+    color:
+      var(--pv-text);
+  
+    text-align: left;
+  
+    text-decoration: none;
+  
+    transition:
+      background .18s ease,
+      border-color .18s ease,
+      transform .18s ease;
+  }
+  
+  .pv-home-contact:hover {
+    background:
+      var(--pv-primary-soft);
+  
+    border-color:
+      #D6E9EE;
+  
+    transform:
+      translateX(2px);
+  }
+  
+  .pv-home-contact > :last-child {
+    margin-left: auto;
+  
+    color:
+      #9EB0BC;
+  
+    font-size: 19px;
+  }
+  
+  .pv-home-contact-icon {
+    width: 42px;
+    height: 42px;
+  
+    flex: 0 0 auto;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 13px;
+  }
+  
+  .pv-home-contact-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .pv-home-contact-purple {
+    background:
+      var(--pv-purple-soft);
+  
+    color:
+      var(--pv-purple);
+  }
+  
+  .pv-home-contact-green {
+    background:
+      var(--pv-success-soft);
+  
+    color:
+      var(--pv-success);
+  }
+  
+  .pv-home-contact-blue {
+    background:
+      var(--pv-primary-soft);
+  
+    color:
+      var(--pv-primary);
+  }
+  
+  .pv-home-contact-copy {
+    min-width: 0;
+  
+    display: flex;
+  
+    flex-direction: column;
+  
+    gap: 4px;
+  }
+  
+  .pv-home-contact-copy strong {
+    color:
+      var(--pv-text-strong);
+  
+    font-size: 13px;
+  
+    font-weight: 700;
+  }
+  
+  .pv-home-contact-copy small {
+    overflow: hidden;
+  
+    color:
+      var(--pv-text-muted);
+  
+    font-size: 11px;
+  
+    text-overflow: ellipsis;
+  
+    white-space: nowrap;
+  }
+  
+  
+  /* ----------------------------- Lembrete */
+  
+  .pv-home-reminder {
+    position: relative;
+  
+    overflow: hidden;
+  
+    padding:
+      26px;
+  
+    border-radius:
+      var(--pv-radius-lg);
+  
+    background:
+      linear-gradient(
+        150deg,
+        #173F61 0%,
+        #176A91 100%
+      );
+  
+    color:
+      #FFFFFF;
+  
+    box-shadow:
+      var(--pv-shadow-md);
+  }
+  
+  .pv-home-reminder-icon {
+    width: 45px;
+    height: 45px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    margin-bottom: 19px;
+  
+    border-radius: 14px;
+  
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .12
+      );
+  
+    color:
+      #FFFFFF;
+  }
+  
+  .pv-home-reminder-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .pv-home-reminder-label {
+    display: block;
+  
+    margin-bottom: 6px;
+  
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .72
+      );
+  
+    font-size: 10px;
+  
+    font-weight: 700;
+  
+    letter-spacing: .09em;
+  
+    text-transform:
+      uppercase;
+  }
+  
+  .pv-home-reminder h2 {
+    margin: 0;
+  
+    font-size: 21px;
+  
+    line-height: 1.15;
+  
+    font-weight: 600;
+  }
+  
+  .pv-home-reminder p {
+    margin:
+      12px 0 0;
+  
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .77
+      );
+  
+    font-size: 12px;
+  
+    line-height: 1.65;
+  }
+  
+  
+  /* ----------------------------- Mensagem final */
+  
+  .pv-home-reassurance {
+    min-height: 76px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 13px;
+  
+    margin-top: 18px;
+  
+    padding:
+      15px
+      19px;
+  
+    border:
+      1px solid
+      #D7ECE9;
+  
+    border-radius:
+      var(--pv-radius-md);
+  
+    background:
+      var(--pv-mint-soft);
+  }
+  
+  .pv-home-reassurance-icon {
+    width: 40px;
+    height: 40px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    flex: 0 0 auto;
+  
+    border-radius: 12px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      var(--pv-teal);
+  }
+  
+  .pv-home-reassurance-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .pv-home-reassurance strong {
+    display: block;
+  
+    color:
+      var(--pv-text-strong);
+  
+    font-size: 13px;
+  }
+  
+  .pv-home-reassurance small {
+    display: block;
+  
+    margin-top: 3px;
+  
+    color:
+      var(--pv-text-muted);
+  
+    font-size: 11px;
+  }
+  
+  .pv-home-reassurance-heart {
+    margin-left: auto;
+  
+    color:
+      #71BDAA;
+  }
+  
+  .pv-home-reassurance-heart svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  
+  /* ----------------------------- Mobile nav */
+  
+  .pv-home-mobile-nav {
+    display: none;
+  }
+  
+  
+  /* ================================================================
+     38. HOME — TABLET
+     ================================================================ */
+  
+  @media (max-width: 999px) {
+  
+    .pv-home-content {
+      padding:
+        30px
+        24px
+        42px;
+    }
+  
+    .pv-home-actions {
+      grid-template-columns:
+        1fr
+        1fr;
+    }
+  
+    .pv-home-action-primary {
+      grid-column:
+        1 / -1;
+    }
+  
+    .pv-home-support {
+      grid-template-columns:
+        1fr;
+    }
+  
+  }
+  
+  
+  /* ================================================================
+     39. HOME — MOBILE
+     ================================================================ */
+  
+  @media (max-width: 699px) {
+  
+    .pv-home-layout {
+      display: block;
+  
+      padding-bottom:
+        76px;
+    }
+  
+    .pv-home-workspace {
+      width: 100%;
+    }
+  
+    .pv-home-content {
+      padding:
+        22px
+        16px
+        28px;
+    }
+  
+    .pv-home-welcome {
+      min-height: auto;
+  
+      align-items:
+        flex-start;
+  
+      padding:
+        23px
+        20px;
+  
+      border-radius:
+        21px;
+    }
+  
+    .pv-home-welcome h1 {
+      font-size: 29px;
+    }
+  
+    .pv-home-welcome p {
+      font-size: 12px;
+    }
+  
+    .pv-home-welcome-icon {
+      width: 48px;
+      height: 48px;
+  
+      border-radius: 15px;
+  
+      font-size: 22px;
+    }
+  
+    .pv-home-actions {
+      display: flex;
+  
+      flex-direction: column;
+  
+      gap: 12px;
+    }
+  
+    .pv-home-action,
+    .pv-home-action-primary {
+      min-height: auto;
+  
+      grid-column:
+        auto;
+  
+      padding:
+        20px;
+  
+      border-radius:
+        19px;
+    }
+  
+    .pv-home-action h2 {
+      font-size: 19px;
+    }
+  
+    .pv-home-action p {
+      margin-bottom:
+        16px;
+    }
+  
+    .pv-home-support {
+      display: flex;
+  
+      flex-direction: column;
+  
+      gap: 12px;
+    }
+  
+    .pv-home-contacts,
+    .pv-home-reminder {
+      padding:
+        20px;
+  
+      border-radius:
+        19px;
+    }
+  
+    .pv-home-section-heading h2 {
+      font-size: 18px;
+    }
+  
+    .pv-home-reminder h2 {
+      font-size: 19px;
+    }
+  
+    .pv-topbar-title {
+      font-size: 17px;
+    }
+  
+    .pv-home-profile-copy,
+    .pv-home-logout span {
+      display: none;
+    }
+  
+    .pv-home-logout {
+      padding:
+        0 8px;
+    }
+  
+    .pv-home-mobile-nav {
+      position: fixed;
+  
+      left: 0;
+      right: 0;
+      bottom: 0;
+  
+      z-index: 50;
+  
+      height: 68px;
+  
+      display: flex;
+  
+      align-items: stretch;
+      justify-content: space-around;
+  
+      padding:
+        7px
+        6px;
+  
+      border-top:
+        1px solid
+        var(--pv-border-soft);
+  
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .96
+        );
+  
+      backdrop-filter:
+        blur(14px);
+  
+      box-shadow:
+        0 -8px 24px
+        rgba(
+          23,
+          63,
+          97,
+          .06
+        );
+    }
+  
+    .pv-home-mobile-nav button {
+      min-width: 60px;
+  
+      display: flex;
+  
+      flex-direction: column;
+  
+      align-items: center;
+      justify-content: center;
+  
+      gap: 3px;
+  
+      border: 0;
+  
+      background:
+        transparent;
+  
+      color:
+        #8BA0AE;
+  
+      font-size: 10px;
+  
+      font-weight: 600;
+    }
+  
+    .pv-home-mobile-nav button.active {
+      color:
+        var(--pv-primary);
+    }
+  
+    .pv-home-mobile-nav svg {
+      width: 21px;
+      height: 21px;
+    }
+  
+  }
+  
+  
+  /* ================================================================
+     40. HOME — MOBILE PEQUENO
+     ================================================================ */
+  
+  @media (max-width: 390px) {
+  
+    .pv-home-content {
+      padding-left:
+        13px;
+  
+      padding-right:
+        13px;
+    }
+  
+    .pv-topbar {
+      padding-left:
+        13px;
+  
+      padding-right:
+        13px;
+    }
+  
+    .pv-home-welcome {
+      padding:
+        20px 17px;
+    }
+  
+    .pv-home-action {
+      padding:
+        18px;
+    }
+  
+    .pv-home-contact {
+      min-height:
+        60px;
+    }
+  
+  }
+
+
+  /* ================================================================
+   41. MENU DE SINTOMAS — LOVABLE
+   ================================================================ */
+
+/* ================================================================
+   CONTAINER DA ROTA
+   ================================================================ */
+
+.app-main.pv-menu-sintomas-main {
+    width: 100%;
+  
+    max-width: none;
+  
+    margin: 0;
+  
+    padding: 0;
+  
+    overflow: visible;
+  
+    background:
+      #F5FAFB;
+  }
+  
+  
+  /* ================================================================
+     TELA
+     ================================================================ */
+  
+  .pv-menu-sintomas-modern {
+    width: 100%;
+  
+    min-height: 100vh;
+  
+    background:
+      #F5FAFB;
+  
+    color:
+      var(--pv-text);
+  }
+  
+  
+  /* ================================================================
+     TOPBAR
+     ================================================================ */
+  
+  .pv-sintomas-topbar {
+    width: 100%;
+  
+    min-height: 60px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    justify-content: flex-end;
+  
+    gap: 16px;
+  
+    padding:
+      0 44px;
+  
+    border-bottom:
+      1px solid
+      #DCE8EC;
+  
+    background:
+      #FFFFFF;
+  }
+  
+  .pv-sintomas-demo {
+    margin-right: 2px;
+  
+    color:
+      #617887;
+  
+    font-size: 12px;
+  
+    font-weight: 500;
+  }
+  
+  .pv-sintomas-topbar-icon {
+    position: relative;
+  
+    width: 38px;
+    height: 38px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    padding: 0;
+  
+    border: 0;
+  
+    border-radius: 10px;
+  
+    background:
+      transparent;
+  
+    color:
+      #597286;
+  }
+  
+  .pv-sintomas-topbar-icon:hover {
+    background:
+      #F1F7F8;
+  
+    color:
+      var(--pv-primary);
+  }
+  
+  .pv-sintomas-topbar-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+  
+  .pv-sintomas-notificacao-dot {
+    position: absolute;
+  
+    top: 7px;
+    right: 5px;
+  
+    width: 7px;
+    height: 7px;
+  
+    border-radius: 50%;
+  
+    background:
+      #158D7E;
+  }
+  
+  
+  /* ================================================================
+     CONTEÚDO
+     ================================================================ */
+  
+  .pv-sintomas-content {
+    width:
+      min(
+        1000px,
+        calc(100% - 88px)
+      );
+  
+    margin:
+      0 auto;
+  
+    padding:
+      39px 0 48px;
+  }
+  
+  
+  /* ================================================================
+     CABEÇALHO
+     ================================================================ */
+  
+  .pv-sintomas-heading {
+    display: flex;
+  
+    align-items: flex-end;
+  
+    justify-content: space-between;
+  
+    gap: 28px;
+  }
+  
+  .pv-sintomas-heading h1 {
+    margin: 0;
+  
+    color:
+      var(--pv-text-strong);
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      clamp(
+        29px,
+        4vw,
+        34px
+      );
+  
+    line-height:
+      1.08;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-sintomas-heading p {
+    margin:
+      9px 0 0;
+  
+    color:
+      #617B8E;
+  
+    font-size:
+      14px;
+  
+    line-height:
+      1.5;
+  }
+  
+  .pv-sintomas-heading
+  .pv-page-eyebrow {
+    margin-bottom:
+      6px;
+  
+    color:
+      #0E8A8D;
+  }
+  
+  
+  /* ================================================================
+     HISTÓRICO
+     ================================================================ */
+  
+  .pv-sintomas-historico {
+    min-width:
+      115px;
+  
+    min-height:
+      44px;
+  
+    display:
+      inline-flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    gap:
+      8px;
+  
+    padding:
+      0 14px;
+  
+    border:
+      1px solid
+      #C9DCE3;
+  
+    border-radius:
+      9px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #143C5D;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      700;
+  
+    box-shadow:
+      0 2px 7px
+      rgba(
+        23,
+        63,
+        97,
+        .035
+      );
+  }
+  
+  .pv-sintomas-historico:hover {
+    background:
+      #F7FBFC;
+  
+    border-color:
+      #AFCED8;
+  }
+  
+  .pv-sintomas-historico svg {
+    width:
+      18px;
+  
+    height:
+      18px;
+  }
+  
+  
+  /* ================================================================
+     DIVISOR
+     ================================================================ */
+  
+  .pv-sintomas-divider {
+    width:
+      100%;
+  
+    height:
+      1px;
+  
+    margin:
+      27px 0 28px;
+  
+    background:
+      #CFDDE2;
+  }
+  
+  
+  /* ================================================================
+     BUSCA
+     ================================================================ */
+  
+  .pv-sintomas-search {
+    position:
+      relative;
+  
+    width:
+      100%;
+  
+    margin-bottom:
+      27px;
+  }
+  
+  .pv-sintomas-search svg {
+    position:
+      absolute;
+  
+    left:
+      16px;
+  
+    top:
+      50%;
+  
+    width:
+      21px;
+  
+    height:
+      21px;
+  
+    transform:
+      translateY(-50%);
+  
+    color:
+      #55768A;
+  
+    pointer-events:
+      none;
+  }
+  
+  .pv-sintomas-search input {
+    width:
+      100%;
+  
+    height:
+      49px;
+  
+    padding:
+      0 18px 0 48px;
+  
+    border:
+      1px solid
+      #BFD2DA;
+  
+    border-radius:
+      8px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #173F61;
+  
+    font-family:
+      var(--pv-font-body);
+  
+    font-size:
+      14px;
+  
+    outline:
+      none;
+  }
+  
+  .pv-sintomas-search input::placeholder {
+    color:
+      #8196A5;
+  }
+  
+  .pv-sintomas-search input:focus {
+    border-color:
+      #7FBFC8;
+  
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        19,
+        166,
+        185,
+        .08
+      );
+  }
+  
+  
+  /* ================================================================
+     GRID
+     ================================================================ */
+  
+  .pv-sintomas-grid {
+    width:
+      100%;
+  
+    display:
+      grid;
+  
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  
+    gap:
+      12px;
+  }
+  
+  
+  /* ================================================================
+     CARD
+     ================================================================ */
+  
+  .pv-sintoma-item {
+    min-width:
+      0;
+  
+    min-height:
+      111px;
+  
+    position:
+      relative;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      16px;
+  
+    padding:
+      15px 42px 15px 16px;
+  
+    border:
+      1px solid
+      #C8DCE3;
+  
+    border-radius:
+      8px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #143D5D;
+  
+    text-align:
+      left;
+  
+    box-shadow:
+      none;
+  
+    transition:
+      border-color .18s ease,
+      box-shadow .18s ease,
+      transform .18s ease;
+  }
+  
+  .pv-sintoma-item:hover {
+    border-color:
+      #94C4CF;
+  
+    box-shadow:
+      0 5px 15px
+      rgba(
+        23,
+        63,
+        97,
+        .06
+      );
+  
+    transform:
+      translateY(-1px);
+  }
+  
+  
+  /* ================================================================
+     INICIAIS
+     ================================================================ */
+  
+  .pv-sintoma-iniciais {
+    width:
+      44px;
+  
+    height:
+      44px;
+  
+    flex:
+      0 0 44px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      8px;
+  
+    background:
+      #E3F2F2;
+  
+    color:
+      #147C80;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  }
+  
+  
+  /* ================================================================
+     TEXTO
+     ================================================================ */
+  
+  .pv-sintoma-info {
+    min-width:
+      0;
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    align-items:
+      flex-start;
+  }
+  
+  .pv-sintoma-info strong {
+    color:
+      #082E50;
+  
+    font-size:
+      14px;
+  
+    font-weight:
+      700;
+  
+    line-height:
+      1.25;
+  }
+  
+  .pv-sintoma-info small {
+    margin-top:
+      5px;
+  
+    color:
+      #71899A;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      400;
+  
+    line-height:
+      1.25;
+  }
+  
+  .pv-sintoma-info em {
+    margin-top:
+      5px;
+  
+    color:
+      #07868D;
+  
+    font-size:
+      10px;
+  
+    font-style:
+      normal;
+  
+    font-weight:
+      700;
+  }
+  
+  
+  /* ================================================================
+     SETA
+     ================================================================ */
+  
+  .pv-sintoma-seta {
+    position:
+      absolute;
+  
+    right:
+      17px;
+  
+    top:
+      50%;
+  
+    transform:
+      translateY(-50%);
+  
+    color:
+      #587488;
+  
+    font-size:
+      23px;
+  
+    font-weight:
+      300;
+  }
+  
+  
+  /* ================================================================
+     SEM SINTOMA
+     ================================================================ */
+  
+  .pv-sintomas-sem-registro {
+    width:
+      100%;
+  
+    min-height:
+      54px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    gap:
+      9px;
+  
+    margin-top:
+      12px;
+  
+    border:
+      1px solid
+      #D0E5E3;
+  
+    border-radius:
+      9px;
+  
+    background:
+      #F2FBF8;
+  
+    color:
+      #198D87;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-sintomas-sem-registro:hover {
+    background:
+      #E9F8F4;
+  
+    border-color:
+      #B8DED7;
+  }
+  
+  .pv-sintomas-sem-registro > span {
+    font-size:
+      18px;
+  
+    line-height:
+      1;
+  }
+  
+  
+  /* ================================================================
+     VAZIO
+     ================================================================ */
+  
+  .pv-sintomas-estado-vazio {
+    min-height:
+      130px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border:
+      1px dashed
+      #C8D9DF;
+  
+    border-radius:
+      9px;
+  
+    background:
+      #FAFCFD;
+  
+    color:
+      #718796;
+  
+    font-size:
+      13px;
+  
+    text-align:
+      center;
+  }
+  
+  
+  /* ================================================================
+     APOIO
+     ================================================================ */
+  
+  .pv-sintomas-apoio {
+    min-height:
+      66px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      12px;
+  
+    margin-top:
+      18px;
+  
+    padding:
+      12px 15px;
+  
+    border:
+      1px solid
+      #D4EAE7;
+  
+    border-radius:
+      9px;
+  
+    background:
+      #F2FBF8;
+  }
+  
+  .pv-sintomas-apoio-icon {
+    width:
+      37px;
+  
+    height:
+      37px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    flex:
+      0 0 37px;
+  
+    border-radius:
+      10px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #4FA99C;
+  
+    font-size:
+      21px;
+  }
+  
+  .pv-sintomas-apoio strong {
+    display:
+      block;
+  
+    color:
+      #214B61;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-sintomas-apoio small {
+    display:
+      block;
+  
+    margin-top:
+      3px;
+  
+    color:
+      #77909D;
+  
+    font-size:
+      10px;
+  }
+  
+  
+  /* ================================================================
+     MOBILE NAV
+     ================================================================ */
+  
+  .pv-sintomas-mobile-nav {
+    display:
+      none;
+  }
+  
+  
+  /* ================================================================
+     MODAL
+     ================================================================ */
+  
+  .pv-modal-overlay .pv-modal-intensidade {
+    box-sizing:
+      border-box;
+  
+    width:
+      min(
+        520px,
+        calc(100vw - 30px)
+      );
+  
+    border-radius:
+      20px;
+  }
+  
+  
+  /* ================================================================
+     TABLET
+     ================================================================ */
+  
+  @media (max-width: 900px) {
+  
+    .pv-sintomas-content {
+      width:
+        min(
+          100% - 48px,
+          1000px
+        );
+    }
+  
+    .pv-sintomas-grid {
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
+    }
+  
+  }
+  
+  
+  /* ================================================================
+     MOBILE
+     ================================================================ */
+  
+  @media (max-width: 699px) {
+  
+    .pv-sintomas-topbar {
+      min-height:
+        58px;
+  
+      padding:
+        0 14px;
+    }
+  
+    .pv-sintomas-demo {
+      margin-right:
+        auto;
+  
+      font-size:
+        11px;
+    }
+  
+    .pv-sintomas-content {
+      width:
+        calc(100% - 28px);
+  
+      padding:
+        22px 0 95px;
+    }
+  
+    .pv-sintomas-heading {
+      align-items:
+        flex-start;
+  
+      flex-direction:
+        column;
+  
+      gap:
+        15px;
+    }
+  
+    .pv-sintomas-heading h1 {
+      font-size:
+        28px;
+    }
+  
+    .pv-sintomas-heading p {
+      font-size:
+        12px;
+    }
+  
+    .pv-sintomas-historico {
+      width:
+        100%;
+    }
+  
+    .pv-sintomas-grid {
+      grid-template-columns:
+        1fr;
+  
+      gap:
+        9px;
+    }
+  
+    .pv-sintoma-item {
+      min-height:
+        78px;
+  
+      padding:
+        12px 40px 12px 13px;
+  
+      border-radius:
+        9px;
+    }
+  
+    .pv-sintoma-iniciais {
+      width:
+        42px;
+  
+      height:
+        42px;
+  
+      flex-basis:
+        42px;
+    }
+  
+    .pv-sintoma-info strong {
+      font-size:
+        13px;
+    }
+  
+    .pv-sintoma-info small {
+      font-size:
+        10px;
+    }
+  
+    .pv-sintomas-mobile-nav {
+      position:
+        fixed;
+  
+      left:
+        0;
+  
+      right:
+        0;
+  
+      bottom:
+        0;
+  
+      z-index:
+        40;
+  
+      height:
+        68px;
+  
+      display:
+        flex;
+  
+      align-items:
+        stretch;
+  
+      justify-content:
+        space-around;
+  
+      padding:
+        6px;
+  
+      border-top:
+        1px solid
+        #D8E5EA;
+  
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .97
+        );
+  
+      box-shadow:
+        0 -5px 20px
+        rgba(
+          23,
+          63,
+          97,
+          .06
+        );
+    }
+  
+    .pv-sintomas-mobile-nav button {
+      min-width:
+        60px;
+  
+      display:
+        flex;
+  
+      flex-direction:
+        column;
+  
+      align-items:
+        center;
+  
+      justify-content:
+        center;
+  
+      gap:
+        3px;
+  
+      border:
+        0;
+  
+      background:
+        transparent;
+  
+      color:
+        #8BA0AE;
+  
+      font-size:
+        10px;
+  
+      font-weight:
+        600;
+    }
+  
+    .pv-sintomas-mobile-nav button.active {
+      color:
+        #176A91;
+    }
+  
+    .pv-sintomas-mobile-nav svg {
+      width:
+        21px;
+  
+      height:
+        21px;
+    }
+  
+  }
+
+
+  /* ================================================================
+   42. SIDEBAR — MENU DE SINTOMAS
+   ================================================================ */
+
+.pv-menu-sintomas-modern {
+    width: 100%;
+    min-height: 100vh;
+  
+    display: flex;
+  
+    background:
+      #F5FAFB;
+  }
+  
+  
+  /* ================================================================
+     SIDEBAR
+     ================================================================ */
+  
+  .pv-sintomas-sidebar {
+  
+    width:
+      236px;
+  
+    min-width:
+      236px;
+  
+    height:
+      100vh;
+  
+    position:
+      sticky;
+  
+    top:
+      0;
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    justify-content:
+      space-between;
+  
+    padding:
+      0 18px 22px;
+  
+    border-right:
+      1px solid
+      #D9E5E9;
+  
+    background:
+      #FFFFFF;
+  }
+  
+  
+  /* ================================================================
+     LOGO
+     ================================================================ */
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-brand {
+  
+    height:
+      72px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    padding:
+      0 0 0 2px;
+  }
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-brand img {
+  
+    width:
+      120px;
+  
+    height:
+      auto;
+  
+    display:
+      block;
+  }
+  
+  
+  /* ================================================================
+     TÍTULO DA SIDEBAR
+     ================================================================ */
+  
+  .pv-sidebar-section-label {
+  
+    padding:
+      12px 11px 12px;
+  
+    color:
+      #637B8A;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      700;
+  
+    letter-spacing:
+      .035em;
+  }
+  
+  
+  /* ================================================================
+     ITENS
+     ================================================================ */
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-nav {
+  
+    gap:
+      3px;
+  }
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-item {
+  
+    width:
+      100%;
+  
+    min-height:
+      42px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      11px;
+  
+    padding:
+      0 11px;
+  
+    border:
+      0;
+  
+    border-radius:
+      9px;
+  
+    background:
+      transparent;
+  
+    color:
+      #526D80;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      600;
+  }
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-item svg {
+  
+    width:
+      18px;
+  
+    height:
+      18px;
+  
+    flex:
+      0 0 auto;
+  }
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-item:hover {
+  
+    background:
+      #F3F8F9;
+  
+    color:
+      #176A91;
+  }
+  
+  .pv-sintomas-sidebar
+  .pv-sidebar-item.active {
+  
+    background:
+      #E2F2F2;
+  
+    color:
+      #07848A;
+  
+    font-weight:
+      700;
+  }
+  
+  
+  /* ================================================================
+     RODAPÉ DA SIDEBAR
+     ================================================================ */
+  
+  .pv-sidebar-footer {
+  
+    padding-top:
+      17px;
+  
+    border-top:
+      1px solid
+      #DCE7EA;
+  }
+  
+  .pv-sidebar-profile {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      10px;
+  
+    padding:
+      4px 7px 14px;
+  }
+  
+  .pv-sidebar-avatar {
+  
+    width:
+      34px;
+  
+    height:
+      34px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    flex:
+      0 0 34px;
+  
+    border-radius:
+      50%;
+  
+    background:
+      #D7F1E9;
+  
+    color:
+      #167A76;
+  }
+  
+  .pv-sidebar-avatar svg {
+  
+    width:
+      18px;
+  
+    height:
+      18px;
+  }
+  
+  .pv-sidebar-profile-text {
+  
+    min-width:
+      0;
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  }
+  
+  .pv-sidebar-profile-text strong {
+  
+    overflow:
+      hidden;
+  
+    color:
+      #173F61;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  
+    text-overflow:
+      ellipsis;
+  
+    white-space:
+      nowrap;
+  }
+  
+  .pv-sidebar-profile-text small {
+  
+    margin-top:
+      2px;
+  
+    color:
+      #8095A3;
+  
+    font-size:
+      9px;
+  }
+  
+  .pv-sidebar-logout {
+  
+    min-height:
+      34px;
+  
+    display:
+      inline-flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      9px;
+  
+    padding:
+      0 7px;
+  
+    border:
+      0;
+  
+    border-radius:
+      8px;
+  
+    background:
+      transparent;
+  
+    color:
+      #5D7587;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      600;
+  }
+  
+  .pv-sidebar-logout:hover {
+  
+    background:
+      #F7EDED;
+  
+    color:
+      #B84E4E;
+  }
+  
+  .pv-sidebar-logout svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  
+  /* ================================================================
+     ÁREA DE TRABALHO
+     ================================================================ */
+  
+  .pv-sintomas-workspace {
+  
+    min-width:
+      0;
+  
+    flex:
+      1;
+  
+    background:
+      #F5FAFB;
+  }
+  
+  
+  /* ================================================================
+     CONTEÚDO — AJUSTE PARA A SIDEBAR
+     ================================================================ */
+  
+  .pv-sintomas-content {
+  
+    width:
+      min(
+        1105px,
+        calc(100% - 80px)
+      );
+  
+    margin:
+      0 auto;
+  
+    padding:
+      38px 0 48px;
+  }
+  
+  
+  /* ================================================================
+     TOPBAR
+     ================================================================ */
+  
+  .pv-sintomas-workspace
+  .pv-sintomas-topbar {
+  
+    min-height:
+      56px;
+  }
+  
+  
+  /* ================================================================
+     MOBILE — ESCONDE SIDEBAR
+     ================================================================ */
+  
+  @media (max-width: 699px) {
+  
+    .pv-sintomas-sidebar {
+      display:
+        none;
+    }
+  
+    .pv-sintomas-content {
+  
+      width:
+        calc(100% - 28px);
+  
+      padding:
+        22px 0 95px;
+    }
+  
+  }
+
+  /* ================================================================
+   43. AUTENTICAÇÃO — LOVABLE
+   ================================================================ */
+
+
+/* ================================================================
+   BASE
+   ================================================================ */
+
+.pv-auth-lovable {
+
+    width: 100%;
+    min-height: 100vh;
+  
+    display: flex;
+  
+    background:
+      #F5FAFB;
+  
+    color:
+      var(--pv-text);
+  }
+  
+  
+  /* ================================================================
+     PAINEL ESQUERDO
+     ================================================================ */
+  
+  .pv-auth-brand {
+  
+    width: 43%;
+  
+    min-height: 100vh;
+  
+    display: flex;
+  
+    align-items: stretch;
+  
+    background:
+      linear-gradient(
+        145deg,
+        #EAF7F6 0%,
+        #DFF2F3 54%,
+        #D8EDF0 100%
+      );
+  
+    border-right:
+      1px solid
+      rgba(
+        23,
+        106,
+        145,
+        .08
+      );
+  }
+  
+  .pv-auth-brand-inner {
+  
+    width: 100%;
+  
+    display: flex;
+  
+    flex-direction: column;
+  
+    justify-content: space-between;
+  
+    padding:
+      48px
+      clamp(
+        42px,
+        6vw,
+        92px
+      )
+      42px;
+  }
+  
+  .pv-auth-brand-logo {
+  
+    display:
+      inline-flex;
+  
+    width:
+      fit-content;
+  }
+  
+  .pv-auth-brand-logo img {
+  
+    width:
+      145px;
+  
+    height:
+      auto;
+  
+    display:
+      block;
+  }
+  
+  .pv-auth-brand-content {
+  
+    max-width:
+      420px;
+  
+    margin-top:
+      auto;
+  
+    margin-bottom:
+      auto;
+  }
+  
+  .pv-auth-brand-eyebrow {
+  
+    display:
+      block;
+  
+    margin-bottom:
+      16px;
+  
+    color:
+      #16868A;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      700;
+  
+    letter-spacing:
+      .10em;
+  }
+  
+  .pv-auth-brand-content h1 {
+  
+    margin:
+      0;
+  
+    color:
+      #173F61;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      clamp(
+        42px,
+        4.5vw,
+        65px
+      );
+  
+    line-height:
+      .98;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.045em;
+  }
+  
+  .pv-auth-brand-content h1 span {
+  
+    display:
+      block;
+  
+    color:
+      #128F96;
+  }
+  
+  .pv-auth-brand-content p {
+  
+    max-width:
+      380px;
+  
+    margin:
+      22px 0 0;
+  
+    color:
+      #527388;
+  
+    font-size:
+      14px;
+  
+    line-height:
+      1.7;
+  }
+  
+  .pv-auth-brand-message {
+  
+    width:
+      fit-content;
+  
+    min-width:
+      220px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      11px;
+  
+    padding:
+      12px
+      15px;
+  
+    border:
+      1px solid
+      rgba(
+        23,
+        106,
+        145,
+        .10
+      );
+  
+    border-radius:
+      15px;
+  
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .58
+      );
+  }
+  
+  .pv-auth-brand-message > span {
+  
+    width:
+      34px;
+  
+    height:
+      34px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      10px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #176A91;
+  
+    font-size:
+      22px;
+  }
+  
+  .pv-auth-brand-message div {
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    gap:
+      2px;
+  }
+  
+  .pv-auth-brand-message strong {
+  
+    color:
+      #204D67;
+  
+    font-size:
+      11px;
+  }
+  
+  .pv-auth-brand-message small {
+  
+    color:
+      #6F8998;
+  
+    font-size:
+      10px;
+  }
+  
+  
+  /* ================================================================
+     ÁREA PRINCIPAL
+     ================================================================ */
+  
+  .pv-auth-main {
+  
+    flex:
+      1;
+  
+    min-width:
+      0;
+  
+    min-height:
+      100vh;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    padding:
+      42px
+      60px;
+  }
+  
+  .pv-auth-main-centered {
+  
+    width:
+      100%;
+  
+    max-width:
+      540px;
+  }
+  
+  
+  /* ================================================================
+     LOGO MOBILE
+     ================================================================ */
+  
+  .pv-auth-mobile-logo {
+  
+    display:
+      none;
+  
+    text-align:
+      center;
+  }
+  
+  .pv-auth-mobile-logo img {
+  
+    width:
+      125px;
+  
+    height:
+      auto;
+  }
+  
+  .pv-auth-mobile-logo span {
+  
+    display:
+      block;
+  
+    margin-top:
+      7px;
+  
+    color:
+      #43808D;
+  
+    font-size:
+      8px;
+  
+    font-weight:
+      700;
+  
+    letter-spacing:
+      .08em;
+  }
+  
+  
+  /* ================================================================
+     CARD
+     ================================================================ */
+  
+  .pv-auth-card {
+  
+    width:
+      100%;
+  
+    max-width:
+      455px;
+  
+    padding:
+      35px 38px;
+  
+    border:
+      1px solid
+      #DFEAEE;
+  
+    border-radius:
+      23px;
+  
+    background:
+      #FFFFFF;
+  
+    box-shadow:
+      0 18px 50px
+      rgba(
+        23,
+        63,
+        97,
+        .07
+      );
+  }
+  
+  .pv-auth-card-header {
+  
+    margin-bottom:
+      26px;
+  }
+  
+  .pv-auth-eyebrow {
+  
+    display:
+      block;
+  
+    margin-bottom:
+      7px;
+  
+    color:
+      #128A8E;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      700;
+  
+    letter-spacing:
+      .09em;
+  }
+  
+  .pv-auth-card-header h2 {
+  
+    margin:
+      0;
+  
+    color:
+      #123A5C;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      34px;
+  
+    line-height:
+      1.08;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-auth-card-header p {
+  
+    margin:
+      9px 0 0;
+  
+    color:
+      #71899A;
+  
+    font-size:
+      12px;
+  
+    line-height:
+      1.55;
+  }
+  
+  
+  /* ================================================================
+     FORM
+     ================================================================ */
+  
+  .pv-auth-form {
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    gap:
+      15px;
+  }
+  
+  .pv-auth-field {
+  
+    width:
+      100%;
+  }
+  
+  .pv-auth-field > label,
+  .pv-auth-label-row label,
+  .pv-auth-form-cadastro .campo-label {
+  
+    display:
+      block;
+  
+    margin-bottom:
+      7px;
+  
+    color:
+      #244E66;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-label-row {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      space-between;
+  
+    gap:
+      12px;
+  }
+  
+  .pv-auth-label-row label {
+  
+    margin-bottom:
+      7px;
+  }
+  
+  
+  /* ================================================================
+     INPUT
+     ================================================================ */
+  
+  .pv-auth-input-wrap {
+  
+    position:
+      relative;
+  
+    width:
+      100%;
+  }
+  
+  .pv-auth-input {
+  
+    width:
+      100%;
+  
+    height:
+      48px;
+  
+    padding:
+      0 44px;
+  
+    border:
+      1px solid
+      #CFDEE4;
+  
+    border-radius:
+      11px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #183E5D;
+  
+    font-family:
+      var(--pv-font-body);
+  
+    font-size:
+      13px;
+  
+    outline:
+      none;
+  
+    transition:
+      border-color .18s ease,
+      box-shadow .18s ease;
+  }
+  
+  .pv-auth-input::placeholder {
+  
+    color:
+      #9AAEB9;
+  }
+  
+  .pv-auth-input:hover {
+  
+    border-color:
+      #B7CFD8;
+  }
+  
+  .pv-auth-input:focus {
+  
+    border-color:
+      #62B9C0;
+  
+    box-shadow:
+      0 0 0 4px
+      rgba(
+        19,
+        166,
+        185,
+        .08
+      );
+  }
+  
+  .pv-auth-input-icon {
+  
+    position:
+      absolute;
+  
+    left:
+      15px;
+  
+    top:
+      50%;
+  
+    width:
+      18px;
+  
+    height:
+      18px;
+  
+    transform:
+      translateY(-50%);
+  
+    color:
+      #658295;
+  
+    pointer-events:
+      none;
+  }
+  
+  .pv-auth-input-icon svg {
+  
+    width:
+      100%;
+  
+    height:
+      100%;
+  }
+  
+  .pv-auth-eye {
+  
+    position:
+      absolute;
+  
+    right:
+      10px;
+  
+    top:
+      50%;
+  
+    width:
+      31px;
+  
+    height:
+      31px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    transform:
+      translateY(-50%);
+  
+    border:
+      0;
+  
+    border-radius:
+      8px;
+  
+    background:
+      transparent;
+  
+    color:
+      #7891A0;
+  }
+  
+  .pv-auth-eye:hover {
+  
+    background:
+      #F2F7F8;
+  
+    color:
+      #176A91;
+  }
+  
+  .pv-auth-eye svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  
+  /* ================================================================
+     ESQUECI
+     ================================================================ */
+  
+  .pv-auth-forgot {
+  
+    margin:
+      0 0 7px;
+  
+    padding:
+      0;
+  
+    border:
+      0;
+  
+    background:
+      transparent;
+  
+    color:
+      #087F88;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-forgot:hover {
+  
+    text-decoration:
+      underline;
+  }
+  
+  
+  /* ================================================================
+     BOTÃO PRIMÁRIO
+     ================================================================ */
+  
+  .pv-auth-primary {
+  
+    width:
+      100%;
+  
+    min-height:
+      48px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      space-between;
+  
+    padding:
+      0 17px;
+  
+    border:
+      0;
+  
+    border-radius:
+      11px;
+  
+    background:
+      linear-gradient(
+        90deg,
+        #176A91,
+        #159EAB
+      );
+  
+    color:
+      #FFFFFF;
+  
+    font-size:
+      13px;
+  
+    font-weight:
+      700;
+  
+    box-shadow:
+      0 8px 18px
+      rgba(
+        23,
+        106,
+        145,
+        .15
+      );
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease,
+      opacity .18s ease;
+  }
+  
+  .pv-auth-primary:hover:not(:disabled) {
+  
+    transform:
+      translateY(-1px);
+  
+    box-shadow:
+      0 11px 23px
+      rgba(
+        23,
+        106,
+        145,
+        .20
+      );
+  }
+  
+  .pv-auth-primary:disabled {
+  
+    opacity:
+      .65;
+  
+    cursor:
+      wait;
+  }
+  
+  .pv-auth-primary > span:last-child {
+  
+    font-size:
+      20px;
+  
+    line-height:
+      1;
+  }
+  
+  
+  /* ================================================================
+     DIVISOR
+     ================================================================ */
+  
+  .pv-auth-divider {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      9px;
+  
+    margin:
+      1px 0;
+  }
+  
+  .pv-auth-divider span {
+  
+    flex:
+      1;
+  
+    height:
+      1px;
+  
+    background:
+      #E5EDF0;
+  }
+  
+  .pv-auth-divider small {
+  
+    color:
+      #9AAAB4;
+  
+    font-size:
+      10px;
+  }
+  
+  
+  /* ================================================================
+     SECUNDÁRIO
+     ================================================================ */
+  
+  .pv-auth-secondary {
+  
+    min-height:
+      46px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    gap:
+      8px;
+  
+    border:
+      1px solid
+      #C7DDE3;
+  
+    border-radius:
+      11px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #176A91;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-secondary:hover {
+  
+    background:
+      #F3FAFB;
+  
+    border-color:
+      #9FCBD4;
+  }
+  
+  .pv-auth-secondary-icon {
+  
+    width:
+      22px;
+  
+    height:
+      22px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      7px;
+  
+    background:
+      #E7F4F5;
+  
+    font-size:
+      15px;
+  
+    font-weight:
+      500;
+  }
+  
+  
+  /* ================================================================
+     SEGURANÇA
+     ================================================================ */
+  
+  .pv-auth-security {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      9px;
+  
+    padding:
+      11px 12px;
+  
+    border:
+      1px solid
+      #E0ECEE;
+  
+    border-radius:
+      12px;
+  
+    background:
+      #F7FBFB;
+  }
+  
+  .pv-auth-security-icon {
+  
+    width:
+      31px;
+  
+    height:
+      31px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    flex:
+      0 0 31px;
+  
+    border-radius:
+      9px;
+  
+    background:
+      #E5F4F0;
+  
+    color:
+      #298B76;
+  }
+  
+  .pv-auth-security-icon svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  .pv-auth-security div {
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    gap:
+      2px;
+  }
+  
+  .pv-auth-security strong {
+  
+    color:
+      #2D5667;
+  
+    font-size:
+      10px;
+  }
+  
+  .pv-auth-security small {
+  
+    color:
+      #8299A4;
+  
+    font-size:
+      9px;
+  }
+  
+  
+  /* ================================================================
+     DEMO
+     ================================================================ */
+  
+  .pv-auth-demo {
+  
+    margin-top:
+      1px;
+  
+    padding-top:
+      2px;
+  
+    border-top:
+      1px solid
+      #EDF2F4;
+  }
+  
+  .pv-auth-demo summary {
+  
+    padding:
+      10px 0;
+  
+    cursor:
+      pointer;
+  
+    color:
+      #6B8493;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-demo p {
+  
+    margin:
+      0 0 9px;
+  
+    color:
+      #8498A4;
+  
+    font-size:
+      10px;
+  }
+  
+  .pv-auth-demo-actions {
+  
+    display:
+      grid;
+  
+    grid-template-columns:
+      repeat(
+        3,
+        1fr
+      );
+  
+    gap:
+      6px;
+  }
+  
+  .pv-auth-demo-actions button {
+  
+    min-height:
+      34px;
+  
+    border:
+      1px solid
+      #D5E4E8;
+  
+    border-radius:
+      8px;
+  
+    background:
+      #F9FCFD;
+  
+    color:
+      #486C7D;
+  
+    font-size:
+      9px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-demo-actions button:hover {
+  
+    border-color:
+      #9FCBD4;
+  
+    background:
+      #EAF7F8;
+  
+    color:
+      #176A91;
+  }
+  
+  .pv-auth-demo > small {
+  
+    display:
+      block;
+  
+    margin-top:
+      7px;
+  
+    color:
+      #9AAAB4;
+  
+    font-size:
+      9px;
+  }
+  
+  
+  /* ================================================================
+     MENSAGEM
+     ================================================================ */
+  
+  .pv-auth-message {
+  
+    width:
+      100%;
+  }
+  
+  
+  /* ================================================================
+     RECUPERAÇÃO
+     ================================================================ */
+  
+  .pv-auth-recovery-card {
+  
+    max-width:
+      500px;
+  }
+  
+  .pv-auth-back {
+  
+    min-height:
+      40px;
+  
+    border:
+      0;
+  
+    background:
+      transparent;
+  
+    color:
+      #637D8D;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-back:hover {
+  
+    color:
+      #176A91;
+  }
+  
+  
+  /* ================================================================
+     CADASTRO
+     ================================================================ */
+  
+  .pv-cadastro-intro {
+  
+    max-width:
+      500px;
+  
+    text-align:
+      center;
+  }
+  
+  .pv-cadastro-intro
+  .pv-auth-card-header p {
+  
+    max-width:
+      390px;
+  
+    margin-left:
+      auto;
+  
+    margin-right:
+      auto;
+  }
+  
+  .pv-cadastro-intro-icon {
+  
+    width:
+      72px;
+  
+    height:
+      72px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    margin:
+      24px auto;
+  
+    border-radius:
+      22px;
+  
+    background:
+      #E5F4F0;
+  
+    color:
+      #188E8C;
+  }
+  
+  .pv-cadastro-intro-icon svg {
+  
+    width:
+      34px;
+  
+    height:
+      34px;
+  }
+  
+  .pv-cadastro-form-card {
+  
+    max-width:
+      520px;
+  }
+  
+  .pv-auth-form-cadastro {
+  
+    gap:
+      12px;
+  }
+  
+  .pv-auth-form-cadastro
+  .campo-label {
+  
+    margin-top:
+      0;
+  }
+  
+  .pv-auth-form-cadastro
+  .campo {
+  
+    width:
+      100%;
+  
+    height:
+      46px;
+  
+    padding:
+      0 13px;
+  
+    border:
+      1px solid
+      #CFDEE4;
+  
+    border-radius:
+      10px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #183E5D;
+  
+    font-family:
+      var(--pv-font-body);
+  
+    font-size:
+      12px;
+  
+    outline:
+      none;
+  }
+  
+  .pv-auth-form-cadastro
+  .campo:focus {
+  
+    border-color:
+      #62B9C0;
+  
+    box-shadow:
+      0 0 0 4px
+      rgba(
+        19,
+        166,
+        185,
+        .08
+      );
+  }
+  
+  .pv-cadastro-required {
+  
+    margin:
+      0;
+  
+    color:
+      #8CA0AA;
+  
+    font-size:
+      9px;
+  }
+  
+  
+  /* ================================================================
+     RESPONSIVO
+     ================================================================ */
+  
+  @media (max-width: 900px) {
+  
+    .pv-auth-brand {
+      width:
+        38%;
+    }
+  
+    .pv-auth-brand-inner {
+      padding:
+        38px 34px;
+    }
+  
+    .pv-auth-brand-content h1 {
+      font-size:
+        46px;
+    }
+  
+    .pv-auth-main {
+      padding:
+        34px;
+    }
+  
+  }
+  
+  
+  @media (max-width: 699px) {
+  
+    .pv-auth-lovable {
+  
+      min-height:
+        100vh;
+  
+      display:
+        block;
+  
+      background:
+        #F5FAFB;
+    }
+  
+    .pv-auth-brand {
+  
+      display:
+        none;
+    }
+  
+    .pv-auth-main {
+  
+      width:
+        100%;
+  
+      min-height:
+        100vh;
+  
+      display:
+        flex;
+  
+      align-items:
+        flex-start;
+  
+      justify-content:
+        center;
+  
+      padding:
+        25px
+        15px
+        34px;
+    }
+  
+    .pv-auth-main-centered {
+  
+      max-width:
+        100%;
+    }
+  
+    .pv-auth-mobile-logo {
+  
+      display:
+        block;
+  
+      margin-bottom:
+        22px;
+    }
+  
+    .pv-auth-card {
+  
+      max-width:
+        100%;
+  
+      padding:
+        25px 19px;
+  
+      border-radius:
+        20px;
+  
+      box-shadow:
+        0 11px 30px
+        rgba(
+          23,
+          63,
+          97,
+          .055
+        );
+    }
+  
+    .pv-auth-card-header {
+  
+      margin-bottom:
+        22px;
+    }
+  
+    .pv-auth-card-header h2 {
+  
+      font-size:
+        29px;
+    }
+  
+    .pv-auth-card-header p {
+  
+      font-size:
+        11px;
+    }
+  
+    .pv-auth-demo-actions {
+  
+      grid-template-columns:
+        1fr;
+    }
+  
+    .pv-auth-security {
+  
+      padding:
+        10px;
+    }
+  
+  }
+  
+  
+  /* ================================================================
+     MOBILE PEQUENO
+     ================================================================ */
+  
+  @media (max-width: 390px) {
+  
+    .pv-auth-main {
+  
+      padding:
+        20px
+        12px
+        28px;
+    }
+  
+    .pv-auth-card {
+  
+      padding:
+        22px 16px;
+    }
+  
+    .pv-auth-input {
+  
+      height:
+        46px;
+    }
+  
+    .pv-auth-primary {
+  
+      min-height:
+        46px;
+    }
+  
+  }
+
+  /* ================================================================
+   44. CADASTRO — TELA INTEIRA LOVABLE
+   ================================================================ */
+
+.pv-cadastro-lovable {
+
+    width:
+      100%;
+  
+    min-height:
+      100vh;
+  
+    display:
+      flex;
+  
+    overflow:
+      hidden;
+  
+    background:
+      #F3F9F8;
+  }
+  
+  
+  /* ================================================================
+     PAINEL ESQUERDO
+     ================================================================ */
+  
+  .pv-cadastro-brand {
+  
+    width:
+      52%;
+  
+    min-height:
+      100vh;
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    justify-content:
+      space-between;
+  
+    padding:
+      48px
+      52px
+      38px;
+  
+    background:
+      #0F354B;
+  
+    color:
+      #FFFFFF;
+  
+    position:
+      relative;
+  
+    overflow:
+      hidden;
+  }
+  
+  
+  /*
+   * Círculos decorativos semelhantes aos do Lovable.
+   */
+  
+  .pv-cadastro-brand::before {
+  
+    content:
+      "";
+  
+    position:
+      absolute;
+  
+    width:
+      300px;
+  
+    height:
+      300px;
+  
+    right:
+      -110px;
+  
+    top:
+      290px;
+  
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .10
+      );
+  
+    border-radius:
+      50%;
+  }
+  
+  .pv-cadastro-brand::after {
+  
+    content:
+      "";
+  
+    position:
+      absolute;
+  
+    width:
+      190px;
+  
+    height:
+      190px;
+  
+    right:
+      -10px;
+  
+    top:
+      335px;
+  
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .09
+      );
+  
+    border-radius:
+      50%;
+  }
+  
+  
+  /* ================================================================
+     LOGO
+     ================================================================ */
+  
+  .pv-cadastro-logo {
+  
+    position:
+      relative;
+  
+    z-index:
+      2;
+  
+    display:
+      inline-flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      11px;
+  
+    width:
+      fit-content;
+  
+    text-decoration:
+      none;
+  }
+  
+  .pv-cadastro-logo-icon {
+  
+    width:
+      39px;
+  
+    height:
+      39px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      11px;
+  
+    background:
+      #0D7D7C;
+  
+    color:
+      #FFFFFF;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      19px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-cadastro-logo-text {
+  
+    color:
+      #FFFFFF;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      19px;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.02em;
+  }
+  
+  
+  /* ================================================================
+     CONTEÚDO ESQUERDO
+     ================================================================ */
+  
+  .pv-cadastro-brand-middle {
+  
+    position:
+      relative;
+  
+    z-index:
+      2;
+  
+    max-width:
+      510px;
+  
+    margin:
+      auto 0;
+  }
+  
+  .pv-cadastro-brand-symbol {
+  
+    width:
+      74px;
+  
+    height:
+      74px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    margin-bottom:
+      38px;
+  
+    border-radius:
+      50%;
+  
+    background:
+      rgba(
+        16,
+        123,
+        124,
+        .35
+      );
+  
+    color:
+      #FFFFFF;
+  }
+  
+  .pv-cadastro-brand-symbol svg {
+  
+    width:
+      38px;
+  
+    height:
+      38px;
+  }
+  
+  .pv-cadastro-brand-middle h1 {
+  
+    margin:
+      0;
+  
+    color:
+      #FFFFFF;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      clamp(
+        40px,
+        4vw,
+        57px
+      );
+  
+    line-height:
+      1.08;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-cadastro-brand-middle p {
+  
+    max-width:
+      410px;
+  
+    margin:
+      28px 0 0;
+  
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .74
+      );
+  
+    font-size:
+      15px;
+  
+    line-height:
+      1.7;
+  }
+  
+  
+  /* ================================================================
+     BASE
+     ================================================================ */
+  
+  .pv-cadastro-brand-bottom {
+  
+    position:
+      relative;
+  
+    z-index:
+      2;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      8px;
+  
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .74
+      );
+  
+    font-size:
+      11px;
+  }
+  
+  .pv-cadastro-brand-bottom svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  
+  /* ================================================================
+     LADO DIREITO
+     ================================================================ */
+  
+  .pv-cadastro-content {
+  
+    flex:
+      1;
+  
+    min-width:
+      0;
+  
+    min-height:
+      100vh;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    padding:
+      50px 70px;
+  
+    background:
+      #F3F9F8;
+  
+    overflow:
+      auto;
+  }
+  
+  .pv-cadastro-form-area {
+  
+    width:
+      min(
+        100%,
+        570px
+      );
+  
+    padding:
+      10px 0;
+  }
+  
+  
+  /* ================================================================
+     VOLTAR
+     ================================================================ */
+  
+  .pv-cadastro-voltar-topo {
+  
+    display:
+      inline-flex;
+  
+    align-items:
+      center;
+  
+    margin-bottom:
+      28px;
+  
+    padding:
+      0;
+  
+    border:
+      0;
+  
+    background:
+      transparent;
+  
+    color:
+      #577083;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      600;
+  }
+  
+  .pv-cadastro-voltar-topo:hover {
+  
+    color:
+      #176A91;
+  }
+  
+  
+  /* ================================================================
+     ÍCONE ETAPA 1
+     ================================================================ */
+  
+  .pv-cadastro-step-icon {
+  
+    width:
+      51px;
+  
+    height:
+      51px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    margin-bottom:
+      24px;
+  
+    border-radius:
+      12px;
+  
+    background:
+      #E1F2F0;
+  
+    color:
+      #118785;
+  }
+  
+  .pv-cadastro-step-icon svg {
+  
+    width:
+      25px;
+  
+    height:
+      25px;
+  }
+  
+  
+  /* ================================================================
+     TÍTULOS
+     ================================================================ */
+  
+  .pv-cadastro-eyebrow {
+  
+    display:
+      block;
+  
+    margin-bottom:
+      8px;
+  
+    color:
+      #147F83;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      800;
+  
+    letter-spacing:
+      .08em;
+  }
+  
+  .pv-cadastro-form-area h2 {
+  
+    margin:
+      0;
+  
+    color:
+      #113A59;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      32px;
+  
+    line-height:
+      1.1;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-cadastro-description {
+  
+    max-width:
+      570px;
+  
+    margin:
+      12px 0 28px;
+  
+    color:
+      #587388;
+  
+    font-size:
+      14px;
+  
+    line-height:
+      1.7;
+  }
+  
+  
+  /* ================================================================
+     BOTÃO PRINCIPAL
+     ================================================================ */
+  
+  .pv-cadastro-primary {
+  
+    width:
+      100%;
+  
+    min-height:
+      46px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      space-between;
+  
+    padding:
+      0 17px;
+  
+    border:
+      0;
+  
+    border-radius:
+      7px;
+  
+    background:
+      #127D79;
+  
+    color:
+      #FFFFFF;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      700;
+  
+    transition:
+      background .18s ease,
+      transform .18s ease;
+  }
+  
+  .pv-cadastro-primary:hover {
+  
+    background:
+      #0E706C;
+  
+    transform:
+      translateY(-1px);
+  }
+  
+  .pv-cadastro-primary
+  > span:last-child {
+  
+    font-size:
+      18px;
+  }
+  
+  
+  /* ================================================================
+     BOTÃO SECUNDÁRIO
+     ================================================================ */
+  
+  .pv-cadastro-secondary {
+  
+    width:
+      100%;
+  
+    min-height:
+      43px;
+  
+    margin-top:
+      12px;
+  
+    border:
+      1px solid
+      #CADCDF;
+  
+    border-radius:
+      7px;
+  
+    background:
+      transparent;
+  
+    color:
+      #23485F;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      600;
+  }
+  
+  .pv-cadastro-secondary:hover {
+  
+    background:
+      #FFFFFF;
+  
+    border-color:
+      #AFCBD1;
+  }
+  
+  
+  /* ================================================================
+     FORMULÁRIO
+     ================================================================ */
+  
+  .pv-cadastro-fields {
+  
+    width:
+      100%;
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    gap:
+      10px;
+  }
+  
+  .pv-cadastro-fields
+  .campo-label {
+  
+    display:
+      block;
+  
+    margin:
+      0 0 6px;
+  
+    color:
+      #183E5C;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-cadastro-fields
+  .campo {
+  
+    width:
+      100%;
+  
+    height:
+      45px;
+  
+    padding:
+      0 12px;
+  
+    border:
+      1px solid
+      #C6D8DD;
+  
+    border-radius:
+      7px;
+  
+    background:
+      transparent;
+  
+    color:
+      #183E5C;
+  
+    font-family:
+      var(--pv-font-body);
+  
+    font-size:
+      12px;
+  
+    outline:
+      none;
+  }
+  
+  .pv-cadastro-fields
+  .campo:focus {
+  
+    border-color:
+      #65AEAF;
+  
+    background:
+      #FFFFFF;
+  
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        18,
+        125,
+        121,
+        .07
+      );
+  }
+  
+  .pv-cadastro-fields
+  .campo::placeholder {
+  
+    color:
+      #91A7B2;
+  }
+  
+  .pv-cadastro-optional {
+  
+    margin-top:
+      -3px;
+  
+    color:
+      #8A9CA5;
+  
+    font-size:
+      10px;
+  }
+  
+  
+  /* ================================================================
+     SENHAS LADO A LADO
+     ================================================================ */
+  
+  .pv-cadastro-password-grid {
+  
+    display:
+      grid;
+  
+    grid-template-columns:
+      1fr 1fr;
+  
+    gap:
+      15px;
+  
+    margin-top:
+      2px;
+  }
+  
+  .pv-cadastro-help {
+  
+    display:
+      block;
+  
+    margin-top:
+      5px;
+  
+    color:
+      #879AA5;
+  
+    font-size:
+      9px;
+  }
+  
+  .pv-cadastro-required {
+  
+    margin:
+      1px 0 0;
+  
+    color:
+      #8A9DA7;
+  
+    font-size:
+      9px;
+  }
+  
+  
+  /* ================================================================
+     MOBILE
+     ================================================================ */
+  
+  @media (max-width: 699px) {
+  
+    .pv-cadastro-lovable {
+  
+      min-height:
+        100vh;
+  
+      display:
+        block;
+  
+      overflow:
+        auto;
+    }
+  
+    .pv-cadastro-brand {
+  
+      display:
+        none;
+    }
+  
+    .pv-cadastro-content {
+  
+      width:
+        100%;
+  
+      min-height:
+        100vh;
+  
+      padding:
+        30px 20px 35px;
+  
+      align-items:
+        flex-start;
+    }
+  
+    .pv-cadastro-form-area {
+  
+      width:
+        100%;
+  
+      max-width:
+        100%;
+  
+      padding:
+        4px 0;
+    }
+  
+    .pv-cadastro-form-area h2 {
+  
+      font-size:
+        29px;
+    }
+  
+    .pv-cadastro-description {
+  
+      font-size:
+        12px;
+  
+      line-height:
+        1.6;
+    }
+  
+    .pv-cadastro-password-grid {
+  
+      grid-template-columns:
+        1fr;
+    }
+  
+  }
+
+  /* ================================================================
+   45. LOGIN — MESMA ESTRUTURA DO CADASTRO
+   ================================================================ */
+
+.pv-login-lovable {
+
+    width: 100%;
+    min-height: 100vh;
+  
+    display: flex;
+  
+    background:
+      #F3F9F8;
+  }
+  
+  
+  /* ================================================================
+     LADO ESQUERDO
+     ================================================================ */
+  
+  .pv-login-brand {
+  
+    width:
+      52%;
+  
+    min-height:
+      100vh;
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    justify-content:
+      space-between;
+  
+    padding:
+      48px
+      52px
+      38px;
+  
+    position:
+      relative;
+  
+    overflow:
+      hidden;
+  
+    background:
+      #0F354B;
+  
+    color:
+      #FFFFFF;
+  }
+  
+  .pv-login-brand::before {
+  
+    content:
+      "";
+  
+    position:
+      absolute;
+  
+    width:
+      300px;
+  
+    height:
+      300px;
+  
+    right:
+      -110px;
+  
+    top:
+      290px;
+  
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .10
+      );
+  
+    border-radius:
+      50%;
+  }
+  
+  .pv-login-brand::after {
+  
+    content:
+      "";
+  
+    position:
+      absolute;
+  
+    width:
+      190px;
+  
+    height:
+      190px;
+  
+    right:
+      -10px;
+  
+    top:
+      335px;
+  
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .09
+      );
+  
+    border-radius:
+      50%;
+  }
+  
+  
+  /* ================================================================
+     LOGO
+     ================================================================ */
+  
+  .pv-login-logo {
+  
+    position:
+      relative;
+  
+    z-index:
+      2;
+  
+    display:
+      inline-flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      11px;
+  
+    width:
+      fit-content;
+  
+    text-decoration:
+      none;
+  }
+  
+  .pv-login-logo-icon {
+  
+    width:
+      39px;
+  
+    height:
+      39px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      11px;
+  
+    background:
+      #0D7D7C;
+  
+    color:
+      #FFFFFF;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      19px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-login-logo-text {
+  
+    color:
+      #FFFFFF;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      19px;
+  
+    font-weight:
+      600;
+  }
+  
+  
+  /* ================================================================
+     TEXTO ESQUERDO
+     ================================================================ */
+  
+  .pv-login-brand-middle {
+  
+    position:
+      relative;
+  
+    z-index:
+      2;
+  
+    max-width:
+      510px;
+  
+    margin:
+      auto 0;
+  }
+  
+  .pv-login-brand-symbol {
+  
+    width:
+      74px;
+  
+    height:
+      74px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    margin-bottom:
+      38px;
+  
+    border-radius:
+      50%;
+  
+    background:
+      rgba(
+        16,
+        123,
+        124,
+        .35
+      );
+  
+    color:
+      #FFFFFF;
+  }
+  
+  .pv-login-brand-symbol svg {
+  
+    width:
+      38px;
+  
+    height:
+      38px;
+  }
+  
+  .pv-login-brand-middle h1 {
+  
+    margin:
+      0;
+  
+    color:
+      #FFFFFF;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      clamp(
+        40px,
+        4vw,
+        57px
+      );
+  
+    line-height:
+      1.08;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-login-brand-middle p {
+  
+    max-width:
+      410px;
+  
+    margin:
+      28px 0 0;
+  
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .74
+      );
+  
+    font-size:
+      15px;
+  
+    line-height:
+      1.7;
+  }
+  
+  .pv-login-brand-bottom {
+  
+    position:
+      relative;
+  
+    z-index:
+      2;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      8px;
+  
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .74
+      );
+  
+    font-size:
+      11px;
+  }
+  
+  .pv-login-brand-bottom svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  
+  /* ================================================================
+     LADO DIREITO
+     ================================================================ */
+  
+  .pv-login-content {
+  
+    flex:
+      1;
+  
+    min-width:
+      0;
+  
+    min-height:
+      100vh;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    padding:
+      50px 80px;
+  
+    background:
+      #F3F9F8;
+  
+    overflow:
+      auto;
+  }
+  
+  .pv-login-form-area {
+  
+    width:
+      min(
+        100%,
+        500px
+      );
+  }
+  
+  .pv-login-form-header {
+  
+    margin-bottom:
+      28px;
+  }
+  
+  .pv-login-eyebrow {
+  
+    display:
+      block;
+  
+    margin-bottom:
+      8px;
+  
+    color:
+      #147F83;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      800;
+  
+    letter-spacing:
+      .08em;
+  }
+  
+  .pv-login-form-header h2 {
+  
+    margin:
+      0;
+  
+    color:
+      #113A59;
+  
+    font-family:
+      var(--pv-font-heading);
+  
+    font-size:
+      34px;
+  
+    line-height:
+      1.08;
+  
+    font-weight:
+      600;
+  
+    letter-spacing:
+      -.035em;
+  }
+  
+  .pv-login-form-header p {
+  
+    margin:
+      10px 0 0;
+  
+    color:
+      #587388;
+  
+    font-size:
+      13px;
+  
+    line-height:
+      1.6;
+  }
+  
+  
+  /* ================================================================
+     FORM
+     ================================================================ */
+  
+  .pv-login-form {
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    gap:
+      14px;
+  }
+  
+  .pv-login-field {
+  
+    width:
+      100%;
+  }
+  
+  .pv-login-field label,
+  .pv-login-label-row label {
+  
+    display:
+      block;
+  
+    margin-bottom:
+      7px;
+  
+    color:
+      #183E5C;
+  
+    font-size:
+      11px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-login-label-row {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      space-between;
+  }
+  
+  .pv-login-input-wrap {
+  
+    position:
+      relative;
+  }
+  
+  .pv-login-input {
+  
+    width:
+      100%;
+  
+    height:
+      48px;
+  
+    padding:
+      0 45px;
+  
+    border:
+      1px solid
+      #C7D9DE;
+  
+    border-radius:
+      8px;
+  
+    background:
+      transparent;
+  
+    color:
+      #183E5D;
+  
+    font-family:
+      var(--pv-font-body);
+  
+    font-size:
+      12px;
+  
+    outline:
+      none;
+  }
+  
+  .pv-login-input:focus {
+  
+    background:
+      #FFFFFF;
+  
+    border-color:
+      #67AFAF;
+  
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        18,
+        125,
+        121,
+        .07
+      );
+  }
+  
+  .pv-login-input::placeholder {
+  
+    color:
+      #91A7B2;
+  }
+  
+  .pv-login-input-icon {
+  
+    position:
+      absolute;
+  
+    left:
+      14px;
+  
+    top:
+      50%;
+  
+    width:
+      18px;
+  
+    height:
+      18px;
+  
+    transform:
+      translateY(-50%);
+  
+    color:
+      #688394;
+  
+    pointer-events:
+      none;
+  }
+  
+  .pv-login-input-icon svg {
+  
+    width:
+      100%;
+  
+    height:
+      100%;
+  }
+  
+  .pv-login-eye {
+  
+    position:
+      absolute;
+  
+    right:
+      9px;
+  
+    top:
+      50%;
+  
+    width:
+      30px;
+  
+    height:
+      30px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    transform:
+      translateY(-50%);
+  
+    border:
+      0;
+  
+    border-radius:
+      7px;
+  
+    background:
+      transparent;
+  
+    color:
+      #77909F;
+  }
+  
+  .pv-login-eye svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  .pv-login-eye:hover {
+  
+    background:
+      #EEF6F7;
+  
+    color:
+      #167F85;
+  }
+  
+  .pv-login-forgot {
+  
+    margin:
+      0 0 7px;
+  
+    padding:
+      0;
+  
+    border:
+      0;
+  
+    background:
+      transparent;
+  
+    color:
+      #0C8588;
+  
+    font-size:
+      10px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-login-forgot:hover {
+  
+    text-decoration:
+      underline;
+  }
+  
+  
+  /* ================================================================
+     BOTÕES LOGIN
+     ================================================================ */
+  
+  .pv-auth-action-primary,
+  .pv-auth-action-secondary {
+  
+    position:
+      relative;
+  
+    width:
+      100%;
+  
+    height:
+      46px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      7px;
+  
+    font-size:
+      12px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-auth-action-primary {
+  
+    border:
+      0;
+  
+    background:
+      linear-gradient(
+        90deg,
+        #246F91,
+        #38A2B0
+      );
+  
+    color:
+      #FFFFFF;
+  
+    box-shadow:
+      0 7px 17px
+      rgba(
+        23,
+        106,
+        145,
+        .14
+      );
+  }
+  
+  .pv-auth-action-primary
+  > span:last-child {
+  
+    position:
+      absolute;
+  
+    right:
+      17px;
+  
+    font-size:
+      18px;
+  }
+  
+  .pv-auth-action-secondary {
+  
+    border:
+      1px solid
+      #C7DBE0;
+  
+    background:
+      transparent;
+  
+    color:
+      #23485F;
+  }
+  
+  .pv-auth-action-secondary:hover {
+  
+    background:
+      #FFFFFF;
+  }
+  
+  .pv-login-secondary-icon {
+  
+    position:
+      absolute;
+  
+    left:
+      50%;
+  
+    margin-left:
+      -67px;
+  
+    width:
+      20px;
+  
+    height:
+      20px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      6px;
+  
+    background:
+      #E5F3F2;
+  
+    color:
+      #17818A;
+  
+    font-size:
+      14px;
+  
+    font-weight:
+      500;
+  }
+  
+  
+  /* ================================================================
+     DIVISOR
+     ================================================================ */
+  
+  .pv-login-divider {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      9px;
+  }
+  
+  .pv-login-divider span {
+  
+    flex:
+      1;
+  
+    height:
+      1px;
+  
+    background:
+      #E0EAED;
+  }
+  
+  .pv-login-divider small {
+  
+    color:
+      #9AAAB4;
+  
+    font-size:
+      9px;
+  }
+  
+  
+  /* ================================================================
+     SEGURANÇA
+     ================================================================ */
+  
+  .pv-login-security {
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    gap:
+      9px;
+  
+    min-height:
+      50px;
+  
+    padding:
+      9px 11px;
+  
+    border:
+      1px solid
+      #DDEBEB;
+  
+    border-radius:
+      9px;
+  
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .38
+      );
+  }
+  
+  .pv-login-security-icon {
+  
+    width:
+      30px;
+  
+    height:
+      30px;
+  
+    display:
+      flex;
+  
+    align-items:
+      center;
+  
+    justify-content:
+      center;
+  
+    border-radius:
+      8px;
+  
+    background:
+      #E5F4F0;
+  
+    color:
+      #288A79;
+  }
+  
+  .pv-login-security-icon svg {
+  
+    width:
+      17px;
+  
+    height:
+      17px;
+  }
+  
+  .pv-login-security div {
+  
+    display:
+      flex;
+  
+    flex-direction:
+      column;
+  
+    gap:
+      2px;
+  }
+  
+  .pv-login-security strong {
+  
+    color:
+      #2B5567;
+  
+    font-size:
+      10px;
+  }
+  
+  .pv-login-security small {
+  
+    color:
+      #8398A3;
+  
+    font-size:
+      9px;
+  }
+  
+  
+  /* ================================================================
+     DEMO
+     ================================================================ */
+  
+  .pv-login-demo {
+  
+    border-top:
+      1px solid
+      #E7EEF0;
+  
+    padding-top:
+      3px;
+  }
+  
+  .pv-login-demo summary {
+  
+    padding:
+      8px 0;
+  
+    cursor:
+      pointer;
+  
+    color:
+      #6B8392;
+  
+    font-size:
+      9px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-login-demo p {
+  
+    margin:
+      0 0 8px;
+  
+    color:
+      #8497A2;
+  
+    font-size:
+      9px;
+  }
+  
+  .pv-login-demo-actions {
+  
+    display:
+      grid;
+  
+    grid-template-columns:
+      repeat(
+        3,
+        1fr
+      );
+  
+    gap:
+      6px;
+  }
+  
+  .pv-login-demo-actions button {
+  
+    min-height:
+      32px;
+  
+    border:
+      1px solid
+      #D3E2E6;
+  
+    border-radius:
+      6px;
+  
+    background:
+      #FFFFFF;
+  
+    color:
+      #4B6B7D;
+  
+    font-size:
+      9px;
+  
+    font-weight:
+      700;
+  }
+  
+  .pv-login-demo > small {
+  
+    display:
+      block;
+  
+    margin-top:
+      6px;
+  
+    color:
+      #99A8B0;
+  
+    font-size:
+      8px;
+  }
+  
+  
+  /* ================================================================
+     RESPONSIVO
+     ================================================================ */
+  
+  @media (max-width: 699px) {
+  
+    .pv-login-lovable {
+  
+      display:
+        block;
+  
+      min-height:
+        100vh;
+    }
+  
+    .pv-login-brand {
+  
+      display:
+        none;
+    }
+  
+    .pv-login-content {
+  
+      min-height:
+        100vh;
+  
+      width:
+        100%;
+  
+      padding:
+        30px 20px 35px;
+  
+      align-items:
+        flex-start;
+    }
+  
+    .pv-login-form-area {
+  
+      width:
+        100%;
+    }
+  
+    .pv-login-form-header h2 {
+  
+      font-size:
+        29px;
+    }
+  
+    .pv-login-demo-actions {
+  
+      grid-template-columns:
+        1fr;
+    }
+  
+  }
+
+
+  /* ================================================================
+   46. BOTÕES CADASTRO — ALINHAMENTO
+   ================================================================ */
+
+.pv-cadastro-primary,
+.pv-cadastro-secondary {
+
+  box-sizing:
+    border-box;
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
+}
+
+.pv-cadastro-primary {
+
+  padding:
+    0 50px 0 18px;
+}
+
+.pv-cadastro-primary
+> span:first-child {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  text-align:
+    center;
+}
+
+.pv-cadastro-primary
+> span:last-child {
+
+  position:
+    absolute;
+
+  right:
+    17px;
+
+  top:
+    50%;
+
+  transform:
+    translateY(-50%);
+
+  font-size:
+    18px;
+
+  line-height:
+    1;
+}
+
+.pv-cadastro-secondary {
+
+  padding:
+    0 16px;
+}
+
+.pv-cadastro-fields
+.pv-cadastro-primary {
+
+  margin-top:
+    2px;
+}
+  
+/* ================================================================
+   47. LOGIN — BOTÃO CRIAR CONTA
+   ================================================================ */
+
+   .pv-auth-action-secondary {
+
+    width: 100%;
+  
+    min-height: 46px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    justify-content: center;
+  
+    gap: 8px;
+  
+    position: relative;
+  
+    padding: 0 16px;
+  
+    border: 1px solid #C7DBE0;
+  
+    border-radius: 7px;
+  
+    background: transparent;
+  
+    color: #23485F;
+  
+    font-size: 12px;
+  
+    font-weight: 700;
+  
+    text-align: center;
+  }
+  
+  .pv-auth-action-secondary:hover {
+  
+    background: #FFFFFF;
+  
+    border-color: #AFCBD1;
+  }
+  
+  .pv-login-secondary-icon {
+  
+    position: static;
+  
+    width: 20px;
+  
+    height: 20px;
+  
+    margin: 0;
+  
+    flex: 0 0 20px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    justify-content: center;
+  
+    border-radius: 6px;
+  
+    background: #E1F2F0;
+  
+    color: #127D79;
+  
+    font-size: 14px;
+  
+    font-weight: 500;
+  
+    line-height: 1;
+  }
+
+/* ================================================================
+   48. LOGIN — PALETA IGUAL AO CADASTRO
+   ================================================================ */
+
+
+/* Fundo da área direita */
+
+.pv-login-content {
+    background: #F3F9F8;
+  }
+  
+  
+  /* Painel esquerdo */
+  
+  .pv-login-brand {
+    background: #0F354B;
+  }
+  
+  
+  /* Ícone/elementos verdes */
+  
+  .pv-login-brand-symbol {
+  
+    background:
+      rgba(
+        16,
+        123,
+        124,
+        .35
+      );
+  }
+  
+  .pv-login-brand-bottom svg {
+    color: #D7E9EA;
+  }
+  
+  
+  /* Eyebrow */
+  
+  .pv-login-eyebrow {
+    color: #147F83;
+  }
+  
+  
+  /* Botão principal do Login */
+  
+  .pv-auth-action-primary {
+  
+    background: #127D79;
+  
+    color: #FFFFFF;
+  
+    box-shadow:
+      0 7px 17px
+      rgba(
+        18,
+        125,
+        121,
+        .14
+      );
+  }
+  
+  .pv-auth-action-primary:hover:not(:disabled) {
+  
+    background: #0E706C;
+  
+    box-shadow:
+      0 10px 21px
+      rgba(
+        18,
+        125,
+        121,
+        .20
+      );
+  }
+  
+  
+  /* Ícone do botão Criar conta */
+  
+  .pv-login-secondary-icon {
+  
+    background: #E1F2F0;
+  
+    color: #127D79;
+  }
+  
+  
+  /* Link "Esqueceu sua senha?" */
+  
+  .pv-login-forgot {
+  
+    color: #127D79;
+  }
+  
+  
+  /* Campos quando focados */
+  
+  .pv-login-input:focus {
+  
+    border-color: #65AEAF;
+  
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        18,
+        125,
+        121,
+        .07
+      );
+  }
+  
+  
+  /* Ícones dos campos */
+  
+  .pv-login-input-icon {
+  
+    color: #688394;
+  }
+  
+  
+  /* Segurança */
+  
+  .pv-login-security {
+  
+    border-color:
+      #DDEBEB;
+  
+    background:
+      #F2FAF8;
+  }
+  
+  .pv-login-security-icon {
+  
+    background:
+      #E1F2F0;
+  
+    color:
+      #127D79;
+  }
+  
+  
+  /* Botão secundário */
+  
+  .pv-auth-action-secondary {
+  
+    border-color:
+      #C7DBE0;
+  
+    background:
+      transparent;
+  
+    color:
+      #23485F;
+  }
+  
+  .pv-auth-action-secondary:hover {
+  
+    background:
+      #FFFFFF;
+  
+    border-color:
+      #AFCBD1;
+  }
+
+/* ================================================================
+   CONTEÚDO DO SINTOMA — LOVABLE
+   ================================================================ */
+
+   .pv-conteudo-detalhe-main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #F5FAFB;
+  }
+  
+  .pv-conteudo-detalhe-modern {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    background: #F5FAFB;
+  }
+  
+  
+  /* ================================================================
+     SIDEBAR
+     ================================================================ */
+  
+  .pv-conteudo-sidebar {
+    flex: 0 0 248px;
+  }
+  
+  
+  /* ================================================================
+     WORKSPACE
+     ================================================================ */
+  
+  .pv-conteudo-workspace {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #F5FAFB;
+  }
+  
+  
+  /* ================================================================
+     TOPBAR
+     ================================================================ */
+  
+  .pv-conteudo-topbar {
+    min-height: 60px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    padding: 0 34px;
+  
+    border-bottom: 1px solid #DCE8EC;
+  
+    background: #FFFFFF;
+  
+    flex-shrink: 0;
+  }
+  
+  .pv-conteudo-topbar-back {
+    min-height: 38px;
+  
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  
+    padding: 0 10px;
+  
+    border: 0;
+    border-radius: 10px;
+  
+    background: transparent;
+  
+    color: #5C7688;
+  
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .pv-conteudo-topbar-back:hover {
+    background: #F1F7F8;
+    color: #0A7E81;
+  }
+  
+  .pv-conteudo-topbar-back svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .pv-conteudo-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .pv-conteudo-demo {
+    color: #617887;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  
+  .pv-conteudo-topbar-icon {
+    position: relative;
+  
+    width: 38px;
+    height: 38px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 0;
+  
+    border: 0;
+    border-radius: 10px;
+  
+    background: transparent;
+  
+    color: #597286;
+  }
+  
+  .pv-conteudo-topbar-icon:hover {
+    background: #F1F7F8;
+    color: #087E85;
+  }
+  
+  .pv-conteudo-topbar-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .pv-conteudo-notificacao-dot {
+    position: absolute;
+  
+    width: 7px;
+    height: 7px;
+  
+    top: 7px;
+    right: 5px;
+  
+    border-radius: 50%;
+  
+    background: #158D7E;
+  }
+  
+  
+  /* ================================================================
+     CONTEÚDO
+     ================================================================ */
+  
+  .pv-conteudo-content {
+    width: min(
+      960px,
+      calc(100% - 80px)
+    );
+  
+    margin: 0 auto;
+  
+    padding: 40px 0 54px;
+  
+    overflow-y: auto;
+  }
+  
+  
+  /* ================================================================
+     CABEÇALHO
+     ================================================================ */
+  
+  .pv-conteudo-page-header {
+    margin-bottom: 26px;
+  }
+  
+  .pv-conteudo-page-header h1 {
+    margin: 0;
+  
+    color: #123A5C;
+  
+    font-family: var(--pv-font-heading);
+  
+    font-size: clamp(
+      30px,
+      4vw,
+      42px
+    );
+  
+    line-height: 1.08;
+  
+    font-weight: 600;
+  
+    letter-spacing: -.035em;
+  }
+  
+  .pv-conteudo-page-header p {
+    max-width: 680px;
+  
+    margin-top: 10px;
+  
+    color: #718799;
+  
+    font-size: 14px;
+  
+    line-height: 1.6;
+  }
+  
+  
+  /* ================================================================
+     CARDS
+     ================================================================ */
+  
+  .pv-conteudo-card {
+    position: relative;
+  
+    display: flex;
+    gap: 18px;
+  
+    margin-bottom: 16px;
+  
+    padding: 22px;
+  
+    border: 1px solid #DDE9ED;
+    border-radius: 20px;
+  
+    background: #FFFFFF;
+  
+    box-shadow:
+      0 8px 24px rgba(23, 63, 97, .045);
+  }
+  
+  .pv-conteudo-card-main {
+    padding: 24px;
+  }
+  
+  .pv-conteudo-card-warning {
+    border-color: #F0E2BC;
+    background:
+      linear-gradient(
+        135deg,
+        #FFFFFF 0%,
+        #FFFDF7 100%
+      );
+  }
+  
+  .pv-conteudo-card-danger {
+    border-color: #F0D4D4;
+    background:
+      linear-gradient(
+        135deg,
+        #FFFFFF 0%,
+        #FFF8F8 100%
+      );
+  }
+  
+  
+  /* ================================================================
+     ÍCONE DO CARD
+     ================================================================ */
+  
+  .pv-conteudo-card-icon {
+    width: 46px;
+    height: 46px;
+  
+    flex: 0 0 46px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 14px;
+  }
+  
+  .pv-conteudo-card-icon-teal {
+    background: #E1F3F1;
+    color: #118785;
+  }
+  
+  .pv-conteudo-card-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+  
+  
+  /* ================================================================
+     CORPO DO CARD
+     ================================================================ */
+  
+  .pv-conteudo-card-body {
+    min-width: 0;
+    flex: 1;
+  }
+  
+  .pv-conteudo-card-eyebrow {
+    display: block;
+  
+    margin-bottom: 6px;
+  
+    color: #147F83;
+  
+    font-size: 10px;
+    font-weight: 800;
+  
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  
+  .pv-conteudo-card-warning
+  .pv-conteudo-card-eyebrow {
+    color: #A77A19;
+  }
+  
+  .pv-conteudo-card-danger
+  .pv-conteudo-card-eyebrow {
+    color: #B94B4F;
+  }
+  
+  .pv-conteudo-card h2 {
+    margin: 0;
+  
+    color: #183E5C;
+  
+    font-family: var(--pv-font-heading);
+  
+    font-size: 20px;
+  
+    line-height: 1.2;
+  
+    font-weight: 600;
+  }
+  
+  .pv-conteudo-card p {
+    margin-top: 11px;
+  
+    color: #60798C;
+  
+    font-size: 14px;
+  
+    line-height: 1.75;
+  
+    white-space: pre-line;
+  }
+  
+  
+  /* ================================================================
+     CABEÇALHO INTERNO
+     ================================================================ */
+  
+  .pv-conteudo-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  
+    gap: 15px;
+  }
+  
+  .pv-conteudo-status-dot {
+    width: 11px;
+    height: 11px;
+  
+    flex: 0 0 auto;
+  
+    margin-top: 5px;
+  
+    border-radius: 50%;
+  }
+  
+  .pv-conteudo-status-yellow {
+    background: #D5A427;
+    box-shadow: 0 0 0 5px rgba(213,164,39,.10);
+  }
+  
+  .pv-conteudo-status-red {
+    background: #C95353;
+    box-shadow: 0 0 0 5px rgba(201,83,83,.10);
+  }
+  
+  
+  /* ================================================================
+     AÇÕES DOS CARDS
+     ================================================================ */
+  
+  .pv-conteudo-action {
+    width: 100%;
+  
+    min-height: 46px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    gap: 12px;
+  
+    margin-top: 17px;
+  
+    padding: 0 15px;
+  
+    border-radius: 11px;
+  
+    font-size: 12px;
+    font-weight: 700;
+  
+    transition:
+      transform .18s ease,
+      background .18s ease,
+      border-color .18s ease;
+  }
+  
+  .pv-conteudo-action svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+  }
+  
+  .pv-conteudo-action:hover {
+    transform: translateY(-1px);
+  }
+  
+  .pv-conteudo-action-warning {
+    border: 1px solid #E2C87B;
+  
+    background: #FFF7DF;
+  
+    color: #8B681E;
+  }
+  
+  .pv-conteudo-action-warning:hover {
+    background: #FFF2CC;
+    border-color: #D7BA63;
+  }
+  
+  .pv-conteudo-action-danger {
+    border: 1px solid #E8BABA;
+  
+    background: #FFF0F0;
+  
+    color: #A24043;
+  }
+  
+  .pv-conteudo-action-danger:hover {
+    background: #FFE8E8;
+    border-color: #DDA5A5;
+  }
+  
+  
+  /* ================================================================
+     LEITURA FÁCIL
+     ================================================================ */
+  
+  .pv-conteudo-easy {
+    min-height: 72px;
+  
+    display: flex;
+    align-items: center;
+  
+    gap: 13px;
+  
+    margin-top: 20px;
+    padding: 13px 15px;
+  
+    border: 1px solid #D8E8EA;
+    border-radius: 17px;
+  
+    background:
+      linear-gradient(
+        100deg,
+        #F1FAF9,
+        #F8FCFC
+      );
+  }
+  
+  .pv-conteudo-easy-icon {
+    width: 40px;
+    height: 40px;
+  
+    flex: 0 0 40px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 13px;
+  
+    background: #DDF2EF;
+    color: #128987;
+  }
+  
+  .pv-conteudo-easy-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+  
+  .pv-conteudo-easy strong {
+    display: block;
+  
+    color: #244A65;
+  
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  .pv-conteudo-easy p {
+    margin-top: 3px;
+  
+    color: #7890A1;
+  
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  
+  .pv-conteudo-easy button {
+    width: 36px;
+    height: 36px;
+  
+    margin-left: auto;
+  
+    flex: 0 0 auto;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border: 0;
+    border-radius: 10px;
+  
+    background: transparent;
+  
+    color: #248A8D;
+  }
+  
+  .pv-conteudo-easy button:hover {
+    background: #E4F2F1;
+  }
+  
+  .pv-conteudo-easy button svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  
+  /* ================================================================
+     BOTÃO INFERIOR
+     ================================================================ */
+  
+  .pv-conteudo-bottom-back {
+    min-height: 42px;
+  
+    display: block;
+  
+    margin: 20px auto 0;
+    padding: 0 18px;
+  
+    border: 1px solid #CFDFE4;
+    border-radius: 11px;
+  
+    background: transparent;
+  
+    color: #527085;
+  
+    font-size: 11px;
+    font-weight: 700;
+  }
+  
+  .pv-conteudo-bottom-back:hover {
+    background: #FFFFFF;
+    border-color: #AFCBD1;
+    color: #147F83;
+  }
+  
+  
+  /* ================================================================
+     ESTADO VAZIO / ERRO
+     ================================================================ */
+  
+  .pv-conteudo-detalhe-estado {
+    width: min(600px, calc(100% - 40px));
+  
+    margin: auto;
+  
+    padding: 40px;
+  
+    text-align: center;
+  }
+  
+  .pv-conteudo-detalhe-estado-icon {
+    width: 52px;
+    height: 52px;
+  
+    margin: 0 auto 15px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 16px;
+  
+    background: #FCE9E9;
+    color: #B94B4F;
+  
+    font-family: var(--pv-font-heading);
+  
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .pv-conteudo-detalhe-estado h1 {
+    color: #173F61;
+  
+    font-family: var(--pv-font-heading);
+  
+    font-size: 24px;
+  }
+  
+  .pv-conteudo-detalhe-estado p {
+    margin-top: 8px;
+  
+    color: #718799;
+  
+    font-size: 13px;
+  }
+  
+  .pv-conteudo-voltar {
+    min-height: 44px;
+  
+    margin-top: 22px;
+    padding: 0 18px;
+  
+    border: 1px solid #C8DADF;
+    border-radius: 11px;
+  
+    background: #FFFFFF;
+  
+    color: #397083;
+  
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  
+  /* ================================================================
+     LOADING
+     ================================================================ */
+  
+  .pv-conteudo-detalhe-loading {
+    width: 100%;
+    min-height: 100vh;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    gap: 12px;
+  
+    background: #F5FAFB;
+  
+    color: #668093;
+  
+    font-size: 12px;
+  }
+  
+  
+  /* ================================================================
+     MOBILE
+     ================================================================ */
+  
+  .pv-conteudo-mobile-nav {
+    display: none;
+  }
+  
+  @media (max-width: 699px) {
+  
+    .pv-conteudo-sidebar {
+      display: none;
+    }
+  
+    .pv-conteudo-detalhe-modern {
+      min-height: 100vh;
+      display: block;
+    }
+  
+    .pv-conteudo-workspace {
+      width: 100%;
+      min-height: 100vh;
+      padding-bottom: 74px;
+    }
+  
+    .pv-conteudo-topbar {
+      min-height: 54px;
+      padding: 0 14px;
+    }
+  
+    .pv-conteudo-topbar-back {
+      padding: 0 5px;
+    }
+  
+    .pv-conteudo-topbar-back span {
+      display: none;
+    }
+  
+    .pv-conteudo-demo {
+      display: none;
+    }
+  
+    .pv-conteudo-content {
+      width: calc(100% - 28px);
+      padding: 24px 0 30px;
+    }
+  
+    .pv-conteudo-page-header {
+      margin-bottom: 20px;
+    }
+  
+    .pv-conteudo-page-header h1 {
+      font-size: 29px;
+    }
+  
+    .pv-conteudo-page-header p {
+      font-size: 12px;
+    }
+  
+    .pv-conteudo-card,
+    .pv-conteudo-card-main {
+      padding: 18px;
+      border-radius: 18px;
+    }
+  
+    .pv-conteudo-card {
+      gap: 13px;
+    }
+  
+    .pv-conteudo-card-icon {
+      width: 40px;
+      height: 40px;
+      flex-basis: 40px;
+      border-radius: 12px;
+    }
+  
+    .pv-conteudo-card h2 {
+      font-size: 18px;
+    }
+  
+    .pv-conteudo-card p {
+      font-size: 12px;
+      line-height: 1.7;
+    }
+  
+    .pv-conteudo-action {
+      font-size: 11px;
+    }
+  
+    .pv-conteudo-easy {
+      align-items: flex-start;
+    }
+  
+    .pv-conteudo-easy button {
+      margin-top: 1px;
+    }
+  
+    .pv-conteudo-bottom-back {
+      width: 100%;
+    }
+  
+    .pv-conteudo-mobile-nav {
+      position: fixed;
+  
+      left: 0;
+      right: 0;
+      bottom: 0;
+  
+      z-index: 50;
+  
+      height: 68px;
+  
+      display: flex;
+      align-items: stretch;
+      justify-content: space-around;
+  
+      padding: 7px 6px;
+  
+      border-top: 1px solid #E0EAED;
+  
+      background: rgba(255,255,255,.96);
+  
+      backdrop-filter: blur(14px);
+  
+      box-shadow:
+        0 -8px 24px rgba(23,63,97,.06);
+    }
+  
+    .pv-conteudo-mobile-nav button {
+      min-width: 60px;
+  
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  
+      gap: 3px;
+  
+      border: 0;
+  
+      background: transparent;
+  
+      color: #8BA0AE;
+  
+      font-size: 10px;
+      font-weight: 600;
+    }
+  
+    .pv-conteudo-mobile-nav button.active {
+      color: #0D7F83;
+    }
+  
+    .pv-conteudo-mobile-nav svg {
+      width: 21px;
+      height: 21px;
+    }
+  
+  }

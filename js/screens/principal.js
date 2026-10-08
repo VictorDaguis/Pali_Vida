@@ -29,7 +29,7 @@ window.PV.screens = window.PV.screens || {};
       </svg>
     `,
 
-    prontuario: `
+    prontuario: ` 
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <rect x="5" y="3" width="14" height="18" rx="2.5"
           fill="none" stroke="currentColor" stroke-width="1.8"/>
@@ -398,6 +398,7 @@ window.PV.screens = window.PV.screens || {};
       usuario: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
       coracao: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>',
       folha: '<path d="M20 4c-9 0-15 4-15 11a5 5 0 0 0 5 5c7 0 11-6 10-16Z"/><path d="M3 21c3-5 7-8 13-11"/>',
+      sair: '<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>',
     };
     const icone = ICONES_HOME[nome] || caminhos[nome] || '';
     return icone.startsWith('<svg')
@@ -405,117 +406,815 @@ window.PV.screens = window.PV.screens || {};
       : `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icone}</svg>`;
   }
 
+  function sidebarPaciente(rotaAtiva = 'home') {
+
+    const estaAtiva = (rota) =>
+      rotaAtiva === rota ? ' active' : '';
+  
+    return `
+      <aside
+        class="pv-sidebar"
+        aria-label="Navegação principal"
+      >
+  
+        <div>
+  
+          <div class="pv-sidebar-brand">
+  
+            <a
+              href="#/home"
+              aria-label="PaliVida — início"
+            >
+  
+              <img
+                src="assets/img/logo-completo.png"
+                alt="PaliVida"
+              >
+  
+            </a>
+  
+          </div>
+  
+  
+          <div class="pv-sidebar-section-label">
+            MEU CUIDADO
+          </div>
+  
+  
+          <nav class="pv-sidebar-nav">
+  
+            <button
+              class="pv-sidebar-item${estaAtiva('home')}"
+              type="button"
+              data-rota="/home"
+            >
+              ${iconePainel('inicio')}
+              <span>Início</span>
+            </button>
+  
+  
+            <button
+              class="pv-sidebar-item${estaAtiva('sintomas')}"
+              type="button"
+              data-rota="/menu-sintomas"
+            >
+              ${iconePainel('sintomas')}
+              <span>Sintomas</span>
+            </button>
+  
+  
+            <button
+              class="pv-sidebar-item${estaAtiva('conteudos')}"
+              type="button"
+              data-rota="/busca"
+            >
+              ${iconePainel('conteudos')}
+              <span>Conteúdos</span>
+            </button>
+  
+  
+            <button
+              class="pv-sidebar-item${estaAtiva('prontuario')}"
+              type="button"
+              data-rota="/perfil"
+            >
+              ${iconePainel('prontuario')}
+              <span>Prontuário</span>
+            </button>
+  
+  
+            <button
+              class="pv-sidebar-item${estaAtiva('perfil')}"
+              type="button"
+              data-rota="/perfil"
+            >
+              ${iconePainel('usuario')}
+              <span>Perfil</span>
+            </button>
+  
+          </nav>
+  
+        </div>
+  
+  
+        <div class="pv-sidebar-footer">
+  
+          <div class="pv-sidebar-profile">
+  
+            <span class="pv-sidebar-avatar">
+              ${iconePainel('usuario')}
+            </span>
+  
+            <span class="pv-sidebar-profile-text">
+  
+              <strong id="pv-sidebar-paciente-name">
+                Paciente
+              </strong>
+  
+              <small>
+                Paciente
+              </small>
+  
+            </span>
+  
+          </div>
+  
+  
+          <button
+            class="pv-sidebar-logout"
+            type="button"
+            data-sair
+          >
+  
+            ${iconePainel('sair')}
+  
+            <span>
+              Sair
+            </span>
+  
+          </button>
+  
+        </div>
+  
+      </aside>
+    `;
+  }
+
+  PV.ui.sidebarPaciente = sidebarPaciente;
+
   function homePaciente(main, ctx) {
+
     main.classList.remove('pv-sem-scroll');
     main.classList.add('pv-dashboard-paciente-main');
+  
     main.innerHTML = `
-      <div class="pv-dashboard-paciente">
-        <aside class="pv-dash-sidebar" aria-label="Navegação principal">
-          <a class="pv-dash-brand" href="#/home" aria-label="PaliVida — início">
-            <img src="assets/img/logo-completo.png" alt="PaliVida">
-          </a>
-          <nav class="pv-dash-nav">
-            <button class="ativo" type="button" data-rota="/home">${iconePainel('inicio')}<span>Início</span></button>
-            <button type="button" data-rota="/triagem">${iconePainel('triagem')}<span>Triagem</span></button>
-            <button type="button" data-rota="/perfil">${iconePainel('prontuario')}<span>Prontuário</span></button>
-          </nav>
-          <div class="pv-dash-sidebar-note">${iconePainel('coracao')}<span>Cuidar também<br>é qualidade de vida.</span></div>
-        </aside>
-
-        <section class="pv-dash-workspace">
-          <header class="pv-dash-topbar">
-            <div class="pv-dash-topbar-spacer"></div>
-            <button class="pv-dash-notification" type="button" aria-label="Abrir triagem" data-rota="/triagem">${iconePainel('sino')}<span></span></button>
-            <button class="pv-logout-button pv-logout-button--dashboard" type="button" data-sair aria-label="Sair da conta"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Sair</span></button>
-            <button class="pv-dash-profile" type="button" aria-label="Abrir prontuário" data-rota="/perfil">
-              <span class="pv-dash-avatar">${iconePainel('usuario')}</span>
-              <span class="pv-dash-profile-copy"><strong id="pv-dash-profile-name">Paciente</strong><small>Paciente</small></span>
-              <span class="pv-dash-chevron" aria-hidden="true">⌄</span>
-            </button>
+      <div class="pv-home-layout">
+  
+        <!-- =========================================================
+             SIDEBAR DESKTOP
+             ========================================================= -->
+  
+             ${sidebarPaciente('home')}
+  
+  
+        <!-- =========================================================
+             ÁREA PRINCIPAL
+             ========================================================= -->
+  
+        <section class="pv-home-workspace">
+  
+          <!-- TOPBAR -->
+  
+          <header class="pv-topbar">
+  
+            <div class="pv-topbar-title">
+              Meu cuidado
+            </div>
+  
+            <div class="pv-topbar-actions">
+  
+              <button
+                class="pv-home-icon-button"
+                type="button"
+                aria-label="Abrir triagem"
+                data-rota="/triagem"
+              >
+                ${iconePainel('sino')}
+              </button>
+  
+              <button
+                class="pv-home-profile"
+                type="button"
+                aria-label="Abrir prontuário"
+                data-rota="/perfil"
+              >
+  
+                <span class="pv-avatar">
+                  ${iconePainel('usuario')}
+                </span>
+  
+                <span class="pv-home-profile-copy">
+                  <strong id="pv-dash-profile-name">
+                    Paciente
+                  </strong>
+  
+                  <small>
+                    Paciente
+                  </small>
+                </span>
+  
+              </button>
+  
+              <button
+                class="pv-home-logout"
+                type="button"
+                data-sair
+                aria-label="Sair da conta"
+              >
+                ${iconePainel('sair')}
+                <span>Sair</span>
+              </button>
+  
+            </div>
+  
           </header>
-
-          <div class="pv-dash-content">
-            <div class="pv-dash-welcome">
-              <span class="pv-dash-wave" aria-hidden="true">👋</span>
-              <div><h1 id="pv-dash-welcome-name">Bem-vindo(a)!</h1><p>Aqui você pode registrar seus sintomas, acompanhar seu<br class="pv-dash-desktop-break"> prontuário e acessar conteúdos que podem te ajudar.</p></div>
-            </div>
-            <div id="pv-dash-aviso"></div>
-
-            <div class="pv-dash-actions">
-              <article class="pv-dash-action pv-dash-action--symptoms">
-                <span class="pv-dash-action-icon">${iconePainel('sintomas')}</span>
-                <h2>Registrar sintomas<br>de hoje</h2>
-                <p>Conte como você está se sentindo<br class="pv-dash-desktop-break"> para que possamos te ajudar melhor.</p>
-                <button type="button" data-rota="/menu-sintomas">Começar agora ${iconePainel('seta')}</button>
-                <span class="pv-dash-decoration" aria-hidden="true">${iconePainel('folha')}</span>
-              </article>
-              <article class="pv-dash-action pv-dash-action--record">
-                <span class="pv-dash-action-icon">${iconePainel('prontuario')}</span>
-                <h2>Prontuário</h2>
-                <p>Acesse seus dados, histórico<br> e informações importantes.</p>
-                <button type="button" data-rota="/perfil">Visualizar ${iconePainel('seta')}</button>
-                <span class="pv-dash-decoration" aria-hidden="true">${iconePainel('prontuario')}</span>
-              </article>
-              <article class="pv-dash-action pv-dash-action--content">
-                <span class="pv-dash-action-icon">${iconePainel('conteudos')}</span>
-                <h2>Conteúdos e orientações</h2>
-                <p>Informações e dicas que podem<br> te ajudar no dia a dia.</p>
-                <button type="button" data-rota="/busca">Explorar ${iconePainel('seta')}</button>
-                <span class="pv-dash-decoration" aria-hidden="true">${iconePainel('folha')}</span>
-              </article>
-            </div>
-
-            <section class="pv-dash-contacts">
-              <div class="pv-dash-contacts-main">
-                <div class="pv-dash-section-heading">${iconePainel('pessoas')}<div><h2>Seus contatos</h2><p>Pessoas que estão com você nessa jornada.</p></div></div>
-                <div class="pv-dash-contact-list">
-                  <button class="pv-dash-contact" type="button" data-rota="/contato/familia"><span class="pv-dash-contact-icon pv-dash-contact-icon--purple">${iconePainel('familia')}</span><span><strong>Cuidador</strong><small id="pv-dash-caregiver">Cadastre um contato</small></span><b aria-hidden="true">›</b></button>
-                  <a class="pv-dash-contact" id="pv-dash-emergency" href="#/perfil"><span class="pv-dash-contact-icon pv-dash-contact-icon--green">${iconePainel('sac')}</span><span><strong>Emergência</strong><small id="pv-dash-emergency-value">Cadastre no prontuário</small></span><b aria-hidden="true">›</b></a>
-                  <button class="pv-dash-contact" type="button" data-rota="/perfil"><span class="pv-dash-contact-icon pv-dash-contact-icon--blue">${iconePainel('hospital')}</span><span><strong>Unidade de saúde</strong><small id="pv-dash-health-unit">Cadastre no prontuário</small></span><b aria-hidden="true">›</b></button>
-                </div>
+  
+  
+          <!-- CONTEÚDO -->
+  
+          <div class="pv-home-content">
+  
+            <!-- =====================================================
+                 BOAS-VINDAS
+                 ===================================================== -->
+  
+            <section class="pv-home-welcome">
+  
+              <div>
+  
+                <span class="pv-page-eyebrow">
+                  PaliVida
+                </span>
+  
+                <h1 id="pv-dash-welcome-name">
+                  Bem-vindo(a)!
+                </h1>
+  
+                <p>
+                  Aqui você pode registrar seus sintomas,
+                  acompanhar seu prontuário e acessar conteúdos
+                  que podem te ajudar.
+                </p>
+  
               </div>
-              <aside class="pv-dash-reminder">${iconePainel('sol')}<h2>Lembre-se</h2><p>Em caso de falta de ar intensa, dor forte ou qualquer sinal de alerta, busque atendimento médico imediato.</p><span aria-hidden="true">${iconePainel('coracao')}</span></aside>
+  
+              <div class="pv-home-welcome-icon" aria-hidden="true">
+                👋
+              </div>
+  
             </section>
-
-            <div class="pv-dash-reassurance"><span>${iconePainel('folha')}</span><div><strong>Você não está sozinho.</strong><small>O PaliVida está aqui para te apoiar, sempre.</small></div>${iconePainel('coracao')}</div>
+  
+  
+            <!-- ERRO DE CARREGAMENTO -->
+  
+            <div id="pv-dash-aviso"></div>
+  
+  
+            <!-- =====================================================
+                 AÇÕES PRINCIPAIS
+                 ===================================================== -->
+  
+            <section class="pv-home-actions">
+  
+              <!-- Registrar sintomas -->
+  
+              <article
+                class="pv-home-action pv-home-action-primary"
+              >
+  
+                <div class="pv-home-action-icon">
+                  ${iconePainel('sintomas')}
+                </div>
+  
+                <div class="pv-home-action-content">
+  
+                  <span class="pv-home-action-label">
+                    Acompanhe como você está
+                  </span>
+  
+                  <h2>
+                    Registrar sintomas de hoje
+                  </h2>
+  
+                  <p>
+                    Conte como você está se sentindo para
+                    acompanhar sua evolução.
+                  </p>
+  
+                  <button
+                    type="button"
+                    class="pv-home-action-link"
+                    data-rota="/menu-sintomas"
+                  >
+                    Começar agora
+                    ${iconePainel('seta')}
+                  </button>
+  
+                </div>
+  
+                <span
+                  class="pv-home-action-decoration"
+                  aria-hidden="true"
+                >
+                  ${iconePainel('folha')}
+                </span>
+  
+              </article>
+  
+  
+              <!-- Prontuário -->
+  
+              <article
+                class="pv-home-action"
+              >
+  
+                <div class="pv-home-action-icon">
+                  ${iconePainel('prontuario')}
+                </div>
+  
+                <div class="pv-home-action-content">
+  
+                  <span class="pv-home-action-label">
+                    Meu acompanhamento
+                  </span>
+  
+                  <h2>
+                    Prontuário
+                  </h2>
+  
+                  <p>
+                    Acesse seus dados, histórico e
+                    informações importantes.
+                  </p>
+  
+                  <button
+                    type="button"
+                    class="pv-home-action-link"
+                    data-rota="/perfil"
+                  >
+                    Visualizar
+                    ${iconePainel('seta')}
+                  </button>
+  
+                </div>
+  
+              </article>
+  
+  
+              <!-- Conteúdos -->
+  
+              <article
+                class="pv-home-action"
+              >
+  
+                <div class="pv-home-action-icon">
+                  ${iconePainel('conteudos')}
+                </div>
+  
+                <div class="pv-home-action-content">
+  
+                  <span class="pv-home-action-label">
+                    Informação
+                  </span>
+  
+                  <h2>
+                    Conteúdos e orientações
+                  </h2>
+  
+                  <p>
+                    Informações e dicas que podem
+                    te ajudar no dia a dia.
+                  </p>
+  
+                  <button
+                    type="button"
+                    class="pv-home-action-link"
+                    data-rota="/busca"
+                  >
+                    Explorar
+                    ${iconePainel('seta')}
+                  </button>
+  
+                </div>
+  
+              </article>
+  
+            </section>
+  
+  
+            <!-- =====================================================
+                 CONTATOS + LEMBRETE
+                 ===================================================== -->
+  
+            <section class="pv-home-support">
+  
+              <div class="pv-home-contacts">
+  
+                <div class="pv-home-section-heading">
+  
+                  <div class="pv-icon-circle">
+                    ${iconePainel('familia')}
+                  </div>
+  
+                  <div>
+                    <h2>
+                      Seus contatos
+                    </h2>
+  
+                    <p>
+                      Pessoas e serviços importantes para você.
+                    </p>
+                  </div>
+  
+                </div>
+  
+  
+                <div class="pv-home-contact-list">
+  
+                  <!-- Família -->
+  
+                  <button
+                    class="pv-home-contact"
+                    type="button"
+                    data-rota="/contato/familia"
+                  >
+  
+                    <span class="pv-home-contact-icon pv-home-contact-purple">
+                      ${iconePainel('familia')}
+                    </span>
+  
+                    <span class="pv-home-contact-copy">
+  
+                      <strong>
+                        Cuidador
+                      </strong>
+  
+                      <small id="pv-dash-caregiver">
+                        Cadastre um contato
+                      </small>
+  
+                    </span>
+  
+                    <span aria-hidden="true">
+                      →
+                    </span>
+  
+                  </button>
+  
+  
+                  <!-- Emergência -->
+  
+                  <a
+                    class="pv-home-contact"
+                    id="pv-dash-emergency"
+                    href="#/perfil"
+                  >
+  
+                    <span class="pv-home-contact-icon pv-home-contact-green">
+                      ${iconePainel('sac')}
+                    </span>
+  
+                    <span class="pv-home-contact-copy">
+  
+                      <strong>
+                        Emergência
+                      </strong>
+  
+                      <small id="pv-dash-emergency-value">
+                        Cadastre no prontuário
+                      </small>
+  
+                    </span>
+  
+                    <span aria-hidden="true">
+                      →
+                    </span>
+  
+                  </a>
+  
+  
+                  <!-- Unidade -->
+  
+                  <button
+                    class="pv-home-contact"
+                    type="button"
+                    data-rota="/perfil"
+                  >
+  
+                    <span class="pv-home-contact-icon pv-home-contact-blue">
+                      ${iconePainel('hospital')}
+                    </span>
+  
+                    <span class="pv-home-contact-copy">
+  
+                      <strong>
+                        Unidade de saúde
+                      </strong>
+  
+                      <small id="pv-dash-health-unit">
+                        Cadastre no prontuário
+                      </small>
+  
+                    </span>
+  
+                    <span aria-hidden="true">
+                      →
+                    </span>
+  
+                  </button>
+  
+                </div>
+  
+              </div>
+  
+  
+              <!-- LEMBRETE -->
+  
+              <aside class="pv-home-reminder">
+  
+                <div class="pv-home-reminder-icon">
+                  ${iconePainel('sol')}
+                </div>
+  
+                <span class="pv-home-reminder-label">
+                  Lembre-se
+                </span>
+  
+                <h2>
+                  Seu cuidado vem primeiro.
+                </h2>
+  
+                <p>
+                  Em caso de falta de ar intensa,
+                  dor forte ou qualquer sinal de alerta,
+                  busque atendimento médico imediato.
+                </p>
+  
+              </aside>
+  
+            </section>
+  
+  
+            <!-- =====================================================
+                 MENSAGEM FINAL
+                 ===================================================== -->
+  
+            <section class="pv-home-reassurance">
+  
+              <span class="pv-home-reassurance-icon">
+                ${iconePainel('folha')}
+              </span>
+  
+              <div>
+  
+                <strong>
+                  Você não está sozinho.
+                </strong>
+  
+                <small>
+                  O PaliVida está aqui para te apoiar, sempre.
+                </small>
+  
+              </div>
+  
+              <span class="pv-home-reassurance-heart">
+                ${iconePainel('coracao')}
+              </span>
+  
+            </section>
+  
           </div>
+  
         </section>
-      </div>`;
-
-    const painel = main.querySelector('.pv-dashboard-paciente');
+  
+  
+        <!-- =========================================================
+             NAVEGAÇÃO MOBILE
+             ========================================================= -->
+  
+        <nav
+          class="pv-home-mobile-nav"
+          aria-label="Navegação mobile"
+        >
+  
+          <button
+            class="active"
+            type="button"
+            data-rota="/home"
+          >
+            ${iconePainel('inicio')}
+            <span>Início</span>
+          </button>
+  
+          <button
+            type="button"
+            data-rota="/menu-sintomas"
+          >
+            ${iconePainel('sintomas')}
+            <span>Sintomas</span>
+          </button>
+  
+          <button
+            type="button"
+            data-rota="/triagem"
+          >
+            ${iconePainel('triagem')}
+            <span>Triagem</span>
+          </button>
+  
+          <button
+            type="button"
+            data-rota="/perfil"
+          >
+            ${iconePainel('usuario')}
+            <span>Perfil</span>
+          </button>
+  
+        </nav>
+  
+      </div>
+    `;
+  
+  
+    /* ================================================================
+       NAVEGAÇÃO
+       ================================================================ */
+  
+    const painel = main.querySelector('.pv-home-layout');
+  
     PV.ui.ligarLogout(painel);
-    main.querySelectorAll('[data-rota]').forEach((botao) => {
-      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.rota));
-    });
-
+  
+    main
+      .querySelectorAll('[data-rota]')
+      .forEach((botao) => {
+  
+        botao.addEventListener('click', () => {
+          PV.router.navegar(botao.dataset.rota);
+        });
+  
+      });
+  
+  
+    /* ================================================================
+       ERROS
+       ================================================================ */
+  
     function mostrarErro(erro) {
-      const alvo = painel.querySelector('#pv-dash-aviso');
-      if (painel.isConnected && alvo && !alvo.textContent) {
-        alvo.innerHTML = aviso({ tipo: 'erro', texto: erro.message || 'Não foi possível carregar os dados do painel.' });
+  
+      const alvo =
+        painel.querySelector('#pv-dash-aviso');
+  
+      if (
+        painel.isConnected &&
+        alvo &&
+        !alvo.textContent
+      ) {
+  
+        alvo.innerHTML = aviso({
+          tipo: 'erro',
+          texto:
+            erro.message ||
+            'Não foi possível carregar os dados do painel.'
+        });
+  
       }
+  
     }
+  
+  
+    /* ================================================================
+       DADOS DO PACIENTE
+       ================================================================ */
+  
+    const carregarPaciente =
+      PV.db.pacientes
+        .buscar(ctx.usuario.id)
+  
+        .then((paciente) => {
+  
+          if (!painel.isConnected) {
+            return;
+          }
+  
+          const nome =
+            paciente.nome_social ||
+            paciente.nome ||
+            'Paciente';
+  
+  
+          /* Nome de boas-vindas */
+  
+          painel
+            .querySelector('#pv-dash-welcome-name')
+            .textContent =
+              `Olá, ${nome}`;
+  
+  
+          /* Nome no perfil */
+  
+          painel
+            .querySelector('#pv-dash-profile-name')
+            .textContent =
+              nome;
+  
+  
+            /* Nome na sidebar */
 
-    const carregarPaciente = PV.db.pacientes.buscar(ctx.usuario.id).then((paciente) => {
-      if (!painel.isConnected) return;
-      const nome = paciente.nome_social || paciente.nome || 'Paciente';
-      painel.querySelector('#pv-dash-welcome-name').textContent = `Bem-vindo(a), ${nome}!`;
-      painel.querySelector('#pv-dash-profile-name').textContent = nome;
-      painel.querySelector('#pv-dash-emergency-value').textContent = paciente.contato_emergencia || 'Cadastre no prontuário';
-      painel.querySelector('#pv-dash-health-unit').textContent =
-        paciente.unidades_de_saude || [paciente.cidade, paciente.estado].filter(Boolean).join(' — ') || 'Cadastre no prontuário';
-      const telefone = String(paciente.contato_emergencia || '').match(/(?:\+?\d[\d\s().-]{7,}\d)/);
-      if (telefone) painel.querySelector('#pv-dash-emergency').href = `tel:${telefone[0].replace(/[^\d+]/g, '')}`;
-    }).catch(mostrarErro);
+            const nomeSidebar =
+            painel.querySelector(
+              '#pv-sidebar-paciente-name'
+            );
 
-    const carregarContato = PV.db.contatos.buscar('familia').then((contato) => {
-      if (!painel.isConnected) return;
-      const nomePadrao = 'Nome do familiar ou cuidador';
-      const nome = contato.nome === nomePadrao ? '' : contato.nome;
-      painel.querySelector('#pv-dash-caregiver').textContent =
-        nome ? [nome, contato.observacao].filter(Boolean).join(' · ') : 'Cadastre um contato';
-    }).catch(mostrarErro);
+            if (nomeSidebar) {
+            nomeSidebar.textContent = nome;
+            }
 
-    Promise.all([carregarPaciente, carregarContato]);
+          /* Emergência */
+  
+          painel
+            .querySelector('#pv-dash-emergency-value')
+            .textContent =
+              paciente.contato_emergencia ||
+              'Cadastre no prontuário';
+  
+  
+          /* Unidade de saúde */
+  
+          painel
+            .querySelector('#pv-dash-health-unit')
+            .textContent =
+              paciente.unidades_de_saude ||
+              [
+                paciente.cidade,
+                paciente.estado
+              ]
+                .filter(Boolean)
+                .join(' — ') ||
+              'Cadastre no prontuário';
+  
+  
+          /* Telefone de emergência */
+  
+          const telefone =
+            String(
+              paciente.contato_emergencia || ''
+            ).match(
+              /(?:\+?\d[\d\s().-]{7,}\d)/
+            );
+  
+  
+          if (telefone) {
+  
+            painel
+              .querySelector('#pv-dash-emergency')
+              .href =
+                `tel:${telefone[0]
+                  .replace(/[^\d+]/g, '')}`;
+  
+          }
+  
+        })
+  
+        .catch(mostrarErro);
+  
+  
+    /* ================================================================
+       CONTATO DA FAMÍLIA
+       ================================================================ */
+  
+    const carregarContato =
+      PV.db.contatos
+        .buscar('familia')
+  
+        .then((contato) => {
+  
+          if (!painel.isConnected) {
+            return;
+          }
+  
+  
+          const nomePadrao =
+            'Nome do familiar ou cuidador';
+  
+  
+          const nome =
+            contato.nome === nomePadrao
+              ? ''
+              : contato.nome;
+  
+  
+          painel
+            .querySelector('#pv-dash-caregiver')
+            .textContent =
+              nome
+                ? [
+                    nome,
+                    contato.observacao
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')
+                : 'Cadastre um contato';
+  
+        })
+  
+        .catch(mostrarErro);
+  
+  
+    Promise.all([
+      carregarPaciente,
+      carregarContato
+    ]);
+  
   }
 
   /* ============================================================= Contato === */
