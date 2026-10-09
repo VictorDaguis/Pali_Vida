@@ -47,16 +47,23 @@ window.PV = window.PV || {};
       sessao.usuario.tipo === 'paciente' &&
       ['home', 'triagem', 'perfil', 'meu-perfil'].includes(rota),
     );
+    const painelAdministrador = Boolean(
+      sessao &&
+      sessao.usuario.tipo === 'administrador' &&
+      ['home', 'busca', 'admin-pacientes', 'admin-registros', 'admin-sintomas', 'admin-conteudos'].includes(rota),
+    );
     document.body.classList.toggle('pv-route-login', rota === 'login' || rota === 'cadastro');
     document.body.classList.toggle('pv-route-home', rota === 'home');
     document.body.classList.toggle('pv-role-paciente', Boolean(sessao && sessao.usuario.tipo === 'paciente'));
     document.body.classList.toggle('pv-role-acompanhante', Boolean(sessao && sessao.usuario.tipo === 'acompanhante'));
     document.body.classList.toggle('pv-role-administrador', Boolean(sessao && sessao.usuario.tipo === 'administrador'));
     document.body.classList.toggle('pv-paciente-dashboard', painelPaciente);
+    document.body.classList.toggle('pv-admin-dashboard', painelAdministrador);
     document.querySelector('.app-shell').classList.toggle('pv-paciente-dashboard', painelPaciente);
+    document.querySelector('.app-shell').classList.toggle('pv-admin-dashboard', painelAdministrador);
     main.innerHTML = '';
     main.classList.remove('pv-dashboard-paciente-main');
-    main.classList.remove('pv-menu-sintomas-main', 'pv-conteudo-detalhe-main', 'pv-sintoma-detalhe-main', 'pv-sintoma-registro-main');
+    main.classList.remove('pv-menu-sintomas-main', 'pv-conteudo-detalhe-main', 'pv-sintoma-detalhe-main', 'pv-sintoma-registro-main', 'pv-cuidador-vinculos-main', 'pv-cuidador-sintomas-main');
     // Reseta a marcação de "tela sem rolagem" a cada navegação; a própria
     // tela (ex.: menuSintomas) adiciona a classe de volta se precisar.
     main.classList.remove('pv-sem-scroll');
@@ -65,7 +72,7 @@ window.PV = window.PV || {};
 
     // O painel de paciente desenha sua própria navegação lateral; as telas
     // públicas também não usam o cabeçalho e o rodapé autenticados.
-    if (PUBLICAS.has(rota) || painelPaciente) {
+    if (PUBLICAS.has(rota) || painelPaciente || painelAdministrador || (sessao && sessao.usuario.tipo === 'acompanhante' && ['vinculos', 'sintomas'].includes(rota))) {
       headerEl.hidden = true;
       footerEl.hidden = true;
       headerEl.innerHTML = '';
@@ -92,7 +99,16 @@ window.PV = window.PV || {};
           else await PV.screens.home(main, ctx);
           break;
         case 'busca':
-          await PV.screens.busca(main, ctx);
+          if (ctx.usuario.tipo === 'administrador') await PV.screens.busca(main, { ...ctx, adminStandalone: true });
+          else await PV.screens.busca(main, ctx);
+          break;
+        case 'vinculos':
+          if (ctx.usuario.tipo !== 'acompanhante') { location.hash = '#/home'; return; }
+          await PV.screens.vinculosAcompanhante(main, ctx);
+          break;
+        case 'sintomas':
+          if (ctx.usuario.tipo !== 'acompanhante') { location.hash = '#/home'; return; }
+          await PV.screens.sintomasAcompanhante(main, ctx);
           break;
         case 'contato':
           if (ctx.usuario.tipo === 'administrador') { location.hash = '#/home'; return; }
@@ -136,6 +152,22 @@ window.PV = window.PV || {};
           break;
         case 'sinal':
           await PV.screens.sinal(main, ctx);
+          break;
+        case 'admin-pacientes':
+          if (ctx.usuario.tipo !== 'administrador') { location.hash = '#/home'; return; }
+          await PV.screens.adminPacientes(main, ctx);
+          break;
+        case 'admin-registros':
+          if (ctx.usuario.tipo !== 'administrador') { location.hash = '#/home'; return; }
+          await PV.screens.adminRegistros(main, ctx);
+          break;
+        case 'admin-sintomas':
+          if (ctx.usuario.tipo !== 'administrador') { location.hash = '#/home'; return; }
+          await PV.screens.adminSintomas(main, ctx);
+          break;
+        case 'admin-conteudos':
+          if (ctx.usuario.tipo !== 'administrador') { location.hash = '#/home'; return; }
+          await PV.screens.busca(main, { ...ctx, adminStandalone: true });
           break;
         case 'painel-admin':
           await PV.screens.painelAdmin(main, ctx);

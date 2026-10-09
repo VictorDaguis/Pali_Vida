@@ -92,9 +92,226 @@ window.PV.screens = window.PV.screens || {};
 
   /* ================================================================ Home === */
 
+  /* PaliVida: cuidador home v1 */
+  function iconeHomeAcompanhante(nome) {
+    const caminhos = {
+      inicio: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+      vinculos: '<path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 0 0 12 20.1l1.1-1.1"/>',
+      sintomas: '<path d="M3 12h4l2-6 4 12 2-6h6"/>',
+      conteudos: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20"/>',
+      perfil: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      busca: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+      coracao: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>',
+      sair: '<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>',
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${caminhos[nome] || ''}</svg>`;
+  }
+
+  function iniciaisAcompanhante(nome) {
+    const partes = String(nome || '').trim().split(/\s+/).filter(Boolean);
+    if (!partes.length) return 'A';
+    return (partes.length === 1
+      ? partes[0].slice(0, 2)
+      : partes[0].charAt(0) + partes[partes.length - 1].charAt(0)
+    ).toLocaleUpperCase('pt-BR');
+  }
+
+  async function homeAcompanhanteLovable(main, ctx) {
+    main.classList.remove('pv-sem-scroll');
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+
+    main.innerHTML = `
+      <div class="pv-cuidador-home-layout">
+        <aside class="pv-cuidador-sidebar" aria-label="Navegação do acompanhante">
+          <div class="pv-cuidador-sidebar-top">
+            <div class="pv-cuidador-brand">
+              <a href="#/home" aria-label="PaliVida — início">
+                <img src="assets/img/logo-completo.png" alt="PaliVida">
+              </a>
+            </div>
+            <div class="pv-cuidador-nav-label">MEU CUIDADO</div>
+            <nav class="pv-cuidador-nav">
+              <button type="button" class="pv-cuidador-nav-item active" data-cuidador-rota="/home" aria-current="page">
+                ${iconeHomeAcompanhante('inicio')}<span>Início</span>
+              </button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/vinculos">
+                ${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span>
+              </button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/busca">
+                ${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span>
+              </button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/perfil">
+                ${iconeHomeAcompanhante('perfil')}<span>Perfil</span>
+              </button>
+            </nav>
+          </div>
+          <div class="pv-cuidador-sidebar-footer">
+            <div class="pv-cuidador-sidebar-profile">
+              <span class="pv-cuidador-avatar" id="pv-cuidador-sidebar-avatar">A</span>
+              <span class="pv-cuidador-profile-text">
+                <strong id="pv-cuidador-sidebar-name">Acompanhante</strong>
+                <small>Acompanhante</small>
+              </span>
+            </div>
+            <button type="button" class="pv-cuidador-logout" data-sair>
+              ${iconeHomeAcompanhante('sair')}<span>Sair</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="pv-cuidador-workspace">
+          <header class="pv-cuidador-topbar">
+            <strong>Meu cuidado</strong>
+            <div class="pv-cuidador-topbar-actions">
+              <span>Protótipo demonstrativo</span>
+              <button type="button" class="pv-cuidador-topbar-icon" data-cuidador-rota="/busca" aria-label="Buscar conteúdos">
+                ${iconeHomeAcompanhante('busca')}
+              </button>
+            </div>
+          </header>
+
+          <main class="pv-cuidador-content">
+            <section class="pv-cuidador-heading">
+              <span class="pv-cuidador-eyebrow">ÁREA DO ACOMPANHANTE</span>
+              <h1 id="pv-cuidador-boas-vindas">Olá!</h1>
+              <p>Acompanhe as informações permitidas dos pacientes vinculados ao seu perfil.</p>
+            </section>
+
+            <div class="pv-cuidador-notice" id="pv-cuidador-notice" hidden></div>
+
+            <section class="pv-cuidador-overview-grid">
+              <div class="pv-cuidador-card pv-cuidador-patients-card">
+                <div class="pv-cuidador-card-heading">
+                  <div>
+                    <span class="pv-cuidador-card-eyebrow">SEU ACOMPANHAMENTO</span>
+                    <h2>Pacientes vinculados</h2>
+                    <p>Consulte os vínculos associados à sua conta.</p>
+                  </div>
+                  <span class="pv-cuidador-card-icon">${iconeHomeAcompanhante('vinculos')}</span>
+                </div>
+                <div id="pv-cuidador-pacientes" class="pv-cuidador-patients-list">
+                  <div class="pv-cuidador-empty">Carregando seus vínculos...</div>
+                </div>
+                <div class="pv-cuidador-card-actions">
+                  <button type="button" class="pv-cuidador-button primary" data-cuidador-rota="/vinculos">Gerenciar vínculos</button>
+                  <button type="button" class="pv-cuidador-button secondary" data-cuidador-rota="/perfil">Ver meu perfil</button>
+                </div>
+              </div>
+
+              <aside class="pv-cuidador-support-card">
+                <span class="pv-cuidador-support-icon">${iconeHomeAcompanhante('coracao')}</span>
+                <span class="pv-cuidador-card-eyebrow">CUIDAR TAMBÉM É ACOMPANHAR</span>
+                <h2>Você também precisa de apoio.</h2>
+                <p>Consulte conteúdos educativos para apoiar sua rotina de cuidado.</p>
+                <button type="button" class="pv-cuidador-text-button" data-cuidador-rota="/busca">Ver conteúdos ${iconeHomeAcompanhante('busca')}</button>
+              </aside>
+            </section>
+
+            <section class="pv-cuidador-shortcuts">
+              <button type="button" class="pv-cuidador-shortcut" data-cuidador-rota="/vinculos">
+                <span class="pv-cuidador-shortcut-icon">${iconeHomeAcompanhante('vinculos')}</span>
+                <span><strong>Vínculos</strong><small>Gerencie os pacientes vinculados à sua conta.</small></span>
+                <span class="pv-cuidador-arrow">›</span>
+              </button>
+              <button type="button" class="pv-cuidador-shortcut" data-cuidador-rota="/busca">
+                <span class="pv-cuidador-shortcut-icon">${iconeHomeAcompanhante('conteudos')}</span>
+                <span><strong>Conteúdos e orientações</strong><small>Informações para apoiar o cuidado no dia a dia.</small></span>
+                <span class="pv-cuidador-arrow">›</span>
+              </button>
+            </section>
+
+            <section class="pv-cuidador-reassurance">
+              <span>${iconeHomeAcompanhante('coracao')}</span>
+              <div><strong>Você não está sozinho.</strong><p>O PaliVida está aqui para apoiar sua jornada de cuidado.</p></div>
+            </section>
+          </main>
+        </section>
+
+        <nav class="pv-cuidador-mobile-nav" aria-label="Navegação principal">
+          <button class="active" type="button" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+          <button type="button" data-cuidador-rota="/vinculos">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+              <button type="button" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+          <button type="button" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+          <button type="button" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+        </nav>
+      </div>
+    `;
+
+    main.querySelectorAll('[data-cuidador-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.cuidadorRota));
+    });
+    PV.ui.ligarLogout(main);
+
+    const nomeEl = main.querySelector('#pv-cuidador-sidebar-name');
+    const avatarEl = main.querySelector('#pv-cuidador-sidebar-avatar');
+    const saudacaoEl = main.querySelector('#pv-cuidador-boas-vindas');
+    const pacientesEl = main.querySelector('#pv-cuidador-pacientes');
+    const noticeEl = main.querySelector('#pv-cuidador-notice');
+
+    const resultados = await Promise.allSettled([
+      PV.db.acompanhantes.buscar(ctx.usuario.id),
+      PV.db.acompanhantes.pacientes(ctx.usuario.id),
+    ]);
+    if (!main.isConnected) return;
+
+    const perfilResult = resultados[0];
+    const pacientesResult = resultados[1];
+    let nome = 'Acompanhante';
+    if (perfilResult.status === 'fulfilled' && perfilResult.value) {
+      const perfil = perfilResult.value;
+      nome = perfil.nome_social || perfil.nome_completo || 'Acompanhante';
+    } else if (ctx.usuario.email) {
+      nome = ctx.usuario.email.split('@')[0] || nome;
+    }
+    nomeEl.textContent = nome;
+    avatarEl.textContent = iniciaisAcompanhante(nome);
+    saudacaoEl.textContent = `Olá, ${nome}`;
+
+    if (pacientesResult.status !== 'fulfilled') {
+      pacientesEl.innerHTML = '<div class="pv-cuidador-empty">Não foi possível carregar os vínculos agora. Acesse a seção Vínculos para tentar novamente.</div>';
+      noticeEl.hidden = false;
+      noticeEl.textContent = pacientesResult.reason?.message || 'Não foi possível consultar os pacientes vinculados.';
+      return;
+    }
+
+    const pacientes = pacientesResult.value || [];
+    if (!pacientes.length) {
+      pacientesEl.innerHTML = `
+        <div class="pv-cuidador-empty-state">
+          <span class="pv-cuidador-empty-icon">${iconeHomeAcompanhante('vinculos')}</span>
+          <strong>Nenhum paciente vinculado ainda</strong>
+          <p>Use a área de vínculos para conectar o código de um paciente à sua conta.</p>
+        </div>`;
+      return;
+    }
+
+    pacientesEl.innerHTML = pacientes.map((paciente) => {
+      const nomePaciente = paciente.nome_social || paciente.nome || 'Paciente vinculado';
+      const email = paciente.email || '';
+      return `
+        <article class="pv-cuidador-patient-row">
+          <span class="pv-cuidador-patient-avatar">${escaparHtml(iniciaisAcompanhante(nomePaciente))}</span>
+          <div class="pv-cuidador-patient-info">
+            <strong>${escaparHtml(nomePaciente)}</strong>
+            <small>${email ? escaparHtml(email) + ' · ' : ''}Vínculo ativo</small>
+          </div>
+          <span class="pv-cuidador-status">Ativo</span>
+        </article>`;
+    }).join('');
+  }
+
   async function home(main, ctx) {
     if (ctx.usuario.tipo === 'paciente') {
       homePaciente(main, ctx);
+      return;
+    }
+
+    if (ctx.usuario.tipo === 'acompanhante') {
+      await homeAcompanhanteLovable(main, ctx);
       return;
     }
 
@@ -385,6 +602,510 @@ window.PV.screens = window.PV.screens || {};
        * Se não conseguir carregar os dados do usuário,
        * a Home continua funcionando com "Olá!".
        */
+    }
+  }
+
+  /* PaliVida: cuidador vínculos v1 */
+  async function telaVinculosAcompanhante(main, ctx) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+
+    main.classList.remove('pv-sem-scroll', 'pv-cuidador-vinculos-main');
+    main.classList.add('pv-cuidador-vinculos-main');
+    main.innerHTML = `
+      <div class="pv-cuidador-home-layout pv-cuidador-vinculos-layout">
+        <aside class="pv-cuidador-sidebar" aria-label="Navegação do acompanhante">
+          <div class="pv-cuidador-sidebar-top">
+            <div class="pv-cuidador-brand">
+              <a href="#/home" aria-label="PaliVida — início"><img src="assets/img/logo-completo.png" alt="PaliVida"></a>
+            </div>
+            <div class="pv-cuidador-nav-label">MEU CUIDADO</div>
+            <nav class="pv-cuidador-nav">
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+              <button type="button" class="pv-cuidador-nav-item active" data-cuidador-rota="/vinculos" aria-current="page">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+            </nav>
+          </div>
+          <div class="pv-cuidador-sidebar-footer">
+            <div class="pv-cuidador-sidebar-profile">
+              <span class="pv-cuidador-avatar" id="pv-cuidador-vinculos-avatar" aria-hidden="true">A</span>
+              <span class="pv-cuidador-profile-text"><strong id="pv-cuidador-vinculos-nome">Acompanhante</strong><small>Acompanhante</small></span>
+            </div>
+            <button type="button" class="pv-cuidador-logout" data-sair>${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
+          </div>
+        </aside>
+
+        <section class="pv-cuidador-workspace">
+          <header class="pv-cuidador-topbar">
+            <strong>Meu cuidado</strong>
+            <div class="pv-cuidador-topbar-actions"><span>Protótipo demonstrativo</span><button type="button" class="pv-cuidador-topbar-icon" data-cuidador-rota="/busca" aria-label="Buscar conteúdos">${iconeHomeAcompanhante('busca')}</button></div>
+          </header>
+
+          <main class="pv-cuidador-content pv-cuidador-vinculos-content">
+            <section class="pv-cuidador-heading">
+              <span class="pv-cuidador-eyebrow">ACOMPANHANTE</span>
+              <h1>Pacientes vinculados</h1>
+              <p>Vínculos disponíveis para consulta neste perfil.</p>
+            </section>
+
+            <div class="pv-cuidador-notice" id="pv-cuidador-vinculos-aviso" hidden role="status"></div>
+
+            <section class="pv-cuidador-vinculos-list" id="pv-cuidador-vinculos-list" aria-live="polite">
+              <div class="pv-cuidador-empty">Carregando seus vínculos...</div>
+            </section>
+
+            <p class="pv-cuidador-vinculos-note">As informações exibidas dependem dos vínculos associados à sua conta. O acompanhamento é somente para consulta; esta tela não registra sintomas em nome do cuidador.</p>
+
+            <section class="pv-cuidador-card pv-cuidador-link-create-card">
+              <div class="pv-cuidador-card-heading">
+                <div><span class="pv-cuidador-card-eyebrow">NOVO VÍNCULO</span><h2>Vincular paciente</h2><p>Informe o código do paciente para solicitar o vínculo à sua conta.</p></div>
+                <span class="pv-cuidador-card-icon">${iconeHomeAcompanhante('vinculos')}</span>
+              </div>
+              <form id="pv-cuidador-vincular-form" class="pv-cuidador-vincular-form">
+                <label for="pv-cuidador-codigo-paciente">Código do paciente</label>
+                <div class="pv-cuidador-vincular-row">
+                  <input id="pv-cuidador-codigo-paciente" name="codigoPaciente" type="number" min="1" step="1" inputmode="numeric" placeholder="Digite o código do paciente" required>
+                  <button class="pv-cuidador-button primary" id="pv-cuidador-vincular-submit" type="submit">Vincular paciente</button>
+                </div>
+                <p>O vínculo será validado pelo serviço de dados existente. Se o código não for válido ou o vínculo já existir, a mensagem de erro será exibida aqui.</p>
+              </form>
+            </section>
+
+            <nav class="pv-cuidador-mobile-nav" aria-label="Navegação principal">
+              <button type="button" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+              <button type="button" class="active" data-cuidador-rota="/vinculos" aria-current="page">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+              <button type="button" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+              <button type="button" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+              <button type="button" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+            </nav>
+          </main>
+        </section>
+      </div>`;
+
+    main.querySelectorAll('[data-cuidador-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.cuidadorRota));
+    });
+    PV.ui.ligarLogout(main);
+
+    const nomeEl = main.querySelector('#pv-cuidador-vinculos-nome');
+    const avatarEl = main.querySelector('#pv-cuidador-vinculos-avatar');
+    const avisoEl = main.querySelector('#pv-cuidador-vinculos-aviso');
+    const listaEl = main.querySelector('#pv-cuidador-vinculos-list');
+    const formEl = main.querySelector('#pv-cuidador-vincular-form');
+    const codigoEl = main.querySelector('#pv-cuidador-codigo-paciente');
+    const submitEl = main.querySelector('#pv-cuidador-vincular-submit');
+    let pacientes = [];
+
+    const mostrarAviso = (texto, tipo = 'info') => {
+      avisoEl.hidden = !texto;
+      avisoEl.className = `pv-cuidador-notice${tipo === 'error' ? ' is-error' : tipo === 'success' ? ' is-success' : ''}`;
+      avisoEl.textContent = texto || '';
+    };
+
+    function renderizarPacientes() {
+      if (!pacientes.length) {
+        listaEl.innerHTML = `
+          <div class="pv-cuidador-vinculos-empty">
+            <span class="pv-cuidador-empty-icon">${iconeHomeAcompanhante('vinculos')}</span>
+            <strong>Nenhum paciente vinculado ainda</strong>
+            <p>Quando houver um vínculo associado à sua conta, o paciente aparecerá aqui. Você também pode usar o formulário abaixo para vincular um código.</p>
+          </div>`;
+        return;
+      }
+
+      listaEl.innerHTML = pacientes.map((paciente) => {
+        const id = Number(paciente.id);
+        const nomePaciente = paciente.nome_social || paciente.nome || 'Paciente vinculado';
+        return `
+          <article class="pv-cuidador-vinculo-card" data-vinculo-id="${id}">
+            <div class="pv-cuidador-vinculo-summary">
+              <span class="pv-cuidador-patient-avatar">${escaparHtml(iniciaisAcompanhante(nomePaciente))}</span>
+              <div class="pv-cuidador-patient-info"><strong>${escaparHtml(nomePaciente)}</strong><small>Vínculo ativo · Paciente acompanhado</small></div>
+              <span class="pv-cuidador-status">Ativo</span>
+            </div>
+            <div class="pv-cuidador-vinculo-actions">
+              <button class="pv-cuidador-button primary" type="button" data-consultar-vinculo="${id}">Ver acompanhamento permitido</button>
+              <button class="pv-cuidador-button secondary" type="button" data-detalhes-vinculo="${id}">Detalhes do vínculo</button>
+            </div>
+            <div class="pv-cuidador-vinculo-detail" id="pv-cuidador-vinculo-detail-${id}" hidden></div>
+          </article>`;
+      }).join('');
+
+      listaEl.querySelectorAll('[data-consultar-vinculo], [data-detalhes-vinculo]').forEach((botao) => {
+        botao.addEventListener('click', async () => {
+          const id = Number(botao.dataset.consultarVinculo || botao.dataset.detalhesVinculo);
+          const detail = main.querySelector(`#pv-cuidador-vinculo-detail-${id}`);
+          if (!detail) return;
+          if (!detail.hidden) {
+            detail.hidden = true;
+            return;
+          }
+          detail.hidden = false;
+          detail.innerHTML = '<div class="pv-cuidador-empty">Carregando informações autorizadas...</div>';
+          botao.disabled = true;
+          try {
+            const paciente = await PV.db.pacientes.buscar(id);
+            if (!main.isConnected) return;
+            const cidade = [paciente.cidade, paciente.estado].filter(Boolean).join(' — ');
+            const itens = [
+              ['E-mail', paciente.email],
+              ['Cidade / UF', cidade],
+              ['Unidade de saúde', paciente.unidades_de_saude],
+              ['Contato de emergência', paciente.contato_emergencia],
+            ].filter((item) => String(item[1] || '').trim());
+            detail.innerHTML = itens.length
+              ? `<div class="pv-cuidador-vinculo-detail-grid">${itens.map(([label, value]) => `<div><small>${escaparHtml(label)}</small><strong>${escaparHtml(value)}</strong></div>`).join('')}</div><p>Para manter o escopo desta etapa, os registros de sintomas serão organizados em uma tela de consulta própria na próxima etapa.</p>`
+              : '<p>O cadastro não contém informações adicionais de contato ou referência para exibir.</p>';
+          } catch (erro) {
+            detail.innerHTML = `<p class="pv-cuidador-inline-error">${escaparHtml(erro.message || 'Não foi possível carregar as informações deste vínculo.')}</p>`;
+          } finally {
+            botao.disabled = false;
+          }
+        });
+      });
+    }
+
+    const resultados = await Promise.allSettled([
+      PV.db.acompanhantes.buscar(ctx.usuario.id),
+      PV.db.acompanhantes.pacientes(ctx.usuario.id),
+    ]);
+    if (!main.isConnected) return;
+
+    const perfilResult = resultados[0];
+    const pacientesResult = resultados[1];
+    let nome = 'Acompanhante';
+    if (perfilResult.status === 'fulfilled' && perfilResult.value) {
+      nome = perfilResult.value.nome_social || perfilResult.value.nome_completo || 'Acompanhante';
+    } else if (ctx.usuario.email) {
+      nome = ctx.usuario.email.split('@')[0] || nome;
+    }
+    nomeEl.textContent = nome;
+    avatarEl.textContent = iniciaisAcompanhante(nome);
+
+    if (pacientesResult.status === 'fulfilled') {
+      pacientes = pacientesResult.value || [];
+      renderizarPacientes();
+    } else {
+      listaEl.innerHTML = `<div class="pv-cuidador-vinculos-empty"><strong>Não foi possível carregar os vínculos</strong><p>${escaparHtml(pacientesResult.reason?.message || 'Tente novamente em instantes.')}</p></div>`;
+    }
+
+    formEl.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      mostrarAviso('');
+      const codigo = Number(codigoEl.value);
+      if (!Number.isSafeInteger(codigo) || codigo <= 0) {
+        mostrarAviso('Informe um código de paciente válido.', 'error');
+        codigoEl.focus();
+        return;
+      }
+      if (pacientes.some((paciente) => Number(paciente.id) === codigo)) {
+        mostrarAviso('Este paciente já está vinculado à sua conta.', 'error');
+        return;
+      }
+      submitEl.disabled = true;
+      submitEl.textContent = 'Vinculando...';
+      try {
+        await PV.db.vinculos.criar(codigo);
+        pacientes = await PV.db.acompanhantes.pacientes(ctx.usuario.id);
+        renderizarPacientes();
+        codigoEl.value = '';
+        mostrarAviso('Vínculo criado com sucesso.', 'success');
+      } catch (erro) {
+        mostrarAviso(erro.message || 'Não foi possível criar o vínculo. Confira o código e tente novamente.', 'error');
+      } finally {
+        submitEl.disabled = false;
+        submitEl.textContent = 'Vincular paciente';
+      }
+    });
+  }
+
+  /* PaliVida: cuidador sintomas consulta v1 */
+  async function telaSintomasAcompanhante(main, ctx) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+    main.classList.remove('pv-sem-scroll');
+    main.classList.remove('pv-cuidador-sintomas-main');
+    main.classList.add('pv-cuidador-sintomas-main');
+
+    const esc = (valor) => PV.ui.escaparHtml(String(valor ?? ''));
+    const nomeNormalizado = (valor) => String(valor || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+      .replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    const dataValor = (registro) => registro?.data_registro || registro?.created_at || registro?.data || '';
+    const timestamp = (registro) => {
+      const valor = dataValor(registro);
+      const numero = valor ? new Date(valor).getTime() : 0;
+      return Number.isFinite(numero) ? numero : 0;
+    };
+    const formatarData = (valor, incluirHora = true) => {
+      if (!valor) return 'Data não informada';
+      const data = new Date(valor);
+      if (Number.isNaN(data.getTime())) return esc(valor);
+      return data.toLocaleString('pt-BR', incluirHora
+        ? { dateStyle: 'short', timeStyle: 'short' }
+        : { dateStyle: 'short' });
+    };
+    const iniciais = (nome) => {
+      const partes = String(nome || '').trim().split(/\s+/).filter(Boolean);
+      if (!partes.length) return 'A';
+      return (partes.length === 1 ? partes[0].slice(0, 2) : partes[0][0] + partes[partes.length - 1][0]).toLocaleUpperCase('pt-BR');
+    };
+    const paraLista = (valor) => {
+      if (Array.isArray(valor)) return valor.map((item) => String(item).trim()).filter(Boolean);
+      return String(valor || '').split(/[;\n]+/).map((item) => item.trim()).filter(Boolean);
+    };
+    const hashSintomas = (parametros = {}) => {
+      const query = new URLSearchParams();
+      Object.entries(parametros).forEach(([chave, valor]) => {
+        if (valor !== undefined && valor !== null && valor !== '') query.set(chave, String(valor));
+      });
+      const texto = query.toString();
+      PV.router.navegar('/sintomas' + (texto ? '?' + texto : ''));
+    };
+
+    const viewSolicitada = ['detalhe', 'historico'].includes(ctx.query.view) ? ctx.query.view : 'lista';
+    const idSintomaSolicitado = Number(ctx.query.sintoma) || 0;
+    main.innerHTML = `
+      <div class="pv-cuidador-home-layout pv-cuidador-sintomas-layout">
+        <aside class="pv-cuidador-sidebar" aria-label="Navegação do acompanhante">
+          <div class="pv-cuidador-sidebar-top">
+            <div class="pv-cuidador-brand"><a href="#/home" aria-label="PaliVida — início"><img src="assets/img/logo-completo.png" alt="PaliVida"></a></div>
+            <div class="pv-cuidador-nav-label">MEU CUIDADO</div>
+            <nav class="pv-cuidador-nav">
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/vinculos">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+              <button type="button" class="pv-cuidador-nav-item active" data-cuidador-rota="/sintomas" aria-current="page">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+              <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+            </nav>
+          </div>
+          <div class="pv-cuidador-sidebar-footer">
+            <div class="pv-cuidador-sidebar-profile"><span class="pv-cuidador-avatar" id="pv-cuid-sintomas-avatar">A</span><span class="pv-cuidador-profile-text"><strong id="pv-cuid-sintomas-nome">Acompanhante</strong><small>Acompanhante</small></span></div>
+            <button type="button" class="pv-cuidador-logout" data-sair>${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
+          </div>
+        </aside>
+        <section class="pv-cuidador-workspace">
+          <header class="pv-cuidador-topbar"><strong>Meu cuidado</strong><div class="pv-cuidador-topbar-actions"><span>Protótipo demonstrativo</span><button type="button" class="pv-cuidador-topbar-icon" data-cuidador-rota="/busca" aria-label="Buscar conteúdos">${iconeHomeAcompanhante('busca')}</button></div></header>
+          <div class="pv-cuidador-content pv-cuidador-sintomas-content">
+            <div class="pv-cuidador-heading"><span class="pv-cuidador-eyebrow">ACOMPANHAMENTO</span><h1 id="pv-cuid-sintomas-titulo">Sintomas do paciente</h1><p id="pv-cuid-sintomas-subtitulo">Consulte os sintomas e as intensidades informadas pelos pacientes vinculados à sua conta.</p></div>
+            <div id="pv-cuid-sintomas-notice" class="pv-cuidador-notice" hidden></div>
+            <div id="pv-cuid-sintomas-loading" class="pv-cuidador-symptom-loading"><span class="pv-cuidador-symptom-spinner" aria-hidden="true"></span>Carregando informações autorizadas...</div>
+            <div id="pv-cuid-sintomas-body" hidden></div>
+          </div>
+        </section>
+        <nav class="pv-cuidador-mobile-nav" aria-label="Navegação principal">
+          <button type="button" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+          <button type="button" data-cuidador-rota="/vinculos">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+          <button type="button" class="active" data-cuidador-rota="/sintomas" aria-current="page">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+          <button type="button" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+          <button type="button" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+        </nav>
+      </div>`;
+
+    main.querySelectorAll('[data-cuidador-rota]').forEach((botao) => botao.addEventListener('click', () => PV.router.navegar(botao.dataset.cuidadorRota)));
+    PV.ui.ligarLogout(main);
+
+    const nomeEl = main.querySelector('#pv-cuid-sintomas-nome');
+    const avatarEl = main.querySelector('#pv-cuid-sintomas-avatar');
+    const loadingEl = main.querySelector('#pv-cuid-sintomas-loading');
+    const bodyEl = main.querySelector('#pv-cuid-sintomas-body');
+    const noticeEl = main.querySelector('#pv-cuid-sintomas-notice');
+    const tituloEl = main.querySelector('#pv-cuid-sintomas-titulo');
+    const subtituloEl = main.querySelector('#pv-cuid-sintomas-subtitulo');
+    const mostrarAviso = (mensagem, erro = false) => {
+      noticeEl.hidden = !mensagem;
+      noticeEl.className = `pv-cuidador-notice${erro ? ' is-error' : ''}`;
+      noticeEl.textContent = mensagem || '';
+    };
+
+    const resultados = await Promise.allSettled([
+      PV.db.acompanhantes.buscar(ctx.usuario.id),
+      PV.db.acompanhantes.pacientes(ctx.usuario.id),
+      PV.db.sintomas.listar(),
+      PV.db.registros.listar(),
+    ]);
+    if (!main.isConnected) return;
+    const [perfilResult, pacientesResult, sintomasResult, registrosResult] = resultados;
+    const perfil = perfilResult.status === 'fulfilled' ? perfilResult.value : null;
+    const pacientes = pacientesResult.status === 'fulfilled' ? (pacientesResult.value || []) : [];
+    const sintomas = sintomasResult.status === 'fulfilled' ? (sintomasResult.value || []) : [];
+    const registrosPermitidos = registrosResult.status === 'fulfilled' ? (registrosResult.value || []) : [];
+    const nomeCuidador = perfil?.nome_social || perfil?.nome_completo || (ctx.usuario.email ? ctx.usuario.email.split('@')[0] : 'Acompanhante') || 'Acompanhante';
+    nomeEl.textContent = nomeCuidador;
+    avatarEl.textContent = iniciais(nomeCuidador);
+    loadingEl.hidden = true;
+    bodyEl.hidden = false;
+
+    if (pacientesResult.status === 'rejected') {
+      mostrarAviso(pacientesResult.reason?.message || 'Não foi possível carregar os vínculos autorizados. Tente novamente.', true);
+    }
+    if (sintomasResult.status === 'rejected' || registrosResult.status === 'rejected') {
+      mostrarAviso('Não foi possível carregar todos os dados de acompanhamento. Atualize a página para tentar novamente.', true);
+    }
+
+    const queryPatientId = Number(ctx.query.paciente) || 0;
+    const pacienteSelecionado = pacientes.find((paciente) => Number(paciente.id) === queryPatientId) || pacientes[0] || null;
+    // Restrict everything displayed below to a patient returned by the caregiver's own authorized links.
+    const idPaciente = pacienteSelecionado ? Number(pacienteSelecionado.id) : 0;
+    const nomePaciente = pacienteSelecionado ? (pacienteSelecionado.nome_social || pacienteSelecionado.nome || 'Paciente vinculado') : '';
+    const registrosPaciente = registrosPermitidos
+      .filter((registro) => Number(registro.paciente_id) === idPaciente)
+      .slice()
+      .sort((a, b) => timestamp(b) - timestamp(a));
+    const mapaSintomas = new Map(sintomas.map((sintoma) => [Number(sintoma.id), sintoma]));
+    const mapaUltimoRegistro = new Map();
+    registrosPaciente.forEach((registro) => {
+      const id = Number(registro.sintoma_id);
+      if (id && !mapaUltimoRegistro.has(id)) mapaUltimoRegistro.set(id, registro);
+    });
+
+    const seletorPaciente = () => `
+      <section class="pv-cuidador-symptom-patient-picker">
+        <div><label for="pv-cuid-sintomas-paciente">Paciente em acompanhamento</label><p>Os dados exibidos pertencem ao paciente selecionado.</p></div>
+        <select id="pv-cuid-sintomas-paciente" ${pacientes.length ? '' : 'disabled'}>
+          ${pacientes.map((paciente) => `<option value="${Number(paciente.id)}" ${Number(paciente.id) === idPaciente ? 'selected' : ''}>${esc(paciente.nome_social || paciente.nome || 'Paciente vinculado')}</option>`).join('')}
+        </select>
+      </section>`;
+
+    const listaSemVinculos = () => `
+      <section class="pv-cuidador-symptom-empty">
+        <span class="pv-cuidador-empty-icon">${iconeHomeAcompanhante('vinculos')}</span>
+        <h2>Nenhum paciente vinculado</h2>
+        <p>Para consultar sintomas e histórico, primeiro é necessário ter um vínculo com um paciente.</p>
+        <button type="button" class="pv-cuidador-button primary" data-cuid-vinculos>Gerenciar vínculos</button>
+      </section>`;
+
+    function nomeDoSintoma(registro) {
+      return mapaSintomas.get(Number(registro.sintoma_id))?.nome_sintoma || 'Sintoma';
+    }
+    function navegarParaHistorico(idSintoma = 0) {
+      hashSintomas({ paciente: idPaciente, view: 'historico', sintoma: idSintoma || '' });
+    }
+    function ligarSeletor() {
+      const seletor = bodyEl.querySelector('#pv-cuid-sintomas-paciente');
+      if (seletor) seletor.addEventListener('change', () => hashSintomas({ paciente: seletor.value }));
+    }
+    function ligarBotaoVinculos() {
+      bodyEl.querySelectorAll('[data-cuid-vinculos]').forEach((botao) => botao.addEventListener('click', () => PV.router.navegar('/vinculos')));
+    }
+
+    if (!idPaciente) {
+      tituloEl.textContent = 'Sintomas dos pacientes';
+      subtituloEl.textContent = 'Consulte os registros e as intensidades informadas pelos pacientes vinculados.';
+      bodyEl.innerHTML = listaSemVinculos();
+      ligarBotaoVinculos();
+      return;
+    }
+
+    tituloEl.textContent = viewSolicitada === 'historico' ? 'Histórico de sintomas' : viewSolicitada === 'detalhe' ? 'Acompanhamento de sintomas' : 'Sintomas de ' + nomePaciente;
+    subtituloEl.textContent = viewSolicitada === 'historico'
+      ? 'Consulte os registros informados, em ordem cronológica.'
+      : viewSolicitada === 'detalhe'
+        ? 'Informações educativas e histórico do sintoma selecionado.'
+        : 'Consulte os sintomas e as intensidades informadas para este paciente.';
+
+    let conteudos = [];
+    if (viewSolicitada === 'detalhe') {
+      try { conteudos = await PV.db.conteudos.listar({ timeoutMs: 8000 }); } catch (_) { /* conteúdo educativo é opcional; histórico continua disponível */ }
+      if (!main.isConnected) return;
+    }
+
+    let html = seletorPaciente();
+
+    if (viewSolicitada === 'lista') {
+      html += `
+        <div class="pv-cuidador-symptom-toolbar">
+          <div class="pv-cuidador-symptom-search"><span aria-hidden="true">⌕</span><input id="pv-cuid-sintoma-busca" type="search" placeholder="Buscar sintoma" aria-label="Buscar sintoma"></div>
+          <button type="button" class="pv-cuidador-button secondary" data-cuid-historico>${iconeHomeAcompanhante('sintomas')} Histórico</button>
+        </div>
+        <div class="pv-cuidador-symptom-section-title"><h2>Todos os sintomas</h2><span>${sintomas.length} sintomas</span></div>
+        <div class="pv-cuidador-symptom-grid" id="pv-cuid-sintoma-grid">
+          ${sintomas.length ? sintomas.map((sintoma) => {
+            const id = Number(sintoma.id);
+            const nome = sintoma.nome_sintoma || 'Sintoma';
+            const ultimo = mapaUltimoRegistro.get(id);
+            return `<button type="button" class="pv-cuidador-symptom-card" data-cuid-sintoma="${id}" data-cuid-nome="${esc(nomeNormalizado(nome))}"><span class="pv-cuidador-symptom-abbr">${esc(iniciais(nome))}</span><span class="pv-cuidador-symptom-copy"><strong>${esc(nome)}</strong><small>Informações e acompanhamento</small>${ultimo ? `<em>Último registro: ${esc(ultimo.intensidade)}/10</em>` : ''}</span><span class="pv-cuidador-symptom-arrow" aria-hidden="true">›</span></button>`;
+          }).join('') : '<div class="pv-cuidador-symptom-empty"><h2>Nenhum sintoma cadastrado</h2><p>Não há sintomas disponíveis para consulta neste momento.</p></div>'}
+        </div>
+        <p class="pv-cuidador-symptom-readonly-note">Consulta somente leitura: os registros são exibidos conforme o paciente informou. Nenhum registro será criado ou modificado nesta tela.</p>`;
+    } else if (viewSolicitada === 'detalhe') {
+      const sintoma = sintomas.find((item) => Number(item.id) === idSintomaSolicitado);
+      if (!sintoma) {
+        html += `<section class="pv-cuidador-symptom-empty"><h2>Sintoma não encontrado</h2><p>Selecione um sintoma da lista para consultar seus detalhes.</p><button type="button" class="pv-cuidador-button secondary" data-cuid-lista>Voltar aos sintomas</button></section>`;
+      } else {
+        const nome = sintoma.nome_sintoma || 'Sintoma';
+        const conteudo = conteudos.find((item) => nomeNormalizado(item.titulo) === nomeNormalizado(nome)) || null;
+        const descricao = conteudo?.descricao || conteudo?.texto || '';
+        const sinais = paraLista(conteudo?.SinaisSintomas ?? conteudo?.sinaissintomas ?? conteudo?.sinaisSintomas);
+        const alertas = paraLista(conteudo?.SinaisAlerta ?? conteudo?.sinaisalerta ?? conteudo?.sinaisAlerta);
+        const registrosSintoma = registrosPaciente.filter((registro) => Number(registro.sintoma_id) === Number(sintoma.id));
+        const ultimo = registrosSintoma[0] || null;
+        html += `
+          <button type="button" class="pv-cuidador-symptom-back" data-cuid-lista>← Voltar para sintomas</button>
+          <section class="pv-cuidador-symptom-detail-heading"><span class="pv-cuidador-eyebrow">SINTOMA</span><h2>${esc(nome)}</h2><p>Consulte informações educativas e o histórico informado para este paciente.</p></section>
+          <div class="pv-cuidador-symptom-detail-grid">
+            <article class="pv-cuidador-symptom-detail-card"><h3>Sobre este sintoma</h3>${descricao ? `<p>${esc(descricao)}</p>` : '<p>Não há definição educativa cadastrada para este sintoma no momento.</p>'}
+              ${sinais.length ? `<div class="pv-cuidador-symptom-detail-section"><h4>Sinais e sintomas</h4><ul>${sinais.map((item) => `<li>${esc(item)}</li>`).join('')}</ul></div>` : ''}
+              ${alertas.length ? `<div class="pv-cuidador-symptom-detail-section alert"><h4>Sinais de alerta cadastrados</h4><ul>${alertas.map((item) => `<li>${esc(item)}</li>`).join('')}</ul></div>` : ''}
+            </article>
+            <aside class="pv-cuidador-symptom-follow-card"><span class="pv-cuidador-card-eyebrow">ACOMPANHAMENTO</span><h3>Última intensidade informada</h3><p>${ultimo ? `${esc(ultimo.intensidade)}/10 · ${esc(formatarData(dataValor(ultimo)))}` : 'Ainda não há registro deste sintoma para o paciente selecionado.'}</p><button type="button" class="pv-cuidador-button primary" data-cuid-historico-sintoma="${Number(sintoma.id)}">Ver histórico deste sintoma</button></aside>
+          </div>
+          <p class="pv-cuidador-symptom-readonly-note">Este perfil pode consultar os registros autorizados. O lançamento de novas intensidades pelo cuidador não está habilitado nesta etapa.</p>`;
+      }
+    } else {
+      const registrosFiltrados = idSintomaSolicitado
+        ? registrosPaciente.filter((registro) => Number(registro.sintoma_id) === idSintomaSolicitado)
+        : registrosPaciente;
+      const hoje = Date.now();
+      const seteDias = 7 * 24 * 60 * 60 * 1000;
+      const recentes = registrosFiltrados.filter((registro) => timestamp(registro) > 0 && hoje - timestamp(registro) <= seteDias);
+      const media = registrosFiltrados.length
+        ? registrosFiltrados.reduce((soma, registro) => soma + (Number(registro.intensidade) || 0), 0) / registrosFiltrados.length
+        : null;
+      const ultimo = registrosFiltrados[0] || null;
+      const nomeFiltro = idSintomaSolicitado ? (mapaSintomas.get(idSintomaSolicitado)?.nome_sintoma || 'sintoma selecionado') : '';
+      html += `
+        <div class="pv-cuidador-history-actions"><button type="button" class="pv-cuidador-button secondary" data-cuid-lista>← Todos os sintomas</button>${idSintomaSolicitado ? '<button type="button" class="pv-cuidador-button secondary" data-cuid-todo-historico>Ver histórico completo</button>' : ''}</div>
+        <div class="pv-cuidador-history-title"><h2>${idSintomaSolicitado ? 'Histórico de ' + esc(nomeFiltro) : 'Registros recentes'}</h2><p>${esc(nomePaciente)} · dados informados no acompanhamento</p></div>
+        <div class="pv-cuidador-history-stats">
+          <article><span>Registros nos últimos 7 dias</span><strong>${recentes.length}</strong><small>Últimos sete dias</small></article>
+          <article><span>Média informada</span><strong>${media === null ? '—' : media.toLocaleString('pt-BR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}</strong><small>Escala de 0 a 10${registrosFiltrados.length ? ` · ${registrosFiltrados.length} registros` : ''}</small></article>
+          <article><span>Último registro</span><strong>${ultimo ? `${esc(ultimo.intensidade)}/10` : '—'}</strong><small>${ultimo ? esc(nomeDoSintoma(ultimo)) + ' · ' + esc(formatarData(dataValor(ultimo))) : 'Sem registros disponíveis'}</small></article>
+        </div>
+        <section class="pv-cuidador-history-panel"><header><h3>Histórico de registros</h3><span>${registrosFiltrados.length} registro(s)</span></header>
+          ${registrosFiltrados.length ? `<div class="pv-cuidador-history-list">${registrosFiltrados.map((registro) => {
+            const valor = Number(registro.intensidade);
+            return `<article class="pv-cuidador-history-row"><span class="pv-cuidador-history-record-icon">${iconeHomeAcompanhante('sintomas')}</span><span class="pv-cuidador-history-record-copy"><strong>${esc(nomeDoSintoma(registro))}</strong><small>${esc(formatarData(dataValor(registro)))}</small></span><span class="pv-cuidador-history-score"><small>Intensidade informada</small><strong>${Number.isFinite(valor) ? esc(valor) : '—'}<small>/10</small></strong></span></article>`;
+          }).join('')}</div>` : '<div class="pv-cuidador-symptom-empty"><h2>Nenhum registro encontrado</h2><p>Não há registros para os filtros e o paciente selecionado.</p></div>'}
+        </section>
+        <p class="pv-cuidador-symptom-readonly-note">Este painel é de consulta. As intensidades e datas são exibidas a partir dos registros existentes, sem inferir diagnóstico ou orientação clínica.</p>`;
+    }
+
+    bodyEl.innerHTML = html;
+    ligarSeletor();
+    ligarBotaoVinculos();
+    bodyEl.querySelectorAll('[data-cuid-sintoma]').forEach((botao) => botao.addEventListener('click', () => hashSintomas({ paciente: idPaciente, view: 'detalhe', sintoma: botao.dataset.cuidSintoma })));
+    bodyEl.querySelectorAll('[data-cuid-historico]').forEach((botao) => botao.addEventListener('click', () => navegarParaHistorico()));
+    bodyEl.querySelectorAll('[data-cuid-historico-sintoma]').forEach((botao) => botao.addEventListener('click', () => navegarParaHistorico(botao.dataset.cuidHistoricoSintoma)));
+    bodyEl.querySelectorAll('[data-cuid-lista]').forEach((botao) => botao.addEventListener('click', () => hashSintomas({ paciente: idPaciente })));
+    bodyEl.querySelectorAll('[data-cuid-todo-historico]').forEach((botao) => botao.addEventListener('click', () => navegarParaHistorico()));
+    const buscaEl = bodyEl.querySelector('#pv-cuid-sintoma-busca');
+    if (buscaEl) {
+      buscaEl.addEventListener('input', () => {
+        const termo = nomeNormalizado(buscaEl.value);
+        bodyEl.querySelectorAll('[data-cuid-sintoma]').forEach((cartao) => {
+          cartao.hidden = Boolean(termo && !cartao.dataset.cuidNome.includes(termo));
+        });
+        const visiveis = [...bodyEl.querySelectorAll('[data-cuid-sintoma]')].filter((cartao) => !cartao.hidden).length;
+        const resumo = bodyEl.querySelector('.pv-cuidador-symptom-section-title span');
+        if (resumo) resumo.textContent = `${visiveis} sintoma(s)`;
+      });
     }
   }
 
@@ -1817,7 +2538,206 @@ window.PV.screens = window.PV.screens || {};
     await carregar();
   }
 
-  async function busca(main, ctx) {
+    /* PaliVida: cuidador conteúdos Lovable v1 */
+  function layoutBibliotecaAcompanhante(rotaAtiva, conteudoHtml) {
+    const ativo = (rota) => rotaAtiva === rota ? ' active' : '';
+    return `
+      <div class="pv-cuidador-home-layout pv-cuidador-library-layout">
+        <aside class="pv-cuidador-sidebar" aria-label="Navegação do acompanhante">
+          <div class="pv-cuidador-sidebar-top">
+            <div class="pv-cuidador-brand"><a href="#/home" aria-label="PaliVida — início"><img src="assets/img/logo-completo.png" alt="PaliVida"></a></div>
+            <div class="pv-cuidador-nav-label">MEU CUIDADO</div>
+            <nav class="pv-cuidador-nav">
+              <button type="button" class="pv-cuidador-nav-item${ativo('home')}" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+              <button type="button" class="pv-cuidador-nav-item${ativo('vinculos')}" data-cuidador-rota="/vinculos">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+              <button type="button" class="pv-cuidador-nav-item${ativo('sintomas')}" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+              <button type="button" class="pv-cuidador-nav-item${ativo('conteudos')}" data-cuidador-rota="/busca" aria-current="${rotaAtiva === 'conteudos' ? 'page' : 'false'}">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+              <button type="button" class="pv-cuidador-nav-item${ativo('perfil')}" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+            </nav>
+          </div>
+          <div class="pv-cuidador-sidebar-footer">
+            <div class="pv-cuidador-sidebar-profile"><span class="pv-cuidador-avatar" id="pv-cuidador-library-avatar" aria-hidden="true">A</span><span class="pv-cuidador-profile-text"><strong id="pv-cuidador-library-name">Acompanhante</strong><small>Acompanhante</small></span></div>
+            <button type="button" class="pv-cuidador-logout" data-sair>${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
+          </div>
+        </aside>
+        <section class="pv-cuidador-workspace">
+          <header class="pv-cuidador-topbar"><strong>Meu cuidado</strong><div class="pv-cuidador-topbar-actions"><span>Protótipo demonstrativo</span><button type="button" class="pv-cuidador-topbar-icon" data-cuidador-rota="/busca" aria-label="Abrir biblioteca de conteúdos">${iconeHomeAcompanhante('busca')}</button></div></header>
+          <main class="pv-cuidador-content pv-cuidador-library-content">${conteudoHtml}</main>
+        </section>
+        <nav class="pv-cuidador-mobile-nav" aria-label="Navegação principal">
+          <button type="button" class="${ativo('home').trim()}" data-cuidador-rota="/home">${iconeHomeAcompanhante('inicio')}<span>Início</span></button>
+          <button type="button" class="${ativo('vinculos').trim()}" data-cuidador-rota="/vinculos">${iconeHomeAcompanhante('vinculos')}<span>Vínculos</span></button>
+          <button type="button" class="${ativo('sintomas').trim()}" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
+          <button type="button" class="${ativo('conteudos').trim()}" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
+          <button type="button" class="${ativo('perfil').trim()}" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+        </nav>
+      </div>`;
+  }
+
+  function prepararBibliotecaAcompanhante(main) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+    main.classList.remove('pv-sem-scroll', 'pv-cuidador-vinculos-main', 'pv-cuidador-sintomas-main', 'pv-conteudo-detalhe-main', 'pv-cuidador-conteudos-main');
+    main.classList.add('pv-cuidador-conteudos-main');
+  }
+
+  function ligarBibliotecaAcompanhante(main, ctx) {
+    main.querySelectorAll('[data-cuidador-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.cuidadorRota));
+    });
+    PV.ui.ligarLogout(main);
+    const nomeEl = main.querySelector('#pv-cuidador-library-name');
+    const avatarEl = main.querySelector('#pv-cuidador-library-avatar');
+    PV.db.acompanhantes.buscar(ctx.usuario.id).then((perfil) => {
+      if (!main.isConnected) return;
+      const nome = perfil?.nome_social || perfil?.nome_completo || 'Acompanhante';
+      if (nomeEl) nomeEl.textContent = nome;
+      if (avatarEl) {
+        const partes = String(nome).trim().split(/\s+/).filter(Boolean);
+        avatarEl.textContent = (partes.length > 1 ? partes[0][0] + partes[partes.length - 1][0] : String(nome).slice(0, 2)).toLocaleUpperCase('pt-BR');
+      }
+    }).catch(() => {
+      if (ctx.usuario.email && nomeEl && main.isConnected) nomeEl.textContent = ctx.usuario.email.split('@')[0];
+    });
+  }
+
+  function categoriaBibliotecaAcompanhante(conteudo) {
+    const declarada = conteudo.categoria || conteudo.tema || conteudo.sintoma || conteudo.assunto;
+    if (declarada) return String(declarada);
+    const titulo = String(conteudo.titulo || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const regras = [
+      [/bem.?estar|qualidade de vida/, 'Bem-estar'],
+      [/dor/, 'Dor'],
+      [/fadiga|cansaco/, 'Fadiga'],
+      [/ansiedade|preocupacao/, 'Ansiedade'],
+      [/sono|insonia|sonolencia/, 'Sono'],
+      [/alimentacao|apetite|anorexia|nutricao/, 'Alimentação'],
+      [/nausea|vomit/, 'Náuseas'],
+      [/respiracao|dispneia|falta de ar/, 'Respiração'],
+    ];
+    const regra = regras.find(([expressao]) => expressao.test(titulo));
+    return regra ? regra[1] : 'Cuidado';
+  }
+
+  function tempoLeituraBibliotecaAcompanhante(conteudo) {
+    const corpo = String(conteudo.texto || conteudo.descricao || '').trim();
+    const palavras = corpo ? corpo.split(/\s+/).length : 0;
+    return Math.max(1, Math.ceil(palavras / 180));
+  }
+
+  async function buscaAcompanhanteLovable(main, ctx) {
+    prepararBibliotecaAcompanhante(main);
+    const esc = (valor) => PV.ui.escaparHtml(String(valor ?? ''));
+    main.innerHTML = layoutBibliotecaAcompanhante('conteudos', `
+      <section class="pv-cuidador-heading pv-cuidador-library-heading">
+        <span class="pv-cuidador-eyebrow">BIBLIOTECA</span>
+        <h1>Conteúdos para o cuidado</h1>
+        <p>Informações organizadas para uma leitura simples e confortável.</p>
+      </section>
+      <div class="pv-cuidador-library-toolbar">
+        <span id="pv-cuidador-library-count">Carregando conteúdos...</span>
+        <button type="button" class="pv-cuidador-button secondary" id="pv-cuidador-library-search-toggle">${iconeHomeAcompanhante('busca')}<span>Buscar</span></button>
+      </div>
+      <div class="pv-cuidador-library-search" id="pv-cuidador-library-search" hidden><label for="pv-cuidador-library-search-input">Buscar por tema ou título</label><input id="pv-cuidador-library-search-input" type="search" placeholder="Digite o tema ou título do conteúdo..."></div>
+      <div class="pv-cuidador-library-notice" id="pv-cuidador-library-notice" hidden></div>
+      <section class="pv-cuidador-library-grid" id="pv-cuidador-library-grid"><div class="pv-cuidador-library-loading"><span class="pv-cuidador-symptom-spinner" aria-hidden="true"></span>Carregando conteúdos...</div></section>
+    `);
+    ligarBibliotecaAcompanhante(main, ctx);
+    const countEl = main.querySelector('#pv-cuidador-library-count');
+    const gridEl = main.querySelector('#pv-cuidador-library-grid');
+    const noticeEl = main.querySelector('#pv-cuidador-library-notice');
+    const searchToggle = main.querySelector('#pv-cuidador-library-search-toggle');
+    const searchPanel = main.querySelector('#pv-cuidador-library-search');
+    const searchInput = main.querySelector('#pv-cuidador-library-search-input');
+    let lista = [];
+
+    searchToggle.addEventListener('click', () => {
+      searchPanel.hidden = !searchPanel.hidden;
+      if (!searchPanel.hidden) searchInput.focus();
+    });
+
+    function renderizarLista() {
+      const termo = String(searchInput.value || '').trim().toLocaleLowerCase('pt-BR');
+      const filtrados = lista.filter((item) => [item.titulo, item.descricao, item.texto, categoriaBibliotecaAcompanhante(item)].join(' ').toLocaleLowerCase('pt-BR').includes(termo));
+      countEl.textContent = termo ? `${filtrados.length} resultado(s)` : `${lista.length} conteúdo(s)`;
+      if (!filtrados.length) {
+        gridEl.innerHTML = `<div class="pv-cuidador-library-empty"><span>${iconeHomeAcompanhante('conteudos')}</span><strong>${lista.length ? 'Nenhum conteúdo encontrado' : 'Nenhum conteúdo disponível'}</strong><p>${lista.length ? 'Experimente pesquisar por outro termo.' : 'Não há materiais educativos disponíveis neste momento.'}</p>${termo ? '<button type="button" class="pv-cuidador-button secondary" id="pv-cuidador-library-clear">Limpar busca</button>' : ''}</div>`;
+        main.querySelector('#pv-cuidador-library-clear')?.addEventListener('click', () => { searchInput.value = ''; renderizarLista(); });
+        return;
+      }
+      gridEl.innerHTML = filtrados.map((item) => {
+        const categoria = categoriaBibliotecaAcompanhante(item);
+        const descricao = String(item.descricao || '').trim();
+        const leitura = tempoLeituraBibliotecaAcompanhante(item);
+        return `<button type="button" class="pv-cuidador-library-card" data-abrir-conteudo="${esc(item.id)}"><span class="pv-cuidador-library-card-top"><span class="pv-cuidador-library-tag">${esc(categoria)}</span><span class="pv-cuidador-library-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span><strong>${esc(item.titulo || 'Conteúdo educativo')}</strong>${descricao ? `<p>${esc(descricao)}</p>` : ''}<small>${leitura} min de leitura</small></button>`;
+      }).join('');
+      gridEl.querySelectorAll('[data-abrir-conteudo]').forEach((botao) => {
+        botao.addEventListener('click', () => PV.router.navegar('/conteudo/' + encodeURIComponent(botao.dataset.abrirConteudo)));
+      });
+    }
+    searchInput.addEventListener('input', renderizarLista);
+
+    try {
+      lista = await PV.db.conteudos.listar({ timeoutMs: 8000 });
+      if (!main.isConnected) return;
+      renderizarLista();
+    } catch (erro) {
+      if (!main.isConnected) return;
+      countEl.textContent = 'Biblioteca';
+      noticeEl.hidden = false;
+      noticeEl.textContent = erro.message || 'Não foi possível carregar os conteúdos. Tente novamente.';
+      gridEl.innerHTML = `<div class="pv-cuidador-library-empty"><strong>Não foi possível carregar os conteúdos</strong><p>Verifique sua conexão e atualize a tela para tentar novamente.</p><button type="button" class="pv-cuidador-button secondary" id="pv-cuidador-library-retry">Tentar novamente</button></div>`;
+      main.querySelector('#pv-cuidador-library-retry')?.addEventListener('click', () => PV.router.renderizar());
+    }
+  }
+
+  async function conteudoDetalheAcompanhante(main, ctx) {
+    prepararBibliotecaAcompanhante(main);
+    const esc = (valor) => PV.ui.escaparHtml(String(valor ?? ''));
+    main.innerHTML = layoutBibliotecaAcompanhante('conteudos', `
+      <button type="button" class="pv-cuidador-library-back" data-cuidador-rota="/busca">← Voltar aos conteúdos</button>
+      <section class="pv-cuidador-heading pv-cuidador-library-heading"><span class="pv-cuidador-eyebrow">BIBLIOTECA</span><h1>Carregando conteúdo...</h1><p>Materiais educativos para apoiar a rotina de cuidado.</p></section>
+      <div class="pv-cuidador-library-loading"><span class="pv-cuidador-symptom-spinner" aria-hidden="true"></span>Carregando leitura...</div>
+    `);
+    ligarBibliotecaAcompanhante(main, ctx);
+    let conteudo;
+    try {
+      conteudo = await PV.db.conteudos.buscar(ctx.sub);
+    } catch (erro) {
+      if (!main.isConnected) return;
+      main.querySelector('.pv-cuidador-library-heading h1').textContent = 'Conteúdo indisponível';
+      main.querySelector('.pv-cuidador-library-heading p').textContent = erro.message || 'Não foi possível carregar este conteúdo.';
+      main.querySelector('.pv-cuidador-library-loading').textContent = 'Volte à biblioteca e tente novamente.';
+      return;
+    }
+    if (!main.isConnected) return;
+    const titulo = conteudo?.titulo || 'Conteúdo educativo';
+    const descricao = String(conteudo?.descricao || '').trim();
+    const texto = String(conteudo?.texto || '').trim();
+    const corpo = texto && texto !== descricao ? texto : (texto || descricao);
+    const paragrafos = corpo.split(/\r?\n+/).map((p) => p.trim()).filter(Boolean);
+    const sinais = Array.isArray(conteudo?.SinaisSintomas) ? conteudo.SinaisSintomas : String(conteudo?.SinaisSintomas || conteudo?.sinaissintomas || '').split(/[;\n]+/).map((x) => x.trim()).filter(Boolean);
+    const alertas = Array.isArray(conteudo?.SinaisAlerta) ? conteudo.SinaisAlerta : String(conteudo?.SinaisAlerta || conteudo?.sinaisalerta || '').split(/[;\n]+/).map((x) => x.trim()).filter(Boolean);
+    const referencias = Array.isArray(conteudo?.Referencias) ? conteudo.Referencias : String(conteudo?.Referencias || conteudo?.referencias || '').split(/[;\n]+/).map((x) => x.trim()).filter(Boolean);
+    const heading = main.querySelector('.pv-cuidador-library-heading');
+    heading.innerHTML = `<span class="pv-cuidador-eyebrow">BIBLIOTECA</span><h1>${esc(titulo)}</h1><p>${esc(descricao || 'Informações educativas para apoiar a rotina de cuidado.')}</p>`;
+    const loading = main.querySelector('.pv-cuidador-library-loading');
+    loading.className = 'pv-cuidador-library-detail';
+    loading.innerHTML = `
+      <article class="pv-cuidador-library-article"><span class="pv-cuidador-library-tag">${esc(categoriaBibliotecaAcompanhante(conteudo))}</span>${paragrafos.length ? paragrafos.map((p) => `<p>${esc(p)}</p>`).join('') : '<p>Não há texto complementar cadastrado para este conteúdo.</p>'}</article>
+      ${sinais.length || alertas.length ? `<aside class="pv-cuidador-library-article-side">${sinais.length ? `<section><h2>Sinais e sintomas relacionados</h2><ul>${sinais.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></section>` : ''}${alertas.length ? `<section class="alert"><h2>Sinais de alerta</h2><ul>${alertas.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></section>` : ''}</aside>` : ''}
+      ${referencias.length ? `<section class="pv-cuidador-library-references"><h2>Referências</h2><ul>${referencias.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></section>` : ''}
+      <p class="pv-cuidador-library-disclaimer">Conteúdo educativo. Em caso de dúvida, converse com a equipe de saúde responsável pelo cuidado.</p>`;
+  }
+
+async function busca(main, ctx) {
+    if (ctx.usuario.tipo === 'acompanhante') {
+      await buscaAcompanhanteLovable(main, ctx);
+      return;
+    }
+
     if (ctx.usuario.tipo === 'paciente') {
       await buscaPacienteLovable(main, ctx);
       return;
@@ -1833,8 +2753,13 @@ window.PV.screens = window.PV.screens || {};
       ...FORM_CONTEUDO_VAZIO,
     };
 
-    main.innerHTML = `
-      <div class="tela-busca">
+    const destino = ehAdmin && ctx.adminStandalone && PV.ui.montarLayoutAdmin
+      ? PV.ui.montarLayoutAdmin(main, 'contents', ctx)
+      : main;
+
+    destino.innerHTML = `
+      <div class="${ehAdmin && ctx.adminStandalone ? 'pv-admin-content-page' : 'tela-busca'}">
+        ${ehAdmin && ctx.adminStandalone ? `<div class="pv-admin-page-heading"><div><span class="pv-admin-eyebrow">ADMINISTRAÇÃO</span><h1>Gestão de conteúdos</h1><p>Gerencie os materiais educativos disponíveis no PaliVida.</p></div><button type="button" class="pv-admin-primary-button" id="btn-novo-conteudo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Adicionar</span></button></div>` : ''}
 
         <div class="busca-container">
 
@@ -1857,7 +2782,7 @@ window.PV.screens = window.PV.screens || {};
         </div>
 
         ${
-          ehAdmin
+          ehAdmin && !ctx.adminStandalone
             ? `
               <button
                 class="botao-novo"
@@ -1976,13 +2901,20 @@ window.PV.screens = window.PV.screens || {};
             Nenhum conteúdo encontrado.
           </p>
         `;
+      } else if (ehAdmin && ctx.adminStandalone) {
+        listaEl.innerHTML = `
+          <div class="pv-admin-table-wrap"><table class="pv-admin-table">
+            <thead><tr><th>NOME</th><th>INFORMAÇÃO</th><th>STATUS</th><th>ATUALIZAÇÃO</th><th></th></tr></thead>
+            <tbody>${filtrados.map((c) => `<tr>
+              <td><strong>${escaparHtml(c.titulo || 'Conteúdo sem título')}</strong></td>
+              <td>${escaparHtml(String(c.descricao || c.texto || '').slice(0, 100) || 'Sem descrição')}</td>
+              <td><span class="pv-admin-status is-good">Cadastrado</span></td>
+              <td>${escaparHtml(formatarDataConteudo(c.data_post) || '—')}</td>
+              <td><div class="pv-admin-row-actions"><button type="button" class="pv-admin-row-action" data-editar="${escaparHtml(c.id)}" aria-label="Editar conteúdo" title="Editar conteúdo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button><button type="button" class="pv-admin-row-action" data-excluir="${escaparHtml(c.id)}" aria-label="Excluir conteúdo" title="Excluir conteúdo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v6M14 10v6"/></svg></button></div></td>
+            </tr>`).join('')}</tbody>
+          </table></div>`;
       } else {
-        listaEl.innerHTML =
-          filtrados
-            .map((c) =>
-              cardConteudoHtml(c, ehAdmin),
-            )
-            .join('');
+        listaEl.innerHTML = filtrados.map((c) => cardConteudoHtml(c, ehAdmin)).join('');
       }
 
       listaEl
@@ -2676,106 +3608,66 @@ window.PV.screens = window.PV.screens || {};
       );
   }
 
-  async function dashboardAdmin(
-    main,
-    ctx,
-  ) {
-    main.innerHTML =
-      carregando(
-        'Carregando...',
-      );
+  async function dashboardAdmin(main, ctx) {
+    const slot = PV.ui.montarLayoutAdmin(main, 'home', ctx);
+    slot.innerHTML = '<div class="pv-admin-state">Carregando indicadores...</div>';
 
-    let registros = [];
-    let sintomas = [];
-    let erro = null;
+    let registros = [], sintomas = [], conteudos = [], pacientes = [];
+    const erros = [];
+    const results = await Promise.allSettled([
+      PV.db.registros.listar(), PV.db.sintomas.listar(),
+      PV.db.conteudos.listar({ timeoutMs: 20000 }), PV.db.pacientes.listar(),
+    ]);
+    if (results[0].status === 'fulfilled') registros = results[0].value || []; else erros.push(results[0].reason?.message || 'Falha ao carregar registros.');
+    if (results[1].status === 'fulfilled') sintomas = results[1].value || []; else erros.push(results[1].reason?.message || 'Falha ao carregar sintomas.');
+    if (results[2].status === 'fulfilled') conteudos = results[2].value || []; else erros.push(results[2].reason?.message || 'Falha ao carregar conteúdos.');
+    if (results[3].status === 'fulfilled') pacientes = results[3].value || []; else erros.push(results[3].reason?.message || 'Falha ao carregar pacientes.');
+    if (!main.isConnected || !slot.isConnected) return;
 
-    try {
-      [
-        registros,
-        sintomas,
-      ] = await Promise.all([
-        PV.db.registros.listar(),
-        PV.db.sintomas.listar(),
-      ]);
-    } catch (e) {
-      erro =
-        e.message ||
-        'Não foi possível carregar os dados.';
+    const nomesSintomas = new Map(sintomas.map((s) => [Number(s.id), s.nome_sintoma || `Sintoma #${s.id}`]));
+    const nomesPacientes = new Map(pacientes.map((p) => [Number(p.id), p.nome_social || p.nome || `Paciente #${p.id}`]));
+    const intensidades = registros.map((r) => Number(r.intensidade)).filter((v) => Number.isFinite(v) && v >= 0 && v <= 10);
+    const media = intensidades.length ? intensidades.reduce((sum, v) => sum + v, 0) / intensidades.length : null;
+    const sorted = [...intensidades].sort((a, b) => a - b);
+    const mediana = sorted.length ? (sorted.length % 2 ? sorted[Math.floor(sorted.length / 2)] : (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2) : null;
+    const variancia = intensidades.length && media !== null ? intensidades.reduce((sum, v) => sum + (v - media) ** 2, 0) / intensidades.length : null;
+    const desvio = variancia === null ? null : Math.sqrt(variancia);
+    const number = (v) => v === null || !Number.isFinite(v) ? '—' : Number(v).toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+    const keyDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    const today = new Date();
+    const dias = [];
+    for (let offset = 6; offset >= 0; offset--) {
+      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - offset);
+      dias.push({ key: keyDate(d), label: d.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '').slice(0, 3), date: d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }), total: 0 });
     }
+    const byDay = new Map(dias.map((d) => [d.key, d]));
+    registros.forEach((r) => { const d = new Date(r.data_registro); if (!Number.isNaN(d.getTime())) { const item = byDay.get(keyDate(d)); if (item) item.total++; } });
+    const highest = Math.max(1, ...dias.map((d) => d.total));
+    const recent = [...registros].sort((a, b) => new Date(b.data_registro) - new Date(a.data_registro)).slice(0, 6);
+    const recentHtml = recent.map((r) => `<div class="pv-admin-recent-row"><div class="pv-admin-recent-icon">${'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>'}</div><div class="pv-admin-recent-copy"><strong>${escaparHtml(nomesSintomas.get(Number(r.sintoma_id)) || `Sintoma #${r.sintoma_id}`)}</strong><small>${escaparHtml(nomesPacientes.get(Number(r.paciente_id)) || `Paciente #${r.paciente_id}`)} · ${escaparHtml(r.data_registro ? new Date(r.data_registro).toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Data não informada')}</small></div><span class="pv-admin-level">Nível ${escaparHtml(r.intensidade ?? '—')}</span></div>`).join('');
 
-    const estat =
-      calcularEstatisticas(
-        registros,
-        sintomas,
-      );
-
-    const temDados =
-      registros.length > 0;
-
-    main.innerHTML = `
-      <div class="tela-dashboard">
-
-        <h1 class="titulo">
-          Dashboard
-        </h1>
-
-        ${
-          erro
-            ? `
-              <p class="erro-texto">
-                ${escaparHtml(erro)}
-              </p>
-            `
-            : ''
-        }
-
-        ${
-          temDados
-            ? `
-              ${cardGraficoHtml(
-                'Média de intensidade',
-                estat.media,
-              )}
-
-              ${cardGraficoHtml(
-                'Frequência de registros',
-                estat.frequencia,
-              )}
-
-              ${cardGraficoHtml(
-                'Mediana da intensidade',
-                estat.mediana,
-              )}
-
-              ${cardGraficoHtml(
-                'Variância da intensidade',
-                estat.variancia,
-              )}
-
-              ${cardGraficoHtml(
-                'Desvio padrão da intensidade',
-                estat.desvioPadrao,
-              )}
-            `
-            : `
-              <p class="vazio">
-                Ainda não há registros de sintomas.
-              </p>
-            `
-        }
-
-        ${gerenciadorSintomasHtml()}
-
-      </div>
-    `;
-
-    ligarGerenciadorSintomas(
-      main,
-      () =>
-        PV.router.renderizar(),
-    );
+    slot.innerHTML = `
+      <div class="pv-admin-overview-page">
+        <div class="pv-admin-page-heading"><div><span class="pv-admin-eyebrow">ADMINISTRAÇÃO</span><h1>Visão geral</h1><p>Acompanhe os principais indicadores do PaliVida.</p></div></div>
+        ${erros.length ? `<div class="pv-admin-alert" role="status">${escaparHtml([...new Set(erros)].join(' '))}</div>` : ''}
+        <section class="pv-admin-stats" aria-label="Indicadores principais">
+          <article class="pv-admin-stat-card"><span>Pacientes cadastrados</span><strong>${results[3].status === 'fulfilled' ? pacientes.length.toLocaleString('pt-BR') : '—'}</strong><small>Cadastros no sistema</small></article>
+          <article class="pv-admin-stat-card"><span>Registros</span><strong>${results[0].status === 'fulfilled' ? registros.length.toLocaleString('pt-BR') : '—'}</strong><small>Histórico de intensidade</small></article>
+          <article class="pv-admin-stat-card"><span>Média de intensidade</span><strong>${number(media)}</strong><small>Escala de 0 a 10</small></article>
+          <article class="pv-admin-stat-card"><span>Conteúdos cadastrados</span><strong>${results[2].status === 'fulfilled' ? conteudos.length.toLocaleString('pt-BR') : '—'}</strong><small>Materiais educativos</small></article>
+        </section>
+        <section class="pv-admin-overview-grid">
+          <article class="pv-admin-panel pv-admin-chart-panel"><div class="pv-admin-panel-heading"><div><h2>Registros por período</h2><p>Quantidade de registros nos últimos 7 dias</p></div><span class="pv-admin-panel-icon">${'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>'}</span></div><div class="pv-admin-chart" role="img" aria-label="Registros por dia nos últimos sete dias">${dias.map((d) => `<div class="pv-admin-chart-column"><span class="pv-admin-chart-number">${d.total}</span><div class="pv-admin-chart-track"><span style="height:${d.total ? Math.max(5, d.total / highest * 100) : 0}%"></span></div><small>${escaparHtml(d.label)}</small><em>${escaparHtml(d.date)}</em></div>`).join('')}</div></article>
+          <article class="pv-admin-panel pv-admin-indicators"><div class="pv-admin-panel-heading"><div><h2>Indicadores estatísticos</h2><p>Resumo das intensidades registradas</p></div></div><div class="pv-admin-indicator-row"><span>Mediana</span><strong>${number(mediana)}</strong></div><div class="pv-admin-indicator-row"><span>Variância</span><strong>${number(variancia === null ? null : Number(variancia.toFixed(2)))}</strong></div><div class="pv-admin-indicator-row"><span>Desvio padrão</span><strong>${number(desvio === null ? null : Number(desvio.toFixed(2)))}</strong></div><div class="pv-admin-indicator-row"><span>Média diária (7 dias)</span><strong>${number(dias.reduce((sum, d) => sum + d.total, 0) / 7)}</strong></div></article>
+        </section>
+        <section class="pv-admin-panel pv-admin-section-panel"><div class="pv-admin-panel-heading"><div><h2>Registros recentes</h2><p>Últimos registros recebidos pelo PaliVida</p></div><button type="button" class="pv-admin-text-link" data-rota="/admin-registros">Ver todos <span aria-hidden="true">›</span></button></div><div class="pv-admin-recent-list">${recentHtml || '<p class="pv-admin-empty">Ainda não há registros de sintomas.</p>'}</div></section>
+      </div>`;
+    slot.querySelectorAll('[data-rota]').forEach((button) => button.addEventListener('click', () => PV.router.navegar(button.dataset.rota)));
   }
 
+  PV.screens.vinculosAcompanhante = telaVinculosAcompanhante;
+  PV.screens.sintomasAcompanhante = telaSintomasAcompanhante;
+  PV.screens.conteudoDetalheAcompanhante = conteudoDetalheAcompanhante;
   PV.screens.home = home;
   PV.screens.contato = contato;
   PV.screens.busca = busca;

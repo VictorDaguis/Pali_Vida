@@ -614,7 +614,227 @@ window.PV.screens = window.PV.screens || {};
   }
 
   /* ============================================================= dispatcher === */
+  /* PaliVida: cuidador perfil Lovable v1 */
+  function iconePerfilCuidador(nome) {
+    const paths = {
+      inicio: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+      vinculos: '<path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2A5 5 0 0 0 12 20.07l1.15-1.15"/>',
+      sintomas: '<path d="M3 12h4l2-6 4 12 2-6h6"/>',
+      conteudos: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20"/>',
+      perfil: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      sair: '<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>',
+      busca: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+      sino: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+      editar: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/>',
+      laudo: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[nome] || ''}</svg>`;
+  }
+
+  function iniciaisPerfilCuidador(nome) {
+    const partes = String(nome || '').trim().split(/\s+/).filter(Boolean);
+    if (!partes.length) return 'AC';
+    return (partes.length > 1 ? partes[0].charAt(0) + partes[partes.length - 1].charAt(0) : partes[0].slice(0, 2)).toLocaleUpperCase('pt-BR');
+  }
+
+  async function perfilAcompanhanteLovable(main, ctx) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+    main.classList.remove('pv-sem-scroll', 'pv-dashboard-paciente-main', 'pv-cuidador-vinculos-main', 'pv-cuidador-sintomas-main', 'pv-cuidador-conteudos-main');
+    main.classList.add('pv-cuidador-profile-main');
+
+    const emailSessao = ctx.usuario?.email || '';
+    const estado = {
+      dados: { nome_completo: '', nome_social: '', email: emailSessao, telefone: '', genero: '', data_nascimento: '' },
+      carregando: true,
+      editando: false,
+      mensagem: '',
+      tipoMensagem: 'info',
+    };
+
+    const sintomasDisponiveis = typeof PV.screens.sintomasAcompanhante === 'function';
+    const navSintomasDesktop = sintomasDisponiveis
+      ? `<button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/sintomas">${iconePerfilCuidador('sintomas')}<span>Sintomas</span></button>`
+      : `<button type="button" class="pv-cuidador-nav-item pv-cuidador-nav-disabled" disabled title="A consulta de sintomas será disponibilizada nesta área.">${iconePerfilCuidador('sintomas')}<span>Sintomas</span><small>Em breve</small></button>`;
+    const navSintomasMobile = sintomasDisponiveis
+      ? `<button type="button" data-cuidador-rota="/sintomas">${iconePerfilCuidador('sintomas')}<span>Sintomas</span></button>`
+      : `<button type="button" disabled title="Em breve">${iconePerfilCuidador('sintomas')}<span>Sintomas</span></button>`;
+
+    function valor(campo) { return String(estado.dados[campo] ?? ''); }
+    function nomeExibido() {
+      return valor('nome_social').trim() || valor('nome_completo').trim() || (emailSessao ? emailSessao.split('@')[0] : 'Acompanhante');
+    }
+    function campoPerfil(id, label, campo, tipo = 'text', placeholder = '') {
+      return `<div class="pv-cuidador-profile-field"><label for="${id}">${escaparHtml(label)}</label><input class="pv-cuidador-profile-input" id="${id}" name="${campo}" type="${tipo}" value="${escaparHtml(valor(campo))}" placeholder="${escaparHtml(placeholder)}" autocomplete="${tipo === 'password' ? 'new-password' : 'off'}"></div>`;
+    }
+    function optionsGenero() {
+      const opcoes = Array.isArray(GENEROS) ? GENEROS : [];
+      return `<option value="">Selecione</option>${opcoes.map((item) => {
+        const value = typeof item === 'string' ? item : (item.value ?? item.valor ?? item.label ?? item.nome ?? '');
+        const label = typeof item === 'string' ? item : (item.label ?? item.nome ?? item.valor ?? item.value ?? '');
+        return `<option value="${escaparHtml(value)}" ${String(value) === valor('genero') ? 'selected' : ''}>${escaparHtml(label)}</option>`;
+      }).join('')}`;
+    }
+
+    function renderizar() {
+      const nome = nomeExibido();
+      const iniciais = iniciaisPerfilCuidador(nome);
+      const avisoHtml = `<div id="pc-notice" class="pv-cuidador-profile-notice ${estado.tipoMensagem === 'erro' ? 'is-error' : estado.tipoMensagem === 'sucesso' ? 'is-success' : ''}" role="status" ${estado.mensagem ? '' : 'hidden'}>${estado.mensagem ? escaparHtml(estado.mensagem) : ''}${estado.mensagem && estado.tipoMensagem === 'erro' ? ' <button type="button" data-pc-retry>Tentar novamente</button>' : ''}</div>`;
+      const campos = estado.editando
+        ? `<div class="pv-cuidador-profile-form-grid">
+             ${campoPerfil('pc-nome', 'Nome completo', 'nome_completo')}
+             ${campoPerfil('pc-nome-social', 'Nome social', 'nome_social')}
+             ${campoPerfil('pc-email', 'E-mail', 'email', 'email')}
+             ${campoPerfil('pc-telefone', 'Telefone', 'telefone', 'tel', '(00) 00000-0000')}
+             <div class="pv-cuidador-profile-field"><label for="pc-genero">Gênero</label><select class="pv-cuidador-profile-input" id="pc-genero" name="genero">${optionsGenero()}</select></div>
+             ${campoPerfil('pc-data', 'Data de nascimento', 'data_nascimento', 'date')}
+             <div class="pv-cuidador-profile-field pv-cuidador-profile-field-full"><label for="pc-senha">Senha</label><input class="pv-cuidador-profile-input" id="pc-senha" name="senha" type="password" placeholder="Deixe em branco para não alterar" autocomplete="new-password"></div>
+           </div>
+           <div class="pv-cuidador-profile-edit-actions"><button class="pv-cuidador-button secondary" type="button" id="pc-cancelar">Cancelar</button><button class="pv-cuidador-button primary" type="button" id="pc-salvar">Salvar alterações</button></div>`
+        : `<div class="pv-cuidador-profile-form-grid">
+             <div class="pv-cuidador-profile-field"><label for="pc-email-view">E-mail</label><input class="pv-cuidador-profile-input" id="pc-email-view" value="${escaparHtml(valor('email'))}" readonly></div>
+             <div class="pv-cuidador-profile-field"><label for="pc-telefone-view">Telefone</label><input class="pv-cuidador-profile-input" id="pc-telefone-view" value="${escaparHtml(valor('telefone'))}" placeholder="Não informado" readonly></div>
+           </div>`;
+
+      main.innerHTML = `
+        <div class="pv-cuidador-home-layout pv-cuidador-profile-layout">
+          <aside class="pv-cuidador-sidebar" aria-label="Navegação do acompanhante">
+            <div class="pv-cuidador-sidebar-top">
+              <div class="pv-cuidador-brand"><a href="#/home" aria-label="PaliVida — início"><img src="assets/img/logo-completo.png" alt="PaliVida"></a></div>
+              <div class="pv-cuidador-nav-label">MEU CUIDADO</div>
+              <nav class="pv-cuidador-nav">
+                <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/home">${iconePerfilCuidador('inicio')}<span>Início</span></button>
+                <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/vinculos">${iconePerfilCuidador('vinculos')}<span>Vínculos</span></button>
+                ${navSintomasDesktop}
+                <button type="button" class="pv-cuidador-nav-item" data-cuidador-rota="/busca">${iconePerfilCuidador('conteudos')}<span>Conteúdos</span></button>
+                <button type="button" class="pv-cuidador-nav-item active" data-cuidador-rota="/perfil" aria-current="page">${iconePerfilCuidador('perfil')}<span>Perfil</span></button>
+              </nav>
+            </div>
+            <div class="pv-cuidador-sidebar-footer">
+              <div class="pv-cuidador-sidebar-profile"><span class="pv-cuidador-avatar" id="pc-sidebar-avatar" aria-hidden="true">${escaparHtml(iniciais)}</span><span class="pv-cuidador-profile-text"><strong id="pc-sidebar-name">${escaparHtml(nome)}</strong><small>Acompanhante</small></span></div>
+              <button type="button" class="pv-cuidador-logout" data-sair>${iconePerfilCuidador('sair')}<span>Sair</span></button>
+            </div>
+          </aside>
+
+          <section class="pv-cuidador-workspace">
+            <header class="pv-cuidador-topbar"><strong>Meu cuidado</strong><div class="pv-cuidador-topbar-actions"><span>Protótipo demonstrativo</span><button type="button" class="pv-cuidador-topbar-icon" data-cuidador-rota="/busca" aria-label="Buscar conteúdos">${iconePerfilCuidador('busca')}</button><span class="pv-cuidador-profile-bell" aria-label="Notificações">${iconePerfilCuidador('sino')}</span></div></header>
+            <main class="pv-cuidador-profile-content">
+              <section class="pv-cuidador-profile-heading"><div><span class="pv-cuidador-eyebrow">MINHA CONTA</span><h1>Perfil</h1><p>Informações do perfil de acompanhante.</p></div>${estado.editando ? `<button type="button" class="pv-cuidador-button secondary" id="pc-cancelar-topo">Cancelar</button>` : `<button type="button" class="pv-cuidador-button secondary pv-cuidador-profile-edit-button" id="pc-editar">${iconePerfilCuidador('editar')}<span>Editar</span></button>`}</section>
+              ${avisoHtml}
+              <section class="pv-cuidador-profile-card">
+                <div class="pv-cuidador-profile-identity"><span class="pv-cuidador-profile-avatar" id="pc-avatar">${escaparHtml(iniciais)}</span><div><h2 id="pc-name">${escaparHtml(nome)}</h2><p>Acompanhante</p></div></div>
+                ${estado.carregando ? `<div class="pv-cuidador-profile-loading">Carregando informações da conta...</div>` : campos}
+              </section>
+              <div class="pv-cuidador-profile-laudo-wrap"><button type="button" class="pv-cuidador-profile-laudo" id="pc-laudo">${iconePerfilCuidador('laudo')}<span>Consultar laudo</span></button></div>
+            </main>
+          </section>
+          <nav class="pv-cuidador-mobile-nav" aria-label="Navegação principal">
+            <button type="button" data-cuidador-rota="/home">${iconePerfilCuidador('inicio')}<span>Início</span></button>
+            <button type="button" data-cuidador-rota="/vinculos">${iconePerfilCuidador('vinculos')}<span>Vínculos</span></button>
+            ${navSintomasMobile}
+            <button type="button" data-cuidador-rota="/busca">${iconePerfilCuidador('conteudos')}<span>Conteúdos</span></button>
+            <button type="button" class="active" data-cuidador-rota="/perfil" aria-current="page">${iconePerfilCuidador('perfil')}<span>Perfil</span></button>
+          </nav>
+        </div>`;
+
+      main.querySelectorAll('[data-cuidador-rota]').forEach((botao) => botao.addEventListener('click', () => PV.router.navegar(botao.dataset.cuidadorRota)));
+      PV.ui.ligarLogout(main);
+      main.querySelector('#pc-laudo')?.addEventListener('click', () => PV.router.navegar('/laudo'));
+      main.querySelector('#pc-retry')?.addEventListener('click', carregarDados);
+      main.querySelector('#pc-editar')?.addEventListener('click', () => { estado.mensagem = ''; estado.editando = true; renderizar(); });
+      main.querySelector('#pc-cancelar')?.addEventListener('click', () => { estado.mensagem = ''; estado.editando = false; renderizar(); });
+      main.querySelector('#pc-cancelar-topo')?.addEventListener('click', () => { estado.mensagem = ''; estado.editando = false; renderizar(); });
+      main.querySelector('#pc-salvar')?.addEventListener('click', salvarDados);
+    }
+
+    async function carregarDados() {
+      estado.carregando = true;
+      estado.mensagem = '';
+      estado.tipoMensagem = 'info';
+      renderizar();
+      try {
+        const dados = await PV.db.acompanhantes.buscar(ctx.usuario.id);
+        if (!main.isConnected) return;
+        if (dados) estado.dados = { ...estado.dados, ...dados, data_nascimento: soData(dados.data_nascimento) };
+        estado.carregando = false;
+        renderizar();
+      } catch (e) {
+        if (!main.isConnected) return;
+        estado.carregando = false;
+        estado.mensagem = e.message || 'Não foi possível carregar os dados agora. Confira a conexão e tente novamente.';
+        estado.tipoMensagem = 'erro';
+        renderizar();
+      }
+    }
+
+    async function salvarDados() {
+      const nome = main.querySelector('#pc-nome')?.value.trim() || '';
+      const nomeSocial = main.querySelector('#pc-nome-social')?.value.trim() || '';
+      const email = main.querySelector('#pc-email')?.value.trim() || '';
+      const telefone = main.querySelector('#pc-telefone')?.value.trim() || '';
+      const genero = main.querySelector('#pc-genero')?.value || '';
+      const data = main.querySelector('#pc-data')?.value || '';
+      const senha = main.querySelector('#pc-senha')?.value || '';
+      if (!nome) {
+        estado.mensagem = 'Informe seu nome completo.'; estado.tipoMensagem = 'erro';
+        const aviso = main.querySelector('.pv-cuidador-profile-notice');
+        if (aviso) { aviso.hidden = false; aviso.className = 'pv-cuidador-profile-notice is-error'; aviso.textContent = estado.mensagem; }
+        else { estado.editando = true; renderizar(); }
+        return;
+      }
+      if (!validar.email(email)) {
+        estado.mensagem = 'Informe um e-mail válido.'; estado.tipoMensagem = 'erro';
+        const aviso = main.querySelector('.pv-cuidador-profile-notice');
+        if (aviso) { aviso.hidden = false; aviso.className = 'pv-cuidador-profile-notice is-error'; aviso.textContent = estado.mensagem; }
+        else renderizar();
+        return;
+      }
+      if (!validar.telefone(telefone)) {
+        estado.mensagem = 'O telefone deve conter DDD e 10 ou 11 dígitos.'; estado.tipoMensagem = 'erro';
+        const aviso = main.querySelector('.pv-cuidador-profile-notice');
+        if (aviso) { aviso.hidden = false; aviso.className = 'pv-cuidador-profile-notice is-error'; aviso.textContent = estado.mensagem; }
+        else renderizar();
+        return;
+      }
+      const botao = main.querySelector('#pc-salvar');
+      if (botao) { botao.disabled = true; botao.textContent = 'Salvando...'; }
+      try {
+        const atualizado = await PV.db.acompanhantes.atualizar(ctx.usuario.id, {
+          nome_completo: nome,
+          nome_social: nomeSocial || null,
+          email,
+          telefone: telefone || null,
+          genero: genero || null,
+          data_nascimento: soData(data) || null,
+          senha: senha || null,
+        });
+        if (!main.isConnected) return;
+        estado.dados = { ...estado.dados, ...(atualizado || {}), senha: '', data_nascimento: soData(atualizado?.data_nascimento ?? data) };
+        estado.editando = false;
+        estado.mensagem = 'Seus dados foram atualizados.';
+        estado.tipoMensagem = 'sucesso';
+        renderizar();
+      } catch (e) {
+        estado.mensagem = e.message || 'Não foi possível salvar seus dados.';
+        estado.tipoMensagem = 'erro';
+        const aviso = main.querySelector('.pv-cuidador-profile-notice');
+        if (aviso) { aviso.hidden = false; aviso.className = 'pv-cuidador-profile-notice is-error'; aviso.textContent = estado.mensagem; }
+        else renderizar();
+        if (botao) { botao.disabled = false; botao.textContent = 'Salvar alterações'; }
+      }
+    }
+
+    renderizar();
+    await carregarDados();
+  }
+
   async function perfil(main, ctx) {
+    if (ctx.usuario.tipo === 'acompanhante') {
+      await perfilAcompanhanteLovable(main, ctx);
+      return;
+    }
     const ehPaciente = ctx.usuario.tipo === 'paciente';
     let tela = main;
 

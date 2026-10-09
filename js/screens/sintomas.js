@@ -1010,6 +1010,10 @@ function iconeMenuSintomas(nome) {
 
   /* ==================================================== ConteudoDetalhe === */
   async function conteudoDetalhe(main, ctx) {
+    if (ctx.usuario && ctx.usuario.tipo === 'acompanhante' && typeof PV.screens.conteudoDetalheAcompanhante === 'function') {
+      await PV.screens.conteudoDetalheAcompanhante(main, ctx);
+      return;
+    }
 
     /*
      * Esta rota passa a usar o mesmo padrão visual das telas

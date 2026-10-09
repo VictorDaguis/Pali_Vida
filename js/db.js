@@ -325,6 +325,20 @@ window.PV = window.PV || {};
       const linhas = await chamarAppsScriptGet({ acao: 'listar', tabela: 'sintomas' }, 20000);
       return [...linhas].sort((a, b) => Number(a.id) - Number(b.id));
     },
+    async atualizar(id, nome_sintoma) {
+      await atraso();
+      const usuario = exigirAutenticacao();
+      exigirPerfil(usuario, 'administrador');
+      const nome = String(nome_sintoma || '').trim();
+      if (!nome) erro('Informe o nome do sintoma.', 400);
+      const existentes = await chamarAppsScriptGet({ acao: 'listar', tabela: 'sintomas' }, 20000);
+      if (!existentes.some((s) => Number(s.id) === Number(id))) erro('Sintoma não encontrado.', 404);
+      if (existentes.some((s) => Number(s.id) !== Number(id) && String(s.nome_sintoma).toLocaleLowerCase('pt-BR') === nome.toLocaleLowerCase('pt-BR'))) {
+        erro('Já existe um sintoma com esse nome.', 409);
+      }
+      const atualizado = await chamarAppsScriptPost({ acao: 'atualizar', tabela: 'sintomas', dados: { id: Number(id), nome_sintoma: nome } });
+      return { sintoma: atualizado };
+    },
     async criar(nome_sintoma) {
       await atraso();
       const usuario = exigirAutenticacao();
@@ -591,6 +605,13 @@ window.PV = window.PV || {};
   ];
 
   const pacientes = {
+    async listar() {
+      await atraso();
+      const usuario = exigirAutenticacao();
+      exigirPerfil(usuario, 'administrador');
+      const linhas = await chamarAppsScriptGet({ acao: 'listar', tabela: 'pacientes' }, 20000);
+      return linhas.map(semSenha).sort((a, b) => String(a.nome_social || a.nome || '').localeCompare(String(b.nome_social || b.nome || ''), 'pt-BR'));
+    },
     async criar(dados) {
       await atraso();
       if (!String(dados.nome || '').trim()) erro('Informe o nome.', 400);
