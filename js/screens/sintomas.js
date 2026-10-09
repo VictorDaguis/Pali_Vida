@@ -22,20 +22,23 @@ window.PV.screens = window.PV.screens || {};
     let sintomas = [];
     let registros = [];
     let erro = null;
+    let avisoRegistros = null;
   
     try {
-  
-      [sintomas, registros] = await Promise.all([
-        PV.db.sintomas.listar(),
-        PV.db.registros.listar()
-      ]);
-  
+      sintomas = await PV.db.sintomas.listar();
     } catch (e) {
-  
-      erro =
-        e.message ||
-        'Erro ao carregar sintomas.';
-  
+      erro = e.message || 'Erro ao carregar sintomas.';
+    }
+
+    // Falha temporária no histórico não deve esconder a lista de sintomas.
+    if (!erro) {
+      try {
+        registros = await PV.db.registros.listar();
+      } catch (e) {
+        registros = [];
+        avisoRegistros = 'Os sintomas estão disponíveis, mas o histórico não pôde ser carregado agora.';
+        console.warn('PaliVida: histórico de sintomas temporariamente indisponível.', e);
+      }
     }
   
   
@@ -169,7 +172,7 @@ window.PV.screens = window.PV.screens || {};
   
   
       container.innerHTML = `
-  
+        ${avisoRegistros ? `<div class="pv-sintomas-aviso-registros" role="status">${escaparHtml(avisoRegistros)}</div>` : ''}
         <div class="pv-sintomas-grid">
   
           ${filtrados
@@ -638,133 +641,7 @@ function iconeMenuSintomas(nome) {
              SIDEBAR DESKTOP
              ========================================================= -->
   
-        <aside
-          class="pv-sidebar pv-sintomas-sidebar"
-          aria-label="Navegação principal"
-        >
-  
-          <div>
-  
-            <div class="pv-sidebar-brand">
-  
-              <a
-                href="#/home"
-                aria-label="PaliVida — início"
-              >
-  
-                <img
-                  src="assets/img/logo-completo.png"
-                  alt="PaliVida"
-                >
-  
-              </a>
-  
-            </div>
-  
-  
-            <div class="pv-sidebar-section-label">
-              MEU CUIDADO
-            </div>
-  
-  
-            <nav class="pv-sidebar-nav">
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/home"
-              >
-                ${iconeMenuSintomas('inicio')}
-                <span>Início</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item active"
-                type="button"
-                data-rota="/menu-sintomas"
-              >
-                ${iconeMenuSintomas('sintomas')}
-                <span>Sintomas</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/busca"
-              >
-                ${iconeMenuSintomas('conteudos')}
-                <span>Conteúdos</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/perfil"
-              >
-                ${iconeMenuSintomas('prontuario')}
-                <span>Prontuário</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/perfil"
-              >
-                ${iconeMenuSintomas('usuario')}
-                <span>Perfil</span>
-              </button>
-  
-            </nav>
-  
-          </div>
-  
-  
-          <!-- PERFIL / SAIR -->
-  
-          <div class="pv-sidebar-footer">
-  
-            <div class="pv-sidebar-profile">
-  
-              <span class="pv-sidebar-avatar">
-                ${iconeMenuSintomas('usuario')}
-              </span>
-  
-              <span class="pv-sidebar-profile-text">
-  
-                <strong id="pv-sintomas-sidebar-name">
-                  Paciente
-                </strong>
-  
-                <small>
-                  Paciente
-                </small>
-  
-              </span>
-  
-            </div>
-  
-  
-            <button
-              class="pv-sidebar-logout"
-              type="button"
-              data-sair
-            >
-  
-              ${iconeMenuSintomas('sair')}
-  
-              <span>
-                Sair
-              </span>
-  
-            </button>
-  
-          </div>
-  
-        </aside>
+        ${PV.ui.sidebarPaciente('sintomas')}
   
   
         <!-- =========================================================
@@ -1004,7 +881,7 @@ function iconeMenuSintomas(nome) {
   
             <button
               type="button"
-              data-rota="/perfil"
+              data-rota="/meu-perfil"
             >
               ${iconeMenuSintomas('usuario')}
               <span>Perfil</span>
@@ -1026,6 +903,7 @@ function iconeMenuSintomas(nome) {
       main.querySelector(
         '.pv-menu-sintomas-modern'
       );
+
   
     PV.ui.ligarLogout(layout);
   
@@ -1081,7 +959,7 @@ function iconeMenuSintomas(nome) {
   
         const elemento =
           main.querySelector(
-            '#pv-sintomas-sidebar-name'
+            '#pv-sidebar-paciente-name'
           );
   
         if (elemento) {
@@ -1125,7 +1003,7 @@ function iconeMenuSintomas(nome) {
         '#lista-sintomas-slot'
       ),
       (sintoma) =>
-        modal.abrir(sintoma)
+        PV.router.navegar('/sintoma/' + encodeURIComponent(sintoma.id))
     );
   
   }
@@ -1246,133 +1124,7 @@ function iconeMenuSintomas(nome) {
              SIDEBAR DESKTOP
              ========================================================= -->
   
-        <aside
-          class="pv-sidebar pv-conteudo-sidebar"
-          aria-label="Navegação principal"
-        >
-  
-          <div>
-  
-            <div class="pv-sidebar-brand">
-  
-              <a
-                href="#/home"
-                aria-label="PaliVida — início"
-              >
-  
-                <img
-                  src="assets/img/logo-completo.png"
-                  alt="PaliVida"
-                >
-  
-              </a>
-  
-            </div>
-  
-  
-            <div class="pv-sidebar-section-label">
-              MEU CUIDADO
-            </div>
-  
-  
-            <nav class="pv-sidebar-nav">
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/home"
-              >
-                ${iconeMenuSintomas('inicio')}
-                <span>Início</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item active"
-                type="button"
-                data-rota="/menu-sintomas"
-              >
-                ${iconeMenuSintomas('sintomas')}
-                <span>Sintomas</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/busca"
-              >
-                ${iconeMenuSintomas('conteudos')}
-                <span>Conteúdos</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/perfil"
-              >
-                ${iconeMenuSintomas('prontuario')}
-                <span>Prontuário</span>
-              </button>
-  
-  
-              <button
-                class="pv-sidebar-item"
-                type="button"
-                data-rota="/perfil"
-              >
-                ${iconeMenuSintomas('usuario')}
-                <span>Perfil</span>
-              </button>
-  
-            </nav>
-  
-          </div>
-  
-  
-          <!-- PERFIL / SAIR -->
-  
-          <div class="pv-sidebar-footer">
-  
-            <div class="pv-sidebar-profile">
-  
-              <span class="pv-sidebar-avatar">
-                ${iconeMenuSintomas('usuario')}
-              </span>
-  
-              <span class="pv-sidebar-profile-text">
-  
-                <strong id="pv-conteudo-sidebar-name">
-                  Paciente
-                </strong>
-  
-                <small>
-                  Paciente
-                </small>
-  
-              </span>
-  
-            </div>
-  
-  
-            <button
-              class="pv-sidebar-logout"
-              type="button"
-              data-sair
-            >
-  
-              ${iconeMenuSintomas('sair')}
-  
-              <span>
-                Sair
-              </span>
-  
-            </button>
-  
-          </div>
-  
-        </aside>
+        ${PV.ui.sidebarPaciente('sintomas')}
   
   
         <!-- =========================================================
@@ -1811,7 +1563,7 @@ function iconeMenuSintomas(nome) {
   
             <button
               type="button"
-              data-rota="/perfil"
+              data-rota="/meu-perfil"
             >
               ${iconeMenuSintomas('usuario')}
               <span>Perfil</span>
@@ -1833,6 +1585,9 @@ function iconeMenuSintomas(nome) {
       main.querySelector(
         '.pv-conteudo-detalhe-modern'
       );
+
+    const sidebar = layout.querySelector('.pv-sidebar');
+    if (sidebar) sidebar.classList.add('pv-conteudo-sidebar');
   
     PV.ui.ligarLogout(layout);
   
@@ -1874,7 +1629,7 @@ function iconeMenuSintomas(nome) {
   
         const elemento =
           main.querySelector(
-            '#pv-conteudo-sidebar-name'
+            '#pv-sidebar-paciente-name'
           );
   
         if (elemento) {
@@ -1953,6 +1708,13 @@ function iconeMenuSintomas(nome) {
           '/definicao/' + conteudo.id
         )
       );
+
+    if (ctx.query && ctx.query.secao === 'alerta') {
+      const secaoAlerta = main.querySelector('.pv-conteudo-card-danger');
+      if (secaoAlerta) {
+        secaoAlerta.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   }
 
   /* ================================================== DefinicaoSintomas === */
@@ -2037,6 +1799,394 @@ dos sinais de alerta</button>
     main.querySelector('#btn-voltar').addEventListener('click', () => PV.router.navegar('/home?alerta=' + (ctx.sub || 'verde')));
   }
 
+
+  /* =========================================================== Fluxo visual de sintoma === */
+
+  function normalizarNomeSintoma(valor) {
+    return String(valor || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
+  function prepararLayoutFluxoSintoma(main, classe) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+
+    if (header) {
+      header.hidden = true;
+      header.innerHTML = '';
+    }
+    if (footer) {
+      footer.hidden = true;
+      footer.innerHTML = '';
+    }
+
+    main.classList.remove(
+      'pv-sem-scroll',
+      'pv-menu-sintomas-main',
+      'pv-conteudo-detalhe-main',
+      'pv-sintoma-detalhe-main',
+      'pv-sintoma-registro-main',
+      'pv-dashboard-paciente-main'
+    );
+    main.classList.add(classe);
+  }
+
+  function ligarNavegacaoFluxoSintoma(main) {
+    main.querySelectorAll('[data-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => {
+        PV.router.navegar(botao.dataset.rota);
+      });
+    });
+    if (PV.ui.ligarLogout) PV.ui.ligarLogout(main);
+  }
+
+  function preencherNomeSidebarFluxoSintoma(main, ctx) {
+    const elemento = main.querySelector('#pv-sidebar-paciente-name');
+    if (!elemento) return;
+
+    PV.db.pacientes.buscar(ctx.usuario.id)
+      .then((paciente) => {
+        if (!elemento.isConnected) return;
+        elemento.textContent = paciente.nome_social || paciente.nome || 'Paciente';
+      })
+      .catch(() => {
+        // Mantém o rótulo acessível "Paciente" se os dados de perfil falharem.
+      });
+  }
+
+  function desenharEstadoFluxoSintoma(main, titulo, mensagem) {
+    main.innerHTML = `
+      <div class="pv-sintoma-estado">
+        <h1>${escaparHtml(titulo)}</h1>
+        <p>${escaparHtml(mensagem)}</p>
+        <button type="button" class="pv-sintoma-botao-principal" id="pv-sintoma-estado-voltar">
+          Voltar aos sintomas
+        </button>
+      </div>
+    `;
+    main.querySelector('#pv-sintoma-estado-voltar')?.addEventListener('click', () => {
+      PV.router.navegar('/menu-sintomas');
+    });
+  }
+
+  function rotuloIntensidadeSintoma(valor) {
+    if (valor === 0) return 'Nenhuma intensidade';
+    if (valor <= 3) return 'Intensidade leve';
+    if (valor <= 6) return 'Intensidade moderada';
+    if (valor <= 8) return 'Intensidade intensa';
+    return 'Intensidade muito intensa';
+  }
+
+  function desenharMobileNavSintoma(rotaAtiva) {
+    const item = (rota, icone, rotulo) => `
+      <button type="button" class="${rotaAtiva === rota ? 'active' : ''}" data-rota="${rota}">
+        ${iconeMenuSintomas(icone)}
+        <span>${rotulo}</span>
+      </button>
+    `;
+
+    return `
+      <nav class="pv-sintoma-mobile-nav" aria-label="Navegação principal">
+        ${item('/home', 'inicio', 'Início')}
+        ${item('/menu-sintomas', 'sintomas', 'Sintomas')}
+        ${item('/busca', 'conteudos', 'Conteúdos')}
+        ${item('/perfil', 'usuario', 'Perfil')}
+      </nav>
+    `;
+  }
+
+  function desenharTopbarSintoma() {
+    return `
+      <header class="pv-sintoma-topbar">
+        <span>Protótipo demonstrativo</span>
+        <button type="button" data-rota="/busca" aria-label="Pesquisar conteúdos">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path>
+          </svg>
+        </button>
+        <button type="button" data-rota="/triagem" aria-label="Abrir triagem">
+          ${iconeMenuSintomas('sino')}
+          <span class="pv-sintoma-notificacao-ponto" aria-hidden="true"></span>
+        </button>
+      </header>
+    `;
+  }
+
+  async function detalheSintoma(main, ctx) {
+    prepararLayoutFluxoSintoma(main, 'pv-sintoma-detalhe-main');
+    main.innerHTML = `<div class="pv-sintoma-loading">${spinner()}<span>Carregando informações do sintoma...</span></div>`;
+
+    let sintoma;
+    let conteudo = null;
+    let ultimoRegistro = null;
+
+    try {
+      const [sintomas, registros] = await Promise.all([
+        PV.db.sintomas.listar(),
+        PV.db.registros.listar(),
+      ]);
+
+      sintoma = sintomas.find((item) => Number(item.id) === Number(ctx.sub));
+      if (!sintoma) {
+        desenharEstadoFluxoSintoma(main, 'Sintoma não encontrado', 'Não foi possível localizar este sintoma.');
+        return;
+      }
+
+      try {
+        const conteudos = await PV.db.conteudos.listar({ timeoutMs: 8000 });
+        const nomeNormalizado = normalizarNomeSintoma(sintoma.nome_sintoma);
+        conteudo = conteudos.find((item) => normalizarNomeSintoma(item.titulo) === nomeNormalizado) || null;
+      } catch (_) {
+        // A página de acompanhamento continua disponível se o conteúdo educativo estiver indisponível.
+      }
+
+      const meusRegistros = registros
+        .filter((item) =>
+          Number(item.paciente_id) === Number(ctx.usuario.id) &&
+          Number(item.sintoma_id) === Number(sintoma.id)
+        )
+        .sort((a, b) => new Date(b.data_registro) - new Date(a.data_registro));
+      ultimoRegistro = meusRegistros[0] || null;
+    } catch (erro) {
+      desenharEstadoFluxoSintoma(
+        main,
+        'Não foi possível carregar o sintoma',
+        erro.message || 'Verifique sua conexão e tente novamente.'
+      );
+      return;
+    }
+
+    const titulo = sintoma.nome_sintoma || 'Sintoma';
+    const descricao = conteudo?.descricao || conteudo?.texto ||
+      'Conteúdo demonstrativo preparado para receber a definição revisada pela equipe responsável.';
+    const dataUltimoRegistro = ultimoRegistro?.data_registro
+      ? new Date(ultimoRegistro.data_registro).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
+      : '';
+    const salvoAgora = Boolean(ctx.query && ctx.query.salvo === '1');
+
+    main.innerHTML = `
+      <div class="pv-sintoma-detalhe-layout">
+        ${PV.ui.sidebarPaciente('sintomas')}
+        <section class="pv-sintoma-workspace">
+          ${desenharTopbarSintoma()}
+          <main class="pv-sintoma-page-content">
+            <button type="button" class="pv-sintoma-voltar" id="pv-sintoma-voltar">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+              <span>Voltar</span>
+            </button>
+
+            <header class="pv-sintoma-page-heading">
+              <span class="pv-sintoma-eyebrow">SINTOMA</span>
+              <h1>${escaparHtml(titulo)}</h1>
+              <p>Consulte informações educativas ou faça um novo registro de intensidade.</p>
+            </header>
+
+            ${salvoAgora ? '<div class="pv-sintoma-success" role="status">Seu registro de intensidade foi salvo.</div>' : ''}
+
+            <div class="pv-sintoma-page-divider"></div>
+
+            <div class="pv-sintoma-detalhe-grid">
+              <section class="pv-sintoma-info-card">
+                <h2>Sobre este sintoma</h2>
+                <p>${escaparHtml(descricao)}</p>
+                <div class="pv-sintoma-info-actions">
+                  <button type="button" class="pv-sintoma-botao-secundario" id="pv-sintoma-ver-definicao" ${conteudo ? '' : 'disabled'}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z"></path><path d="M8 7h8M8 11h8M8 15h5"></path></svg>
+                    <span>Ver definição</span>
+                  </button>
+                  <button type="button" class="pv-sintoma-botao-secundario" id="pv-sintoma-ver-alertas" ${conteudo ? '' : 'disabled'}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5h.01"></path></svg>
+                    <span>Sinais de alerta</span>
+                  </button>
+                </div>
+                ${conteudo ? '' : '<small class="pv-sintoma-ajuda-sem-conteudo">O conteúdo educativo deste sintoma ainda não está disponível.</small>'}
+              </section>
+
+              <aside class="pv-sintoma-acompanhamento-card">
+                <span class="pv-sintoma-acompanhamento-eyebrow">Acompanhamento</span>
+                <h2>Como está a intensidade agora?</h2>
+                <p>Registre de 0 a 10 de forma simples.</p>
+                ${ultimoRegistro ? `
+                  <div class="pv-sintoma-ultimo-registro">
+                    <div class="pv-sintoma-ultimo-valor"><strong>${escaparHtml(ultimoRegistro.intensidade)}</strong><span>/10</span></div>
+                    <span class="pv-sintoma-ultimo-rotulo">${escaparHtml(rotuloIntensidadeSintoma(Number(ultimoRegistro.intensidade)))}</span>
+                    <small>Último registro${dataUltimoRegistro ? ` · ${escaparHtml(dataUltimoRegistro)}` : ''}</small>
+                  </div>
+                ` : `
+                  <div class="pv-sintoma-sem-registro">
+                    <strong>Sem registro ainda</strong>
+                    <span>Seu primeiro registro pode ser feito agora.</span>
+                  </div>
+                `}
+                <button type="button" class="pv-sintoma-botao-principal" id="pv-sintoma-registrar">
+                  Registrar intensidade
+                </button>
+              </aside>
+            </div>
+          </main>
+          ${desenharMobileNavSintoma('/menu-sintomas')}
+        </section>
+      </div>
+    `;
+
+    ligarNavegacaoFluxoSintoma(main);
+    preencherNomeSidebarFluxoSintoma(main, ctx);
+
+    main.querySelector('#pv-sintoma-voltar')?.addEventListener('click', () => {
+      PV.router.navegar('/menu-sintomas');
+    });
+    main.querySelector('#pv-sintoma-registrar')?.addEventListener('click', () => {
+      PV.router.navegar('/registrar-intensidade/' + encodeURIComponent(sintoma.id));
+    });
+    main.querySelector('#pv-sintoma-ver-definicao')?.addEventListener('click', () => {
+      if (conteudo) PV.router.navegar('/conteudo/' + encodeURIComponent(conteudo.id));
+    });
+    main.querySelector('#pv-sintoma-ver-alertas')?.addEventListener('click', () => {
+      if (conteudo) PV.router.navegar('/conteudo/' + encodeURIComponent(conteudo.id) + '?secao=alerta');
+    });
+  }
+
+  async function registrarIntensidade(main, ctx) {
+    prepararLayoutFluxoSintoma(main, 'pv-sintoma-registro-main');
+    main.innerHTML = `<div class="pv-sintoma-loading">${spinner()}<span>Preparando o registro...</span></div>`;
+
+    let sintoma;
+    try {
+      const sintomas = await PV.db.sintomas.listar();
+      sintoma = sintomas.find((item) => Number(item.id) === Number(ctx.sub));
+    } catch (erro) {
+      desenharEstadoFluxoSintoma(main, 'Não foi possível abrir o registro', erro.message || 'Tente novamente.');
+      return;
+    }
+
+    if (!sintoma) {
+      desenharEstadoFluxoSintoma(main, 'Sintoma não encontrado', 'Não foi possível localizar este sintoma.');
+      return;
+    }
+
+    const titulo = sintoma.nome_sintoma || 'Sintoma';
+
+    main.innerHTML = `
+      <div class="pv-sintoma-registro-layout">
+        ${PV.ui.sidebarPaciente('sintomas')}
+        <section class="pv-sintoma-workspace">
+          ${desenharTopbarSintoma()}
+          <main class="pv-sintoma-page-content pv-sintoma-registro-content">
+            <button type="button" class="pv-sintoma-voltar" id="pv-registro-voltar">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+              <span>Voltar</span>
+            </button>
+
+            <header class="pv-sintoma-page-heading">
+              <span class="pv-sintoma-eyebrow">NOVO REGISTRO</span>
+              <h1>${escaparHtml(titulo)}</h1>
+              <p>Indique a intensidade percebida neste momento.</p>
+            </header>
+
+            <div class="pv-sintoma-page-divider"></div>
+
+            <section class="pv-sintoma-registro-card">
+              <div class="pv-sintoma-registro-card-top">
+                <div>
+                  <span class="pv-sintoma-campo-legenda">Intensidade selecionada</span>
+                  <div class="pv-sintoma-score"><strong id="pv-intensidade-valor">5</strong><span>/10</span></div>
+                </div>
+                <span class="pv-sintoma-intensidade-badge moderada" id="pv-intensidade-rotulo">Intensidade moderada</span>
+              </div>
+
+              <label class="pv-sintoma-range-label" for="pv-intensidade-range">Ajuste a escala de intensidade</label>
+              <input class="pv-sintoma-range" id="pv-intensidade-range" type="range" min="0" max="10" step="1" value="5" aria-label="Intensidade do sintoma de zero a dez">
+              <div class="pv-sintoma-range-extremos"><span>0 · Nenhuma intensidade</span><span>10 · Intensidade máxima</span></div>
+
+              <div class="pv-sintoma-numeros" aria-label="Escolha um valor de intensidade">
+                ${Array.from({ length: 11 }, (_, valor) => `
+                  <button type="button" class="pv-intensidade-numero ${valor === 5 ? 'selected' : ''}" data-valor="${valor}" aria-pressed="${valor === 5 ? 'true' : 'false'}">${valor}</button>
+                `).join('')}
+              </div>
+
+              <div class="pv-sintoma-nota-informativa">
+                Esta escala registra apenas a intensidade informada. Ela não representa diagnóstico ou orientação clínica.
+              </div>
+              <div class="pv-sintoma-registro-erro" id="pv-sintoma-registro-erro" role="alert" hidden></div>
+
+              <button type="button" class="pv-sintoma-botao-principal pv-sintoma-salvar-registro" id="pv-sintoma-salvar">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"></path></svg>
+                <span>Salvar registro</span>
+              </button>
+            </section>
+          </main>
+          ${desenharMobileNavSintoma('/menu-sintomas')}
+        </section>
+      </div>
+    `;
+
+    ligarNavegacaoFluxoSintoma(main);
+    preencherNomeSidebarFluxoSintoma(main, ctx);
+
+    let intensidadeSelecionada = 5;
+    const inputRange = main.querySelector('#pv-intensidade-range');
+    const valorEl = main.querySelector('#pv-intensidade-valor');
+    const rotuloEl = main.querySelector('#pv-intensidade-rotulo');
+    const erroEl = main.querySelector('#pv-sintoma-registro-erro');
+
+    function atualizarEscala(valor) {
+      intensidadeSelecionada = Math.max(0, Math.min(10, Number(valor)));
+      inputRange.value = String(intensidadeSelecionada);
+      valorEl.textContent = String(intensidadeSelecionada);
+      rotuloEl.textContent = rotuloIntensidadeSintoma(intensidadeSelecionada);
+      rotuloEl.className = 'pv-sintoma-intensidade-badge ' + (
+        intensidadeSelecionada === 0 ? 'nenhuma' :
+        intensidadeSelecionada <= 3 ? 'leve' :
+        intensidadeSelecionada <= 6 ? 'moderada' :
+        intensidadeSelecionada <= 8 ? 'intensa' : 'muito-intensa'
+      );
+
+      main.querySelectorAll('.pv-intensidade-numero').forEach((botao) => {
+        const selecionado = Number(botao.dataset.valor) === intensidadeSelecionada;
+        botao.classList.toggle('selected', selecionado);
+        botao.setAttribute('aria-pressed', selecionado ? 'true' : 'false');
+      });
+    }
+
+    inputRange.addEventListener('input', () => atualizarEscala(inputRange.value));
+    main.querySelectorAll('.pv-intensidade-numero').forEach((botao) => {
+      botao.addEventListener('click', () => atualizarEscala(botao.dataset.valor));
+    });
+
+    main.querySelector('#pv-registro-voltar')?.addEventListener('click', () => {
+      PV.router.navegar('/sintoma/' + encodeURIComponent(sintoma.id));
+    });
+
+    main.querySelector('#pv-sintoma-salvar')?.addEventListener('click', async (evento) => {
+      const botao = evento.currentTarget;
+      erroEl.hidden = true;
+      erroEl.textContent = '';
+      botao.disabled = true;
+      botao.querySelector('span').textContent = 'Salvando registro...';
+
+      try {
+        await PV.db.registros.criar({
+          paciente_id: ctx.usuario.id,
+          sintoma_id: sintoma.id,
+          intensidade: intensidadeSelecionada,
+        });
+        PV.session.marcarSintomaRegistradoHoje();
+        PV.router.navegar('/sintoma/' + encodeURIComponent(sintoma.id) + '?salvo=1');
+      } catch (erro) {
+        erroEl.textContent = erro.message || 'Não foi possível salvar o registro. Tente novamente.';
+        erroEl.hidden = false;
+        botao.disabled = false;
+        botao.querySelector('span').textContent = 'Salvar registro';
+      }
+    });
+  }
+
+  PV.screens.detalheSintoma = detalheSintoma;
+  PV.screens.registrarIntensidade = registrarIntensidade;
   PV.screens.menuSintomas = menuSintomas;
   PV.screens.conteudoDetalhe = conteudoDetalhe;
   PV.screens.definicaoSintomas = definicaoSintomas;

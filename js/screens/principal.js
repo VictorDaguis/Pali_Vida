@@ -486,7 +486,7 @@ window.PV.screens = window.PV.screens || {};
             <button
               class="pv-sidebar-item${estaAtiva('perfil')}"
               type="button"
-              data-rota="/perfil"
+              data-rota="/meu-perfil"
             >
               ${iconePainel('usuario')}
               <span>Perfil</span>
@@ -501,9 +501,7 @@ window.PV.screens = window.PV.screens || {};
   
           <div class="pv-sidebar-profile">
   
-            <span class="pv-sidebar-avatar">
-              ${iconePainel('usuario')}
-            </span>
+            <span class="pv-sidebar-avatar" id="pv-sidebar-paciente-avatar" aria-hidden="true">P</span>
   
             <span class="pv-sidebar-profile-text">
   
@@ -542,6 +540,26 @@ window.PV.screens = window.PV.screens || {};
 
   PV.ui.sidebarPaciente = sidebarPaciente;
 
+  /* Atualiza nome e iniciais do perfil no rodapé da sidebar compartilhada. */
+  function atualizarPerfilSidebarPaciente(root, nomeInformado) {
+    if (!root || typeof root.querySelector !== 'function') return;
+    const nome = String(nomeInformado || '').trim() || 'Paciente';
+    const nomeEl = root.querySelector('#pv-sidebar-paciente-name');
+    const avatarEl = root.querySelector('#pv-sidebar-paciente-avatar');
+    if (nomeEl) nomeEl.textContent = nome;
+    if (avatarEl) {
+      const ignorar = new Set(['e', 'da', 'de', 'do', 'das', 'dos']);
+      const partes = nome.replace(/[()]/g, ' ').trim().split(/\s+/).filter(Boolean)
+        .filter((parte) => !ignorar.has(parte.toLocaleLowerCase('pt-BR')));
+      const iniciais = partes.length > 1
+        ? partes[0].charAt(0) + partes[1].charAt(0)
+        : (partes[0] || 'P').slice(0, 2);
+      avatarEl.textContent = iniciais.toLocaleUpperCase('pt-BR');
+    }
+  }
+  PV.ui.atualizarPerfilSidebarPaciente = atualizarPerfilSidebarPaciente;
+
+
   function homePaciente(main, ctx) {
 
     main.classList.remove('pv-sem-scroll');
@@ -566,57 +584,18 @@ window.PV.screens = window.PV.screens || {};
           <!-- TOPBAR -->
   
           <header class="pv-topbar">
-  
-            <div class="pv-topbar-title">
-              Meu cuidado
-            </div>
-  
+            <div class="pv-topbar-title">Meu cuidado</div>
             <div class="pv-topbar-actions">
-  
-              <button
-                class="pv-home-icon-button"
-                type="button"
-                aria-label="Abrir triagem"
-                data-rota="/triagem"
-              >
+              <span class="pv-home-topbar-demo">Protótipo demonstrativo</span>
+              <button class="pv-home-icon-button" type="button" aria-label="Pesquisar conteúdos" title="Pesquisar conteúdos" data-rota="/busca">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path>
+                </svg>
+              </button>
+              <button class="pv-home-icon-button" type="button" aria-label="Abrir triagem" title="Abrir triagem" data-rota="/triagem">
                 ${iconePainel('sino')}
               </button>
-  
-              <button
-                class="pv-home-profile"
-                type="button"
-                aria-label="Abrir prontuário"
-                data-rota="/perfil"
-              >
-  
-                <span class="pv-avatar">
-                  ${iconePainel('usuario')}
-                </span>
-  
-                <span class="pv-home-profile-copy">
-                  <strong id="pv-dash-profile-name">
-                    Paciente
-                  </strong>
-  
-                  <small>
-                    Paciente
-                  </small>
-                </span>
-  
-              </button>
-  
-              <button
-                class="pv-home-logout"
-                type="button"
-                data-sair
-                aria-label="Sair da conta"
-              >
-                ${iconePainel('sair')}
-                <span>Sair</span>
-              </button>
-  
             </div>
-  
           </header>
   
   
@@ -1014,7 +993,7 @@ window.PV.screens = window.PV.screens || {};
   
           <button
             type="button"
-            data-rota="/perfil"
+            data-rota="/meu-perfil"
           >
             ${iconePainel('usuario')}
             <span>Perfil</span>
@@ -1102,10 +1081,10 @@ window.PV.screens = window.PV.screens || {};
   
           /* Nome no perfil */
   
-          painel
-            .querySelector('#pv-dash-profile-name')
-            .textContent =
-              nome;
+          const nomeTopoPerfil = painel.querySelector("#pv-dash-profile-name");
+
+  
+          if (nomeTopoPerfil) nomeTopoPerfil.textContent = nome;
   
   
             /* Nome na sidebar */
@@ -1118,6 +1097,7 @@ window.PV.screens = window.PV.screens || {};
             if (nomeSidebar) {
             nomeSidebar.textContent = nome;
             }
+            PV.ui.atualizarPerfilSidebarPaciente(painel, nome);
 
           /* Emergência */
   
@@ -1129,7 +1109,7 @@ window.PV.screens = window.PV.screens || {};
   
   
           /* Unidade de saúde */
-  
+            
           painel
             .querySelector('#pv-dash-health-unit')
             .textContent =
@@ -1472,7 +1452,377 @@ window.PV.screens = window.PV.screens || {};
     `;
   }
 
+  /* ==================================================== ConteudosPaciente === */
+  async function buscaPacienteLovable(main, ctx) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+
+    main.classList.remove('pv-sem-scroll');
+    main.classList.add('pv-conteudos-main');
+
+    main.innerHTML = `
+      <div class="pv-conteudos-modern">
+        ${PV.ui.sidebarPaciente('conteudos')}
+
+        <section class="pv-conteudos-workspace">
+          <header class="pv-conteudos-topbar">
+            <span class="pv-conteudos-demo">Protótipo demonstrativo</span>
+            <button type="button" class="pv-conteudos-topbar-icon" id="pv-conteudos-focus-search" aria-label="Pesquisar conteúdos" title="Pesquisar conteúdos">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path>
+              </svg>
+            </button>
+            <button type="button" class="pv-conteudos-topbar-icon pv-conteudos-notificacao" data-rota="/triagem" aria-label="Abrir triagem" title="Abrir triagem">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path>
+              </svg><span class="pv-conteudos-notificacao-dot" aria-hidden="true"></span>
+            </button>
+          </header>
+
+          <div class="pv-conteudos-content">
+            <section class="pv-conteudos-heading">
+              <div>
+                <span class="pv-conteudos-eyebrow">BIBLIOTECA DE CUIDADO</span>
+                <h1>Conteúdos para você</h1>
+                <p>Informações educativas para entender melhor os sintomas e conversar com sua equipe de saúde.</p>
+              </div>
+            </section>
+
+            <div class="pv-conteudos-search-row">
+              <label class="pv-conteudos-search" for="busca-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path>
+                </svg>
+                <input id="busca-input" type="search" placeholder="Buscar por tema ou sintoma..." autocomplete="off" aria-label="Buscar conteúdos por tema ou sintoma">
+              </label>
+              <button class="pv-conteudos-refresh" id="btn-recarregar" type="button" aria-label="Atualizar conteúdos" title="Atualizar conteúdos">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"></path></svg>
+              </button>
+            </div>
+
+            <div class="pv-conteudos-results-heading">
+              <h2>Todos os conteúdos</h2>
+              <span id="pv-conteudos-count">Carregando...</span>
+            </div>
+            <div id="busca-aviso" class="pv-conteudos-notice" aria-live="polite"></div>
+            <div id="busca-lista" class="pv-conteudos-grid" aria-live="polite">
+              <div class="pv-conteudos-loading">Carregando conteúdos...</div>
+            </div>
+          </div>
+
+          <nav class="pv-conteudos-mobile-nav" aria-label="Navegação principal">
+            <button type="button" data-rota="/home">
+              ${iconePainel('inicio')}<span>Início</span>
+            </button>
+            <button type="button" data-rota="/menu-sintomas">
+              ${iconePainel('sintomas')}<span>Sintomas</span>
+            </button>
+            <button type="button" class="active" data-rota="/busca">
+              ${iconePainel('conteudos')}<span>Conteúdos</span>
+            </button>
+            <button type="button" data-rota="/meu-perfil">
+              ${iconePainel('usuario')}<span>Perfil</span>
+            </button>
+          </nav>
+        </section>
+      </div>
+    `;
+
+    const layout = main.querySelector('.pv-conteudos-modern');
+    const listaEl = main.querySelector('#busca-lista');
+    const buscaEl = main.querySelector('#busca-input');
+    const avisoEl = main.querySelector('#busca-aviso');
+    const contadorEl = main.querySelector('#pv-conteudos-count');
+    let lista = [];
+    let textoBusca = '';
+
+    PV.ui.ligarLogout(layout);
+    layout.querySelectorAll('[data-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.rota));
+    });
+
+    PV.db.pacientes.buscar(ctx.usuario.id).then((paciente) => {
+      const nome = paciente?.nome_social || paciente?.nome || 'Paciente';
+      PV.ui.atualizarPerfilSidebarPaciente(layout, nome);
+      const nomeEl = layout.querySelector('#pv-sidebar-paciente-name');
+      if (nomeEl) nomeEl.textContent = nome;
+    }).catch(() => {});
+
+    function cardHtml(conteudo) {
+      const descricao = String(conteudo.descricao || conteudo.texto || '').trim();
+      const resumo = descricao.length > 190 ? `${descricao.slice(0, 187).trimEnd()}…` : descricao;
+      const data = formatarDataConteudo(conteudo.data_post);
+      return `
+        <article class="pv-conteudos-card">
+          <div class="pv-conteudos-card-top">
+            <span class="pv-conteudos-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H20v17H7.5A2.5 2.5 0 0 1 5 16.5z"></path><path d="M8.5 7H16M8.5 10.5H16M8.5 14H13"></path><path d="M5 16.5A2.5 2.5 0 0 0 7.5 19H20v3H7.5A2.5 2.5 0 0 1 5 19.5z"></path>
+              </svg>
+            </span>
+            <span class="pv-conteudos-card-label">EDUCAÇÃO EM SAÚDE</span>
+          </div>
+          <h3>${escaparHtml(conteudo.titulo || 'Conteúdo educativo')}</h3>
+          <p>${escaparHtml(resumo || 'Consulte as informações educativas deste tema e saiba quais sinais observar.')}</p>
+          <div class="pv-conteudos-card-footer">
+            <span class="pv-conteudos-card-date">${data ? `Atualizado em ${escaparHtml(data)}` : 'Material educativo'}</span>
+            <button type="button" class="pv-conteudos-read" data-ler="${escaparHtml(conteudo.id)}">
+              <span>Ler conteúdo</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderLista() {
+      const termo = textoBusca.trim().toLocaleLowerCase('pt-BR');
+      const filtrados = lista.filter((item) =>
+        `${item.titulo || ''} ${item.descricao || item.texto || ''}`.toLocaleLowerCase('pt-BR').includes(termo)
+      );
+      contadorEl.textContent = `${filtrados.length} ${filtrados.length === 1 ? 'conteúdo' : 'conteúdos'}`;
+
+      if (!filtrados.length) {
+        listaEl.innerHTML = `
+          <div class="pv-conteudos-empty">
+            <span class="pv-conteudos-empty-icon" aria-hidden="true">⌕</span>
+            <h3>Nenhum conteúdo encontrado</h3>
+            <p>Tente buscar por outro tema ou sintoma.</p>
+            ${termo ? '<button type="button" id="pv-conteudos-limpar">Limpar busca</button>' : ''}
+          </div>
+        `;
+        const limpar = listaEl.querySelector('#pv-conteudos-limpar');
+        if (limpar) limpar.addEventListener('click', () => { buscaEl.value = ''; textoBusca = ''; renderLista(); buscaEl.focus(); });
+        return;
+      }
+
+      listaEl.innerHTML = filtrados.map(cardHtml).join('');
+      listaEl.querySelectorAll('[data-ler]').forEach((botao) => {
+        botao.addEventListener('click', () => PV.router.navegar('/conteudo/' + botao.dataset.ler));
+      });
+    }
+
+    async function carregar() {
+      listaEl.innerHTML = '<div class="pv-conteudos-loading">Carregando conteúdos...</div>';
+      avisoEl.innerHTML = '';
+      contadorEl.textContent = 'Carregando...';
+      try {
+        lista = await PV.db.conteudos.listar({ timeoutMs: 20000 });
+        renderLista();
+      } catch (e) {
+        lista = [];
+        contadorEl.textContent = 'Não foi possível carregar';
+        listaEl.innerHTML = `
+          <div class="pv-conteudos-empty pv-conteudos-empty-error">
+            <span class="pv-conteudos-empty-icon" aria-hidden="true">!</span>
+            <h3>Não foi possível carregar os conteúdos</h3>
+            <p>${escaparHtml(e.message || 'Verifique sua conexão e tente novamente.')}</p>
+            <button type="button" id="pv-conteudos-retry">Tentar novamente</button>
+          </div>
+        `;
+        listaEl.querySelector('#pv-conteudos-retry').addEventListener('click', carregar);
+      }
+    }
+
+    buscaEl.addEventListener('input', () => {
+      textoBusca = buscaEl.value;
+      renderLista();
+    });
+    main.querySelector('#btn-recarregar').addEventListener('click', carregar);
+    main.querySelector('#pv-conteudos-focus-search').addEventListener('click', () => buscaEl.focus());
+    await carregar();
+  }
+
+  /* ==================================================== ConteudosPaciente === */
+  async function buscaPacienteLovable(main, ctx) {
+    const header = document.getElementById('app-header');
+    const footer = document.getElementById('app-footer');
+    if (header) { header.hidden = true; header.innerHTML = ''; }
+    if (footer) { footer.hidden = true; footer.innerHTML = ''; }
+
+    main.classList.remove('pv-sem-scroll');
+    main.classList.add('pv-conteudos-main');
+
+    main.innerHTML = `
+      <div class="pv-conteudos-modern">
+        ${PV.ui.sidebarPaciente('conteudos')}
+
+        <section class="pv-conteudos-workspace">
+          <header class="pv-conteudos-topbar">
+            <span class="pv-conteudos-demo">Protótipo demonstrativo</span>
+            <button type="button" class="pv-conteudos-topbar-icon" id="pv-conteudos-focus-search" aria-label="Pesquisar conteúdos" title="Pesquisar conteúdos">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path>
+              </svg>
+            </button>
+            <button type="button" class="pv-conteudos-topbar-icon pv-conteudos-notificacao" data-rota="/triagem" aria-label="Abrir triagem" title="Abrir triagem">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path>
+              </svg><span class="pv-conteudos-notificacao-dot" aria-hidden="true"></span>
+            </button>
+          </header>
+
+          <div class="pv-conteudos-content">
+            <section class="pv-conteudos-heading">
+              <div>
+                <span class="pv-conteudos-eyebrow">BIBLIOTECA DE CUIDADO</span>
+                <h1>Conteúdos para você</h1>
+                <p>Informações educativas para entender melhor os sintomas e conversar com sua equipe de saúde.</p>
+              </div>
+            </section>
+
+            <div class="pv-conteudos-search-row">
+              <label class="pv-conteudos-search" for="busca-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path>
+                </svg>
+                <input id="busca-input" type="search" placeholder="Buscar por tema ou sintoma..." autocomplete="off" aria-label="Buscar conteúdos por tema ou sintoma">
+              </label>
+              <button class="pv-conteudos-refresh" id="btn-recarregar" type="button" aria-label="Atualizar conteúdos" title="Atualizar conteúdos">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"></path></svg>
+              </button>
+            </div>
+
+            <div class="pv-conteudos-results-heading">
+              <h2>Todos os conteúdos</h2>
+              <span id="pv-conteudos-count">Carregando...</span>
+            </div>
+            <div id="busca-aviso" class="pv-conteudos-notice" aria-live="polite"></div>
+            <div id="busca-lista" class="pv-conteudos-grid" aria-live="polite">
+              <div class="pv-conteudos-loading">Carregando conteúdos...</div>
+            </div>
+          </div>
+
+          <nav class="pv-conteudos-mobile-nav" aria-label="Navegação principal">
+            <button type="button" data-rota="/home">
+              ${iconePainel('inicio')}<span>Início</span>
+            </button>
+            <button type="button" data-rota="/menu-sintomas">
+              ${iconePainel('sintomas')}<span>Sintomas</span>
+            </button>
+            <button type="button" class="active" data-rota="/busca">
+              ${iconePainel('conteudos')}<span>Conteúdos</span>
+            </button>
+            <button type="button" data-rota="/meu-perfil">
+              ${iconePainel('usuario')}<span>Perfil</span>
+            </button>
+          </nav>
+        </section>
+      </div>
+    `;
+
+    const layout = main.querySelector('.pv-conteudos-modern');
+    const listaEl = main.querySelector('#busca-lista');
+    const buscaEl = main.querySelector('#busca-input');
+    const avisoEl = main.querySelector('#busca-aviso');
+    const contadorEl = main.querySelector('#pv-conteudos-count');
+    let lista = [];
+    let textoBusca = '';
+
+    PV.ui.ligarLogout(layout);
+    layout.querySelectorAll('[data-rota]').forEach((botao) => {
+      botao.addEventListener('click', () => PV.router.navegar(botao.dataset.rota));
+    });
+
+    PV.db.pacientes.buscar(ctx.usuario.id).then((paciente) => {
+      const nome = paciente?.nome_social || paciente?.nome || 'Paciente';
+      const nomeEl = layout.querySelector('#pv-sidebar-paciente-name');
+      if (nomeEl) nomeEl.textContent = nome;
+    }).catch(() => {});
+
+    function cardHtml(conteudo) {
+      const descricao = String(conteudo.descricao || conteudo.texto || '').trim();
+      const resumo = descricao.length > 190 ? `${descricao.slice(0, 187).trimEnd()}…` : descricao;
+      const data = formatarDataConteudo(conteudo.data_post);
+      return `
+        <article class="pv-conteudos-card">
+          <div class="pv-conteudos-card-top">
+            <span class="pv-conteudos-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H20v17H7.5A2.5 2.5 0 0 1 5 16.5z"></path><path d="M8.5 7H16M8.5 10.5H16M8.5 14H13"></path><path d="M5 16.5A2.5 2.5 0 0 0 7.5 19H20v3H7.5A2.5 2.5 0 0 1 5 19.5z"></path>
+              </svg>
+            </span>
+            <span class="pv-conteudos-card-label">EDUCAÇÃO EM SAÚDE</span>
+          </div>
+          <h3>${escaparHtml(conteudo.titulo || 'Conteúdo educativo')}</h3>
+          <p>${escaparHtml(resumo || 'Consulte as informações educativas deste tema e saiba quais sinais observar.')}</p>
+          <div class="pv-conteudos-card-footer">
+            <span class="pv-conteudos-card-date">${data ? `Atualizado em ${escaparHtml(data)}` : 'Material educativo'}</span>
+            <button type="button" class="pv-conteudos-read" data-ler="${escaparHtml(conteudo.id)}">
+              <span>Ler conteúdo</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderLista() {
+      const termo = textoBusca.trim().toLocaleLowerCase('pt-BR');
+      const filtrados = lista.filter((item) =>
+        `${item.titulo || ''} ${item.descricao || item.texto || ''}`.toLocaleLowerCase('pt-BR').includes(termo)
+      );
+      contadorEl.textContent = `${filtrados.length} ${filtrados.length === 1 ? 'conteúdo' : 'conteúdos'}`;
+
+      if (!filtrados.length) {
+        listaEl.innerHTML = `
+          <div class="pv-conteudos-empty">
+            <span class="pv-conteudos-empty-icon" aria-hidden="true">⌕</span>
+            <h3>Nenhum conteúdo encontrado</h3>
+            <p>Tente buscar por outro tema ou sintoma.</p>
+            ${termo ? '<button type="button" id="pv-conteudos-limpar">Limpar busca</button>' : ''}
+          </div>
+        `;
+        const limpar = listaEl.querySelector('#pv-conteudos-limpar');
+        if (limpar) limpar.addEventListener('click', () => { buscaEl.value = ''; textoBusca = ''; renderLista(); buscaEl.focus(); });
+        return;
+      }
+
+      listaEl.innerHTML = filtrados.map(cardHtml).join('');
+      listaEl.querySelectorAll('[data-ler]').forEach((botao) => {
+        botao.addEventListener('click', () => PV.router.navegar('/conteudo/' + botao.dataset.ler));
+      });
+    }
+
+    async function carregar() {
+      listaEl.innerHTML = '<div class="pv-conteudos-loading">Carregando conteúdos...</div>';
+      avisoEl.innerHTML = '';
+      contadorEl.textContent = 'Carregando...';
+      try {
+        lista = await PV.db.conteudos.listar({ timeoutMs: 20000 });
+        renderLista();
+      } catch (e) {
+        lista = [];
+        contadorEl.textContent = 'Não foi possível carregar';
+        listaEl.innerHTML = `
+          <div class="pv-conteudos-empty pv-conteudos-empty-error">
+            <span class="pv-conteudos-empty-icon" aria-hidden="true">!</span>
+            <h3>Não foi possível carregar os conteúdos</h3>
+            <p>${escaparHtml(e.message || 'Verifique sua conexão e tente novamente.')}</p>
+            <button type="button" id="pv-conteudos-retry">Tentar novamente</button>
+          </div>
+        `;
+        listaEl.querySelector('#pv-conteudos-retry').addEventListener('click', carregar);
+      }
+    }
+
+    buscaEl.addEventListener('input', () => {
+      textoBusca = buscaEl.value;
+      renderLista();
+    });
+    main.querySelector('#btn-recarregar').addEventListener('click', carregar);
+    main.querySelector('#pv-conteudos-focus-search').addEventListener('click', () => buscaEl.focus());
+    await carregar();
+  }
+
   async function busca(main, ctx) {
+    if (ctx.usuario.tipo === 'paciente') {
+      await buscaPacienteLovable(main, ctx);
+      return;
+    }
+
     const ehAdmin =
       ctx.usuario.tipo === 'administrador';
 

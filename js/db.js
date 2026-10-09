@@ -322,7 +322,7 @@ window.PV = window.PV || {};
     // fetch, como faziam antes de acessar `banco.sintomas` diretamente.
     async listar() {
       await atraso();
-      const linhas = await chamarAppsScriptGet({ acao: 'listar', tabela: 'sintomas' });
+      const linhas = await chamarAppsScriptGet({ acao: 'listar', tabela: 'sintomas' }, 20000);
       return [...linhas].sort((a, b) => Number(a.id) - Number(b.id));
     },
     async criar(nome_sintoma) {

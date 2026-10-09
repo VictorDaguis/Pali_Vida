@@ -45,7 +45,7 @@ window.PV = window.PV || {};
     const painelPaciente = Boolean(
       sessao &&
       sessao.usuario.tipo === 'paciente' &&
-      ['home', 'triagem', 'perfil'].includes(rota),
+      ['home', 'triagem', 'perfil', 'meu-perfil'].includes(rota),
     );
     document.body.classList.toggle('pv-route-login', rota === 'login' || rota === 'cadastro');
     document.body.classList.toggle('pv-route-home', rota === 'home');
@@ -56,6 +56,7 @@ window.PV = window.PV || {};
     document.querySelector('.app-shell').classList.toggle('pv-paciente-dashboard', painelPaciente);
     main.innerHTML = '';
     main.classList.remove('pv-dashboard-paciente-main');
+    main.classList.remove('pv-menu-sintomas-main', 'pv-conteudo-detalhe-main', 'pv-sintoma-detalhe-main', 'pv-sintoma-registro-main');
     // Reseta a marcação de "tela sem rolagem" a cada navegação; a própria
     // tela (ex.: menuSintomas) adiciona a classe de volta se precisar.
     main.classList.remove('pv-sem-scroll');
@@ -111,6 +112,18 @@ window.PV = window.PV || {};
           break;
         case 'perfil':
           await PV.screens.perfil(main, ctx);
+          break;
+        case 'meu-perfil':
+          if (ctx.usuario.tipo !== 'paciente') { location.hash = '#/perfil'; return; }
+          await PV.screens.perfilConta(main, ctx);
+          break;
+        case 'sintoma':
+          if (ctx.usuario.tipo === 'administrador') { location.hash = '#/home'; return; }
+          await PV.screens.detalheSintoma(main, ctx);
+          break;
+        case 'registrar-intensidade':
+          if (ctx.usuario.tipo === 'administrador') { location.hash = '#/home'; return; }
+          await PV.screens.registrarIntensidade(main, ctx);
           break;
         case 'menu-sintomas':
           await PV.screens.menuSintomas(main, ctx);
