@@ -237,6 +237,8 @@ window.PV.screens = window.PV.screens || {};
               <button type="button" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
           <button type="button" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
           <button type="button" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+        
+          <button type="button" class="pv-cuidador-mobile-logout" data-sair aria-label="Sair da conta">${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
         </nav>
       </div>
     `;
@@ -681,7 +683,9 @@ window.PV.screens = window.PV.screens || {};
               <button type="button" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
               <button type="button" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
               <button type="button" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
-            </nav>
+            
+          <button type="button" class="pv-cuidador-mobile-logout" data-sair aria-label="Sair da conta">${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
+        </nav>
           </main>
         </section>
       </div>`;
@@ -905,6 +909,8 @@ window.PV.screens = window.PV.screens || {};
           <button type="button" class="active" data-cuidador-rota="/sintomas" aria-current="page">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
           <button type="button" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
           <button type="button" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+        
+          <button type="button" class="pv-cuidador-mobile-logout" data-sair aria-label="Sair da conta">${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
         </nav>
       </div>`;
 
@@ -1682,45 +1688,7 @@ window.PV.screens = window.PV.screens || {};
              NAVEGAÇÃO MOBILE
              ========================================================= -->
   
-        <nav
-          class="pv-home-mobile-nav"
-          aria-label="Navegação mobile"
-        >
-  
-          <button
-            class="active"
-            type="button"
-            data-rota="/home"
-          >
-            ${iconePainel('inicio')}
-            <span>Início</span>
-          </button>
-  
-          <button
-            type="button"
-            data-rota="/menu-sintomas"
-          >
-            ${iconePainel('sintomas')}
-            <span>Sintomas</span>
-          </button>
-  
-          <button
-            type="button"
-            data-rota="/triagem"
-          >
-            ${iconePainel('triagem')}
-            <span>Triagem</span>
-          </button>
-  
-          <button
-            type="button"
-            data-rota="/meu-perfil"
-          >
-            ${iconePainel('usuario')}
-            <span>Perfil</span>
-          </button>
-  
-        </nav>
+        ${PV.ui.navegacaoMobilePaciente('home')}
   
       </div>
     `;
@@ -1924,6 +1892,206 @@ window.PV.screens = window.PV.screens || {};
   // parametrizada pelo tipo (ctx.sub). Ela chega preenchida com um exemplo
   // genérico (PV.db.contatos.buscar) que o usuário edita e salva — os dados
   // ficam por conta de cada paciente/cuidador (ver comentário em db.js).
+  async function contatoPacienteLovable(main, ctx, tipo, rotulo) {
+    const headerGlobal = document.getElementById('app-header');
+    const footerGlobal = document.getElementById('app-footer');
+    if (headerGlobal) { headerGlobal.hidden = true; headerGlobal.innerHTML = ''; }
+    if (footerGlobal) { footerGlobal.hidden = true; footerGlobal.innerHTML = ''; }
+
+    main.classList.remove('pv-sem-scroll');
+    main.classList.add('pv-dashboard-paciente-main');
+
+    const rotuloCampo = tipo === 'familia'
+      ? 'Parentesco'
+      : tipo === 'sac'
+        ? 'Horário de atendimento'
+        : 'Endereço / observação';
+    const textoAjuda = tipo === 'familia'
+      ? 'Mantenha os dados de uma pessoa de confiança atualizados.'
+      : tipo === 'sac'
+        ? 'Registre o telefone e o horário de atendimento deste serviço.'
+        : 'Mantenha o telefone e o endereço da unidade de referência à mão.';
+    const titulo = tipo === 'familia'
+      ? 'Contato de apoio'
+      : tipo === 'sac'
+        ? 'Serviço de atendimento'
+        : 'Unidade de saúde';
+
+    let dados = { nome: '', telefone: '', observacao: '', preenchido: false };
+    let estado = 'carregando';
+    let erroCarregamento = '';
+
+    function escaparTelefone(valor) {
+      return String(valor || '').replace(/[^0-9+]/g, '');
+    }
+
+    function renderizar(feedback) {
+      if (!main.isConnected) return;
+      const telefoneSeguro = escaparTelefone(dados.telefone);
+      const statusContato = dados.preenchido
+        ? '<span class="pv-contato-status salvo">Contato cadastrado</span>'
+        : '<span class="pv-contato-status pendente">Confira os dados de exemplo</span>';
+      const corpoFormulario = estado === 'carregando'
+        ? `<div class="pv-contato-estado"><span class="pv-contato-loader" aria-hidden="true"></span><p>Carregando dados do contato...</p></div>`
+        : estado === 'erro'
+          ? `<div class="pv-contato-estado"><p class="pv-contato-erro-texto">${escaparHtml(erroCarregamento || 'Não foi possível carregar este contato.')}</p><button type="button" class="pv-contato-button primary" id="pv-contato-tentar-novamente">Tentar novamente</button></div>`
+          : `
+            <form id="pv-contato-form" class="pv-contato-form">
+              <div class="pv-contato-form-heading">
+                <div><h2>Informações do contato</h2><p>${dados.preenchido ? 'Edite os dados sempre que precisar.' : 'Preencha com os dados corretos e salve para manter o cadastro atualizado.'}</p></div>
+                ${statusContato}
+              </div>
+              <div class="pv-contato-fields">
+                <div class="pv-contato-field">
+                  <label for="pv-contato-nome">Nome do contato <span aria-hidden="true">*</span></label>
+                  <input id="pv-contato-nome" name="nome" type="text" autocomplete="name" required maxlength="120" value="${escaparHtml(dados.nome || '')}" placeholder="Nome do familiar ou serviço">
+                </div>
+                <div class="pv-contato-field">
+                  <label for="pv-contato-telefone">Telefone <span aria-hidden="true">*</span></label>
+                  <input id="pv-contato-telefone" name="telefone" type="tel" autocomplete="tel" required maxlength="30" value="${escaparHtml(dados.telefone || '')}" placeholder="(00) 00000-0000">
+                </div>
+                <div class="pv-contato-field full">
+                  <label for="pv-contato-observacao">${escaparHtml(rotuloCampo)}</label>
+                  <input id="pv-contato-observacao" name="observacao" type="text" maxlength="180" value="${escaparHtml(dados.observacao || '')}" placeholder="${tipo === 'familia' ? 'Ex.: filha, irmão, cuidador...' : tipo === 'sac' ? 'Ex.: dias úteis, das 8h às 18h' : 'Endereço ou informação complementar'}">
+                </div>
+              </div>
+              <div id="pv-contato-feedback" class="pv-contato-feedback" role="status" aria-live="polite">${feedback ? aviso(feedback) : ''}</div>
+              <div class="pv-contato-actions">
+                <a class="pv-contato-button secondary${telefoneSeguro ? '' : ' disabled'}" id="pv-contato-ligar" href="${telefoneSeguro ? `tel:${escaparHtml(telefoneSeguro)}` : '#'}" ${telefoneSeguro ? '' : 'aria-disabled="true"'}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3H5a2 2 0 0 0-2 2c0 8.8 7.2 16 16 16a2 2 0 0 0 2-2v-2l-5-2-2 3a13 13 0 0 1-5-5l3-2-2-5H7Z"/></svg>
+                  Ligar agora
+                </a>
+                <button type="submit" class="pv-contato-button primary" id="pv-contato-salvar">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h12l4 4v14H3V3h2Z"/><path d="M7 3v6h10V3M7 21v-8h10v8"/></svg>
+                  Salvar contato
+                </button>
+              </div>
+            </form>`;
+
+      main.innerHTML = `
+        <div class="pv-home-layout pv-contato-paciente-layout">
+          ${PV.ui.sidebarPaciente('home')}
+          <section class="pv-home-workspace">
+            <header class="pv-topbar">
+              <div class="pv-topbar-title">Meu cuidado</div>
+              <div class="pv-topbar-actions">
+                <span class="pv-home-topbar-demo">Protótipo demonstrativo</span>
+                <button class="pv-home-icon-button" type="button" aria-label="Pesquisar conteúdos" title="Pesquisar conteúdos" data-rota="/busca">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+                </button>
+                <button class="pv-home-icon-button" type="button" aria-label="Abrir triagem" title="Abrir triagem" data-rota="/triagem">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+                </button>
+              </div>
+            </header>
+            <div class="pv-home-content">
+              <div class="pv-contato-page">
+                <button type="button" class="pv-contato-back" data-rota="/home">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+                  Voltar para Início
+                </button>
+                <section class="pv-contato-page-heading">
+                  <span class="pv-contato-eyebrow">SEUS CONTATOS</span>
+                  <h1>${escaparHtml(`Contato — ${rotulo}`)}</h1>
+                  <p>Organize as informações de contato importantes para o seu cuidado.</p>
+                </section>
+                <div class="pv-contato-layout-grid">
+                  <section class="pv-contato-card">${corpoFormulario}</section>
+                  <aside class="pv-contato-support-card">
+                    <span class="pv-contato-support-icon">${tipo === 'familia' ? ICONES_HOME.familia : tipo === 'sac' ? ICONES_HOME.sac : ICONES_HOME.hospital}</span>
+                    <span class="pv-contato-eyebrow">INFORMAÇÃO DE APOIO</span>
+                    <h2>${escaparHtml(titulo)}</h2>
+                    <p>${escaparHtml(textoAjuda)}</p>
+                    <div class="pv-contato-support-note"><span aria-hidden="true">i</span><p>Confira se o telefone e as informações estão corretos antes de salvar.</p></div>
+                  </aside>
+                </div>
+              </div>
+            </div>
+          </section>
+          ${PV.ui.navegacaoMobilePaciente('home')}
+        </div>`;
+
+      const layout = main.querySelector('.pv-contato-paciente-layout');
+      PV.ui.ligarLogout(layout);
+      main.querySelectorAll('[data-rota]').forEach((botao) => {
+        botao.addEventListener('click', () => PV.router.navegar(botao.dataset.rota));
+      });
+
+      // Atualiza o nome real e as iniciais da sidebar sem bloquear o formulário.
+      PV.db.pacientes.buscar(ctx.usuario.id).then((paciente) => {
+        if (!layout.isConnected) return;
+        const nome = paciente.nome_social || paciente.nome || 'Paciente';
+        if (PV.ui.atualizarPerfilSidebarPaciente) PV.ui.atualizarPerfilSidebarPaciente(layout, nome);
+        const nomeEl = layout.querySelector('#pv-sidebar-paciente-name');
+        if (nomeEl) nomeEl.textContent = nome;
+      }).catch(() => {});
+
+      const botaoTentar = main.querySelector('#pv-contato-tentar-novamente');
+      if (botaoTentar) botaoTentar.addEventListener('click', carregarDados);
+
+      const telefoneEl = main.querySelector('#pv-contato-telefone');
+      const ligarEl = main.querySelector('#pv-contato-ligar');
+      if (telefoneEl && ligarEl) {
+        telefoneEl.addEventListener('input', () => {
+          const telefoneAtual = escaparTelefone(telefoneEl.value);
+          ligarEl.href = telefoneAtual ? `tel:${telefoneAtual}` : '#';
+          ligarEl.classList.toggle('disabled', !telefoneAtual);
+          ligarEl.setAttribute('aria-disabled', telefoneAtual ? 'false' : 'true');
+        });
+        ligarEl.addEventListener('click', (evento) => {
+          if (!escaparTelefone(telefoneEl.value)) evento.preventDefault();
+        });
+      }
+
+      const form = main.querySelector('#pv-contato-form');
+      if (form) form.addEventListener('submit', async (evento) => {
+        evento.preventDefault();
+        const botao = main.querySelector('#pv-contato-salvar');
+        const feedbackEl = main.querySelector('#pv-contato-feedback');
+        const novoForm = {
+          nome: main.querySelector('#pv-contato-nome').value.trim(),
+          telefone: main.querySelector('#pv-contato-telefone').value.trim(),
+          observacao: main.querySelector('#pv-contato-observacao').value.trim(),
+        };
+        botao.disabled = true;
+        botao.classList.add('loading');
+        botao.querySelector('span')?.remove();
+        botao.setAttribute('aria-busy', 'true');
+        botao.innerHTML = '<span class="pv-contato-button-spinner" aria-hidden="true"></span> Salvando...';
+        try {
+          dados = await PV.db.contatos.salvar(tipo, novoForm);
+          estado = 'pronto';
+          renderizar({ tipo: 'sucesso', texto: 'Contato salvo com sucesso.' });
+        } catch (erro) {
+          botao.disabled = false;
+          botao.classList.remove('loading');
+          botao.removeAttribute('aria-busy');
+          feedbackEl.innerHTML = aviso({ tipo: 'erro', texto: erro.message || 'Não foi possível salvar o contato.' });
+        }
+      });
+    }
+
+    async function carregarDados() {
+      estado = 'carregando';
+      erroCarregamento = '';
+      renderizar();
+      try {
+        dados = await PV.db.contatos.buscar(tipo);
+        if (!main.isConnected) return;
+        estado = 'pronto';
+        renderizar();
+      } catch (erro) {
+        if (!main.isConnected) return;
+        estado = 'erro';
+        erroCarregamento = erro.message || 'Não foi possível carregar este contato.';
+        renderizar();
+      }
+    }
+
+    renderizar();
+    await carregarDados();
+  }
+
   async function contato(main, ctx) {
     const tipo = ctx.sub;
 
@@ -1932,6 +2100,11 @@ window.PV.screens = window.PV.screens || {};
 
     if (!rotulo) {
       PV.router.navegar('/home');
+      return;
+    }
+
+    if (ctx.usuario.tipo === 'paciente') {
+      await contatoPacienteLovable(main, ctx, tipo, rotulo);
       return;
     }
 
@@ -2233,20 +2406,7 @@ window.PV.screens = window.PV.screens || {};
             </div>
           </div>
 
-          <nav class="pv-conteudos-mobile-nav" aria-label="Navegação principal">
-            <button type="button" data-rota="/home">
-              ${iconePainel('inicio')}<span>Início</span>
-            </button>
-            <button type="button" data-rota="/menu-sintomas">
-              ${iconePainel('sintomas')}<span>Sintomas</span>
-            </button>
-            <button type="button" class="active" data-rota="/busca">
-              ${iconePainel('conteudos')}<span>Conteúdos</span>
-            </button>
-            <button type="button" data-rota="/meu-perfil">
-              ${iconePainel('usuario')}<span>Perfil</span>
-            </button>
-          </nav>
+          ${PV.ui.navegacaoMobilePaciente('conteudos')}
         </section>
       </div>
     `;
@@ -2416,20 +2576,7 @@ window.PV.screens = window.PV.screens || {};
             </div>
           </div>
 
-          <nav class="pv-conteudos-mobile-nav" aria-label="Navegação principal">
-            <button type="button" data-rota="/home">
-              ${iconePainel('inicio')}<span>Início</span>
-            </button>
-            <button type="button" data-rota="/menu-sintomas">
-              ${iconePainel('sintomas')}<span>Sintomas</span>
-            </button>
-            <button type="button" class="active" data-rota="/busca">
-              ${iconePainel('conteudos')}<span>Conteúdos</span>
-            </button>
-            <button type="button" data-rota="/meu-perfil">
-              ${iconePainel('usuario')}<span>Perfil</span>
-            </button>
-          </nav>
+          ${PV.ui.navegacaoMobilePaciente('conteudos')}
         </section>
       </div>
     `;
@@ -2570,6 +2717,8 @@ window.PV.screens = window.PV.screens || {};
           <button type="button" class="${ativo('sintomas').trim()}" data-cuidador-rota="/sintomas">${iconeHomeAcompanhante('sintomas')}<span>Sintomas</span></button>
           <button type="button" class="${ativo('conteudos').trim()}" data-cuidador-rota="/busca">${iconeHomeAcompanhante('conteudos')}<span>Conteúdos</span></button>
           <button type="button" class="${ativo('perfil').trim()}" data-cuidador-rota="/perfil">${iconeHomeAcompanhante('perfil')}<span>Perfil</span></button>
+        
+          <button type="button" class="pv-cuidador-mobile-logout" data-sair aria-label="Sair da conta">${iconeHomeAcompanhante('sair')}<span>Sair</span></button>
         </nav>
       </div>`;
   }

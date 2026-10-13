@@ -490,21 +490,7 @@ window.PV.screens = window.PV.screens || {};
             </div>
           </div>
 
-          <nav class="pv-perfil-conta-mobile-nav" aria-label="Navegação principal">
-            <button type="button" data-rota="/home">
-              ${PV.ui.iconeNavegacao ? PV.ui.iconeNavegacao('inicio') : '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>'}
-              <span>Início</span>
-            </button>
-            <button type="button" data-rota="/menu-sintomas">
-              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"></path></svg><span>Sintomas</span>
-            </button>
-            <button type="button" data-rota="/busca">
-              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v12.5H8A2.5 2.5 0 0 1 5.5 17V5A.5.5 0 0 1 6 4.5Z"></path><path d="M8.5 8h6M8.5 11.5h6M8.5 15h4"></path></svg><span>Conteúdos</span>
-            </button>
-            <button type="button" class="active" aria-current="page" data-rota="/meu-perfil">
-              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span>Perfil</span>
-            </button>
-          </nav>
+          ${PV.ui.navegacaoMobilePaciente('perfil')}
         </section>
       </div>
     `;
@@ -646,8 +632,30 @@ window.PV.screens = window.PV.screens || {};
     main.classList.add('pv-cuidador-profile-main');
 
     const emailSessao = ctx.usuario?.email || '';
+    // Cache apenas da identidade, durante esta sessão do navegador.
+    const chaveCacheIdentidade = `palivida_acompanhante_identidade_${ctx.usuario?.id || 'sessao'}`;
+    function lerCacheIdentidade() {
+      try {
+        const bruto = sessionStorage.getItem(chaveCacheIdentidade);
+        const cache = bruto ? JSON.parse(bruto) : {};
+        return cache && typeof cache === 'object' ? cache : {};
+      } catch (_) { return {}; }
+    }
+    function salvarCacheIdentidade(dados) {
+      try {
+        sessionStorage.setItem(chaveCacheIdentidade, JSON.stringify({
+          nome_completo: String(dados?.nome_completo || ''),
+          nome_social: String(dados?.nome_social || ''),
+        }));
+      } catch (_) { /* O perfil funciona mesmo se o navegador bloquear o cache. */ }
+    }
+    const identidadeEmCache = lerCacheIdentidade();
     const estado = {
-      dados: { nome_completo: '', nome_social: '', email: emailSessao, telefone: '', genero: '', data_nascimento: '' },
+      dados: {
+        nome_completo: identidadeEmCache.nome_completo || '',
+        nome_social: identidadeEmCache.nome_social || '',
+        email: emailSessao, telefone: '', genero: '', data_nascimento: '',
+      },
       carregando: true,
       editando: false,
       mensagem: '',
@@ -664,7 +672,7 @@ window.PV.screens = window.PV.screens || {};
 
     function valor(campo) { return String(estado.dados[campo] ?? ''); }
     function nomeExibido() {
-      return valor('nome_social').trim() || valor('nome_completo').trim() || (emailSessao ? emailSessao.split('@')[0] : 'Acompanhante');
+      return valor('nome_social').trim() || valor('nome_completo').trim() || 'Acompanhante';
     }
     function campoPerfil(id, label, campo, tipo = 'text', placeholder = '') {
       return `<div class="pv-cuidador-profile-field"><label for="${id}">${escaparHtml(label)}</label><input class="pv-cuidador-profile-input" id="${id}" name="${campo}" type="${tipo}" value="${escaparHtml(valor(campo))}" placeholder="${escaparHtml(placeholder)}" autocomplete="${tipo === 'password' ? 'new-password' : 'off'}"></div>`;
@@ -736,7 +744,9 @@ window.PV.screens = window.PV.screens || {};
             ${navSintomasMobile}
             <button type="button" data-cuidador-rota="/busca">${iconePerfilCuidador('conteudos')}<span>Conteúdos</span></button>
             <button type="button" class="active" data-cuidador-rota="/perfil" aria-current="page">${iconePerfilCuidador('perfil')}<span>Perfil</span></button>
-          </nav>
+          
+          <button type="button" class="pv-cuidador-mobile-logout" data-sair aria-label="Sair da conta">${iconePerfilCuidador('sair')}<span>Sair</span></button>
+        </nav>
         </div>`;
 
       main.querySelectorAll('[data-cuidador-rota]').forEach((botao) => botao.addEventListener('click', () => PV.router.navegar(botao.dataset.cuidadorRota)));
@@ -757,7 +767,10 @@ window.PV.screens = window.PV.screens || {};
       try {
         const dados = await PV.db.acompanhantes.buscar(ctx.usuario.id);
         if (!main.isConnected) return;
-        if (dados) estado.dados = { ...estado.dados, ...dados, data_nascimento: soData(dados.data_nascimento) };
+        if (dados) {
+          estado.dados = { ...estado.dados, ...dados, data_nascimento: soData(dados.data_nascimento) };
+          salvarCacheIdentidade(estado.dados);
+        }
         estado.carregando = false;
         renderizar();
       } catch (e) {
@@ -812,6 +825,7 @@ window.PV.screens = window.PV.screens || {};
         });
         if (!main.isConnected) return;
         estado.dados = { ...estado.dados, ...(atualizado || {}), senha: '', data_nascimento: soData(atualizado?.data_nascimento ?? data) };
+        salvarCacheIdentidade(estado.dados);
         estado.editando = false;
         estado.mensagem = 'Seus dados foram atualizados.';
         estado.tipoMensagem = 'sucesso';
@@ -877,20 +891,7 @@ window.PV.screens = window.PV.screens || {};
           </section>
         </div>
 
-        <nav class="pv-prontuario-mobile-nav" aria-label="Navegação principal">
-          <button type="button" data-rota="/home">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg><span>Início</span>
-          </button>
-          <button type="button" data-rota="/menu-sintomas">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"></path></svg><span>Sintomas</span>
-          </button>
-          <button type="button" data-rota="/busca">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v12.5H8A2.5 2.5 0 0 1 5.5 17V5A.5.5 0 0 1 6 4.5Z"></path><path d="M8.5 8h6M8.5 11.5h6M8.5 15h4"></path></svg><span>Conteúdos</span>
-          </button>
-          <button type="button" class="active" aria-current="page" data-rota="/perfil">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span>Prontuário</span>
-          </button>
-        </nav>
+        ${PV.ui.navegacaoMobilePaciente('prontuario')}
       `;
       tela = main.querySelector('#pv-prontuario-body');
       main.querySelectorAll('[data-rota]').forEach((botao) => {

@@ -45,7 +45,7 @@ window.PV = window.PV || {};
     const painelPaciente = Boolean(
       sessao &&
       sessao.usuario.tipo === 'paciente' &&
-      ['home', 'triagem', 'perfil', 'meu-perfil'].includes(rota),
+      ['home', 'triagem', 'perfil', 'meu-perfil', 'contato'].includes(rota),
     );
     const painelAdministrador = Boolean(
       sessao &&
@@ -53,7 +53,7 @@ window.PV = window.PV || {};
       ['home', 'busca', 'admin-pacientes', 'admin-registros', 'admin-sintomas', 'admin-conteudos'].includes(rota),
     );
     document.body.classList.toggle('pv-route-login', rota === 'login' || rota === 'cadastro');
-    document.body.classList.toggle('pv-route-home', rota === 'home');
+    document.body.classList.toggle('pv-route-home', rota === 'home' || (rota === 'contato' && Boolean(sessao && sessao.usuario.tipo === 'paciente')));
     document.body.classList.toggle('pv-role-paciente', Boolean(sessao && sessao.usuario.tipo === 'paciente'));
     document.body.classList.toggle('pv-role-acompanhante', Boolean(sessao && sessao.usuario.tipo === 'acompanhante'));
     document.body.classList.toggle('pv-role-administrador', Boolean(sessao && sessao.usuario.tipo === 'administrador'));
@@ -63,7 +63,7 @@ window.PV = window.PV || {};
     document.querySelector('.app-shell').classList.toggle('pv-admin-dashboard', painelAdministrador);
     main.innerHTML = '';
     main.classList.remove('pv-dashboard-paciente-main');
-    main.classList.remove('pv-menu-sintomas-main', 'pv-conteudo-detalhe-main', 'pv-sintoma-detalhe-main', 'pv-sintoma-registro-main', 'pv-cuidador-vinculos-main', 'pv-cuidador-sintomas-main');
+    main.classList.remove('pv-menu-sintomas-main', 'pv-conteudo-detalhe-main', 'pv-sintoma-detalhe-main', 'pv-sintoma-registro-main', 'pv-cuidador-vinculos-main', 'pv-cuidador-sintomas-main', 'pv-laudo-modern-main');
     // Reseta a marcação de "tela sem rolagem" a cada navegação; a própria
     // tela (ex.: menuSintomas) adiciona a classe de volta se precisar.
     main.classList.remove('pv-sem-scroll');
@@ -188,8 +188,70 @@ window.PV = window.PV || {};
     // podia ser montado por cima da tela nova).
     if (minhaGeracao !== geracaoAtual) return;
 
+    garantirLogoutMobile(main, footerEl, ctx.usuario);
+
     if (typeof main.scrollTo === 'function') main.scrollTo({ top: 0 });
     else main.scrollTop = 0;
+  }
+
+  /* PaliVida: logout mobile universal v1 */
+  function garantirLogoutMobile(main, footerEl, usuario) {
+    if (!usuario || !main) return;
+
+    const seletoresNavegacao = [
+      '.pv-home-mobile-nav',
+      '.pv-sintomas-mobile-nav',
+      '.pv-conteudo-mobile-nav',
+      '.pv-sintoma-mobile-nav',
+      '.pv-conteudos-mobile-nav',
+      '.pv-perfil-conta-mobile-nav',
+      '.pv-prontuario-mobile-nav',
+      '.pv-cuidador-mobile-nav',
+      '.pv-admin-mobile-nav',
+      '.pv-dash-mobile-nav',
+    ].join(', ');
+
+    const navMobile = main.querySelector(seletoresNavegacao);
+    const iconeSair = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>';
+    const ligarBotaoSair = (botao) => {
+      if (!botao || botao.dataset.logoutMobileLigado === 'true') return;
+      botao.dataset.logoutMobileLigado = 'true';
+      botao.addEventListener('click', () => {
+        PV.session.limparSessao();
+        PV.router.navegar('/login');
+      });
+    };
+    const criarBotaoSair = (classeExtra = '') => {
+      const botao = document.createElement('button');
+      botao.type = 'button';
+      botao.className = `pv-mobile-logout-item ${classeExtra}`.trim();
+      botao.dataset.sair = '';
+      botao.dataset.mobileLogout = 'true';
+      botao.setAttribute('aria-label', 'Sair da conta');
+      botao.innerHTML = `${iconeSair}<span>Sair</span>`;
+      ligarBotaoSair(botao);
+      return botao;
+    };
+
+    if (navMobile) {
+      if (!navMobile.querySelector('[data-mobile-logout], [data-sair]')) {
+        navMobile.appendChild(criarBotaoSair());
+      }
+      return;
+    }
+
+    // Telas antigas que ainda usam o rodapé global recebem Sair como item da barra.
+    if (footerEl && !footerEl.hidden) {
+      if (!footerEl.querySelector('[data-mobile-logout]')) {
+        footerEl.appendChild(criarBotaoSair('pv-mobile-global-logout'));
+      }
+      return;
+    }
+
+    // Último recurso para telas autenticadas sem uma barra mobile própria.
+    if (!main.querySelector('[data-mobile-logout]')) {
+      main.appendChild(criarBotaoSair('pv-mobile-logout-floating'));
+    }
   }
 
   function navegar(hash) {

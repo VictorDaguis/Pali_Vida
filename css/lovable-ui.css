@@ -11587,3 +11587,1342 @@ body.pv-admin-dashboard {
   .pv-cuidador-profile-bell { display: none; }
 }
 
+/* PaliVida — contato do paciente no padrão Lovable */
+.pv-contato-page { width: min(100%, 1050px); margin: 0 auto; }
+.pv-contato-back { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 7px 0; border: 0; background: transparent; color: #516F83; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.pv-contato-back:hover { color: #087A76; }
+.pv-contato-back svg { width: 17px; height: 17px; }
+.pv-contato-page-heading { padding: 0 0 24px; margin: 0 0 24px; border-bottom: 1px solid #D8E6E9; }
+.pv-contato-eyebrow { display: block; margin-bottom: 9px; color: #087A76; font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+.pv-contato-page-heading h1 { margin: 0 0 8px; color: #143D5B; font-size: clamp(27px, 2.3vw, 34px); font-weight: 760; letter-spacing: -.035em; line-height: 1.15; }
+.pv-contato-page-heading p { margin: 0; color: #617887; font-size: 14px; line-height: 1.6; }
+.pv-contato-layout-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(255px, .8fr); gap: 20px; align-items: stretch; }
+.pv-contato-card, .pv-contato-support-card { min-width: 0; border: 1px solid #D8E6E9; border-radius: 18px; background: #FFFFFF; box-shadow: 0 4px 14px rgba(28, 70, 91, .035); }
+.pv-contato-card { padding: 26px; }
+.pv-contato-form-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.pv-contato-form-heading h2, .pv-contato-support-card h2 { margin: 0 0 7px; color: #163F5D; font-size: 18px; font-weight: 750; letter-spacing: -.02em; }
+.pv-contato-form-heading p { margin: 0; color: #617887; font-size: 12px; line-height: 1.55; }
+.pv-contato-status { display: inline-flex; flex: 0 0 auto; align-items: center; padding: 6px 9px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.pv-contato-status.salvo { background: #D7F5E4; color: #126C49; }
+.pv-contato-status.pendente { background: #FFF0C9; color: #875A00; }
+.pv-contato-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px 16px; }
+.pv-contato-field { display: flex; min-width: 0; flex-direction: column; gap: 8px; }
+.pv-contato-field.full { grid-column: 1 / -1; }
+.pv-contato-field label { color: #23475F; font-size: 12px; font-weight: 700; }
+.pv-contato-field label span { color: #0B8580; }
+.pv-contato-field input { box-sizing: border-box; width: 100%; min-height: 46px; padding: 0 13px; border: 1px solid #CCDDE2; border-radius: 9px; outline: none; background: #FFFFFF; color: #173F5B; font: inherit; font-size: 13px; transition: border-color .15s, box-shadow .15s; }
+.pv-contato-field input::placeholder { color: #91A3AE; }
+.pv-contato-field input:focus { border-color: #0B8580; box-shadow: 0 0 0 3px rgba(11, 133, 128, .11); }
+.pv-contato-actions { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 12px; margin-top: 24px; }
+.pv-contato-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 10px 14px; border: 1px solid #CDDDE2; border-radius: 9px; text-decoration: none; font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; transition: background .15s, border-color .15s, transform .15s; }
+.pv-contato-button svg { width: 17px; height: 17px; }
+.pv-contato-button.primary { border-color: #087A76; background: #087A76; color: white; }
+.pv-contato-button.primary:hover { border-color: #066B68; background: #066B68; }
+.pv-contato-button.secondary { background: #FFFFFF; color: #173F5B; }
+.pv-contato-button.secondary:hover { border-color: #8DBAB9; background: #F7FBFB; }
+.pv-contato-button.disabled { opacity: .5; cursor: not-allowed; }
+.pv-contato-button:disabled { opacity: .65; cursor: wait; }
+.pv-contato-feedback { margin-top: 14px; }
+.pv-contato-feedback:empty { display: none; }
+.pv-contato-support-card { display: flex; flex-direction: column; align-items: flex-start; padding: 25px; background: #E2F3F1; border-color: #D1EAE7; }
+.pv-contato-support-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-bottom: 27px; border-radius: 14px; background: #FFFFFFB8; color: #087A76; }
+.pv-contato-support-icon svg { display: block; width: 22px; height: 22px; }
+.pv-contato-support-card .pv-contato-eyebrow { margin-bottom: 10px; }
+.pv-contato-support-card h2 { margin-bottom: 9px; }
+.pv-contato-support-card > p { margin: 0; color: #536F7F; font-size: 13px; line-height: 1.65; }
+.pv-contato-support-note { display: flex; align-items: flex-start; gap: 10px; margin-top: auto; padding-top: 28px; color: #587582; }
+.pv-contato-support-note > span { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 20px; width: 20px; height: 20px; border: 1px solid #88C7C0; border-radius: 50%; color: #087A76; font-size: 12px; font-weight: 800; }
+.pv-contato-support-note p { margin: 0; font-size: 11px; line-height: 1.5; }
+.pv-contato-estado { min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; }
+.pv-contato-estado p { margin: 0; color: #5F7887; font-size: 13px; line-height: 1.6; }
+.pv-contato-estado .pv-contato-erro-texto { max-width: 420px; color: #9F3B3B; }
+.pv-contato-loader, .pv-contato-button-spinner { display: inline-block; width: 23px; height: 23px; border: 2px solid #D5E8E8; border-top-color: #087A76; border-radius: 50%; animation: pvContatoGiro .8s linear infinite; }
+.pv-contato-button-spinner { width: 14px; height: 14px; border-color: #FFFFFF70; border-top-color: #FFFFFF; }
+@keyframes pvContatoGiro { to { transform: rotate(360deg); } }
+@media (max-width: 999px) { .pv-contato-layout-grid { grid-template-columns: minmax(0, 1fr) minmax(225px, .7fr); gap: 14px; } .pv-contato-card, .pv-contato-support-card { padding: 21px; } .pv-contato-form-heading { flex-direction: column; } }
+@media (max-width: 699px) { .pv-contato-page-heading { margin-bottom: 18px; padding-bottom: 18px; } .pv-contato-page-heading h1 { font-size: 27px; } .pv-contato-page-heading p { font-size: 12px; } .pv-contato-layout-grid { grid-template-columns: minmax(0, 1fr); } .pv-contato-card, .pv-contato-support-card { border-radius: 15px; padding: 18px; } .pv-contato-form-heading { gap: 10px; margin-bottom: 20px; } .pv-contato-fields { grid-template-columns: minmax(0, 1fr); gap: 14px; } .pv-contato-field.full { grid-column: auto; } .pv-contato-actions { grid-template-columns: minmax(0, 1fr); } .pv-contato-support-icon { margin-bottom: 18px; } .pv-contato-support-note { padding-top: 18px; } }
+
+
+/* PaliVida — resultado de sintomas no padrão Lovable */
+.pv-sinal-content {
+  width: min(930px, calc(100% - 64px));
+  padding-top: 34px;
+  padding-bottom: 52px;
+}
+
+.pv-sinal-status-card {
+  padding: clamp(22px, 3vw, 32px);
+  border: 1px solid #d4e6e7;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(18, 61, 84, .045);
+}
+
+.pv-sinal-status-verde {
+  border-color: #cce9d8;
+  background: linear-gradient(135deg, #fff 0%, #f1fbf5 100%);
+}
+.pv-sinal-status-amarelo {
+  border-color: #f0dfb5;
+  background: linear-gradient(135deg, #fff 0%, #fff9ea 100%);
+}
+.pv-sinal-status-vermelho {
+  border-color: #efcece;
+  background: linear-gradient(135deg, #fff 0%, #fff4f4 100%);
+}
+
+.pv-sinal-status-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pv-sinal-status-icon {
+  display: grid;
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border-radius: 15px;
+}
+.pv-sinal-status-icon svg { width: 29px; height: 29px; }
+.pv-sinal-status-verde .pv-sinal-status-icon { background: #def4e7; color: #218052; }
+.pv-sinal-status-amarelo .pv-sinal-status-icon { background: #fff0c9; color: #986500; }
+.pv-sinal-status-vermelho .pv-sinal-status-icon { background: #ffe1e1; color: #b42c37; }
+.pv-sinal-status-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.pv-sinal-status-verde .pv-sinal-status-eyebrow { color: #218052; }
+.pv-sinal-status-amarelo .pv-sinal-status-eyebrow { color: #986500; }
+.pv-sinal-status-vermelho .pv-sinal-status-eyebrow { color: #b42c37; }
+.pv-sinal-status-head h2 {
+  margin: 0;
+  color: #123d54;
+  font-size: clamp(19px, 2vw, 25px);
+  font-weight: 750;
+  line-height: 1.35;
+}
+.pv-sinal-status-description {
+  margin: 22px 0 0;
+  padding-top: 19px;
+  border-top: 1px solid rgba(49, 87, 106, .14);
+  color: #526f7f;
+  font-size: 14px;
+  line-height: 1.85;
+  white-space: pre-line;
+}
+
+.pv-sinal-next-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  margin-top: 16px;
+  padding: 20px 22px;
+  border: 1px solid #d2e4e6;
+  border-radius: 12px;
+  background: #fff;
+}
+.pv-sinal-next-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  background: #e1f3f0;
+  color: #087c76;
+}
+.pv-sinal-next-icon svg { width: 22px; height: 22px; }
+.pv-sinal-next-step strong { display: block; color: #163f55; font-size: 13px; }
+.pv-sinal-next-step p { margin: 5px 0 0; color: #607b87; font-size: 12px; line-height: 1.6; }
+.pv-sinal-next-step .pv-sintoma-botao-principal { width: auto; min-width: 145px; }
+
+@media (max-width: 1050px) {
+  .pv-sinal-content { width: min(100% - 42px, 900px); }
+}
+@media (max-width: 699px) {
+  .pv-sinal-content { width: calc(100% - 32px); padding: 24px 0 30px; }
+  .pv-sinal-status-card { padding: 21px 18px; border-radius: 12px; }
+  .pv-sinal-status-head { align-items: flex-start; gap: 12px; }
+  .pv-sinal-status-icon { flex-basis: 45px; width: 45px; height: 45px; border-radius: 12px; }
+  .pv-sinal-status-icon svg { width: 24px; height: 24px; }
+  .pv-sinal-status-head h2 { font-size: 19px; }
+  .pv-sinal-status-description { margin-top: 17px; padding-top: 15px; font-size: 13px; line-height: 1.75; }
+  .pv-sinal-next-step { grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 17px 15px; }
+  .pv-sinal-next-step .pv-sintoma-botao-principal { grid-column: 1 / -1; width: 100%; }
+}
+/* PaliVida — Definição de sintomas em leitura simplificada (Lovable) */
+.pv-definicao-simples-content {
+  width: min(1000px, calc(100% - 64px));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 54px;
+}
+
+.pv-definicao-simples-content .pv-sintoma-voltar {
+  align-self: flex-start;
+  margin-bottom: 0;
+}
+
+.pv-definicao-card {
+  min-width: 0;
+  padding: 23px 24px;
+  border: 1px solid #d2e4e6;
+  border-radius: 14px;
+  background: #fff;
+  color: #21495b;
+}
+
+.pv-definicao-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.pv-definicao-card-icon,
+.pv-definicao-rodape-icon {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #e0f3f0;
+  color: #087c76;
+}
+
+.pv-definicao-card-icon svg,
+.pv-definicao-rodape-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.pv-definicao-card-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: #087c76;
+}
+
+.pv-definicao-card h2 {
+  margin: 0;
+  color: #123d54;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.pv-definicao-card p {
+  margin: 0;
+  color: #526f7f;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.pv-definicao-card-amarelo {
+  border-color: #f0dfb3;
+  background: linear-gradient(135deg, #fff, #fffaf0);
+}
+
+.pv-definicao-card-amarelo .pv-definicao-card-icon {
+  background: #fff0c9;
+  color: #986500;
+}
+
+.pv-definicao-card-amarelo .pv-definicao-card-eyebrow { color: #986500; }
+
+.pv-definicao-card-vermelho {
+  border-color: #f0d0d2;
+  background: linear-gradient(135deg, #fff, #fff5f5);
+}
+
+.pv-definicao-card-vermelho .pv-definicao-card-icon {
+  background: #ffe5e6;
+  color: #b4232d;
+}
+
+.pv-definicao-card-vermelho .pv-definicao-card-eyebrow { color: #b4232d; }
+
+.pv-definicao-acao {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 12px 15px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: #fff;
+  text-align: left;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.pv-definicao-acao svg { width: 18px; height: 18px; flex: 0 0 18px; }
+.pv-definicao-acao:active { transform: translateY(1px); }
+.pv-definicao-acao-amarela { border-color: #e9c56a; background: #fff6de; color: #8a5b00; }
+.pv-definicao-acao-amarela:hover { background: #ffefc4; }
+.pv-definicao-acao-vermelha { border-color: #f0b4b7; background: #fff0f0; color: #a91f2a; }
+.pv-definicao-acao-vermelha:hover { background: #ffe4e5; }
+
+.pv-definicao-rodape {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 18px;
+  border: 1px solid #cfe9e4;
+  border-radius: 13px;
+  background: #f0faf8;
+}
+
+.pv-definicao-rodape-icon { width: 40px; height: 40px; flex-basis: 40px; background: #fff; }
+.pv-definicao-rodape > span:nth-child(2) { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 4px; }
+.pv-definicao-rodape strong { color: #17475a; font-size: 12px; }
+.pv-definicao-rodape small { color: #5d7b88; font-size: 11px; line-height: 1.5; }
+.pv-definicao-rodape > button { display: inline-grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border: 0; border-radius: 8px; background: transparent; color: #087c76; cursor: pointer; }
+.pv-definicao-rodape > button:hover { background: #e1f3f0; }
+.pv-definicao-rodape > button svg { width: 19px; height: 19px; }
+
+@media (max-width: 1050px) {
+  .pv-definicao-simples-content { width: min(100% - 42px, 900px); }
+}
+
+@media (max-width: 699px) {
+  .pv-definicao-simples-layout { display: block; min-height: 100dvh; }
+  .pv-definicao-simples-layout > .pv-sidebar { display: none; }
+  .pv-definicao-simples-content { width: calc(100% - 32px); padding: 24px 0 96px; gap: 13px; }
+  .pv-definicao-card { padding: 19px 17px; border-radius: 12px; }
+  .pv-definicao-card h2 { font-size: 17px; }
+  .pv-definicao-card p { font-size: 13px; line-height: 1.75; }
+  .pv-definicao-card-heading { gap: 11px; margin-bottom: 14px; }
+  .pv-definicao-card-icon { width: 40px; height: 40px; flex-basis: 40px; }
+  .pv-definicao-acao { align-items: flex-start; font-size: 12px; }
+  .pv-definicao-rodape { align-items: flex-start; padding: 13px; gap: 10px; }
+  .pv-definicao-rodape-icon { width: 36px; height: 36px; flex-basis: 36px; }
+  .pv-definicao-rodape > button { width: 30px; height: 30px; flex-basis: 30px; }
+}
+
+/* PaliVida — Laudo digital no padrão Lovable (paciente e acompanhante) */
+#app-main.pv-laudo-modern-main {
+  width: 100%;
+  max-width: none !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: #F4FAFA;
+  color: #173F5F;
+}
+.pv-laudo-modern-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #F4FAFA;
+  color: #173F5F;
+  font-family: 'Inter', 'Nunito Sans', Arial, sans-serif;
+}
+.pv-laudo-modern-workspace { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.pv-laudo-modern-topbar {
+  min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 0 32px; background: #FFF; border-bottom: 1px solid #D5E5E8; color: #173F5F;
+}
+.pv-laudo-modern-topbar > strong { font-size: 12px; font-weight: 750; }
+.pv-laudo-modern-topbar-actions { display: flex; align-items: center; gap: 15px; color: #617D8C; font-size: 11px; }
+.pv-laudo-modern-topbar-actions > button, .pv-laudo-modern-bell {
+  position: relative; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; border: 0; border-radius: 8px; background: transparent; color: #587487;
+}
+.pv-laudo-modern-topbar-actions > button { cursor: pointer; }
+.pv-laudo-modern-topbar-actions > button:hover { background: #EFF7F7; color: #087F80; }
+.pv-laudo-modern-topbar-actions svg { width: 19px; height: 19px; }
+.pv-laudo-modern-bell i { position: absolute; top: 5px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: #087F80; }
+.pv-laudo-modern-content { width: min(1080px, calc(100% - 72px)); margin: 0 auto; padding: 36px 0 48px; }
+.pv-laudo-modern-heading { padding: 0 0 23px; margin-bottom: 25px; border-bottom: 1px solid #D6E5E8; }
+.pv-laudo-modern-eyebrow { display: block; margin-bottom: 8px; color: #087F80; font-size: 10px; font-weight: 800; letter-spacing: .055em; text-transform: uppercase; }
+.pv-laudo-modern-heading h1 { margin: 0 0 8px; color: #123A59; font-size: clamp(27px, 3vw, 35px); font-weight: 760; letter-spacing: -.035em; line-height: 1.17; }
+.pv-laudo-modern-heading p { max-width: 680px; margin: 0; color: #5D7A8F; font-size: 13px; line-height: 1.65; }
+.pv-laudo-modern-upload-card {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
+  padding: 23px; border: 1px solid #D5E5E8; border-radius: 14px; background: #FFF;
+  box-shadow: 0 5px 18px rgba(33, 82, 104, .035);
+}
+.pv-laudo-modern-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; border-radius: 13px; background: #E2F3F1; color: #087F80; }
+.pv-laudo-modern-icon svg { width: 23px; height: 23px; }
+.pv-laudo-modern-upload-copy h2 { margin: 0 0 7px; color: #153D5A; font-size: 17px; font-weight: 750; }
+.pv-laudo-modern-upload-copy p { max-width: 680px; margin: 0 0 8px; color: #607B8E; font-size: 12px; line-height: 1.65; }
+.pv-laudo-modern-upload-copy small { color: #7A909E; font-size: 10px; }
+.pv-laudo-modern-upload-action { display: flex; justify-content: flex-end; }
+.pv-laudo-modern-file-button, .pv-laudo-modern-button {
+  min-height: 41px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 14px; border: 1px solid #00756F; border-radius: 8px; background: #00756F; color: #FFF;
+  font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; text-decoration: none;
+  transition: background .15s ease, border-color .15s ease;
+}
+.pv-laudo-modern-file-button:hover, .pv-laudo-modern-button.primary:hover { background: #006660; border-color: #006660; }
+.pv-laudo-modern-file-button svg, .pv-laudo-modern-button svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.pv-laudo-modern-button.secondary { border-color: #CFE2E5; background: #FFF; color: #244E61; }
+.pv-laudo-modern-button.secondary:hover { background: #F1FBF9; border-color: #00817B; }
+.pv-laudo-modern-notice { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; padding: 13px 15px; border: 1px solid #D2EAE5; border-radius: 10px; background: #EAF7F5; color: #4F7180; font-size: 11px; line-height: 1.65; }
+.pv-laudo-modern-notice svg { width: 17px; height: 17px; flex: 0 0 17px; margin-top: 1px; color: #087F80; }
+.pv-laudo-modern-viewer { margin-top: 22px; overflow: hidden; border: 1px solid #D5E5E8; border-radius: 13px; background: #FFF; box-shadow: 0 5px 18px rgba(33, 82, 104, .035); }
+.pv-laudo-modern-viewer-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 22px; border-bottom: 1px solid #E3ECEE; }
+.pv-laudo-modern-viewer-heading h2 { max-width: 480px; margin: 0; overflow-wrap: anywhere; color: #153D5A; font-size: 16px; font-weight: 750; }
+.pv-laudo-modern-viewer-actions { display: flex; align-items: center; gap: 9px; }
+.pv-laudo-modern-mobile-hint { margin: 0; padding: 10px 20px; color: #668195; font-size: 11px; }
+.pv-laudo-modern-frame-wrap { height: min(68vh, 760px); min-height: 420px; border-top: 1px solid #E3ECEE; background: #F3F7F8; }
+.pv-laudo-modern-frame-wrap iframe { width: 100%; height: 100%; border: 0; background: #FFF; }
+.pv-laudo-modern-back-row { display: flex; justify-content: flex-start; margin-top: 22px; }
+.pv-laudo-modern-back { min-height: 39px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border: 1px solid #CFE2E5; border-radius: 8px; background: #FFF; color: #244E61; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.pv-laudo-modern-back:hover { background: #F1FBF9; border-color: #00817B; }
+.pv-laudo-modern-back svg { width: 16px; height: 16px; }
+.pv-laudo-mobile-nav { display: none; }
+@media (max-width: 820px) {
+  .pv-laudo-modern-content { width: min(100% - 42px, 720px); padding-top: 28px; }
+  .pv-laudo-modern-upload-card { grid-template-columns: auto minmax(0, 1fr); }
+  .pv-laudo-modern-upload-action { grid-column: 2; justify-content: flex-start; }
+}
+@media (max-width: 699px) {
+  #app-main.pv-laudo-modern-main { min-height: 100dvh; overflow-x: hidden !important; }
+  .pv-laudo-modern-layout { display: block; min-height: 100dvh; padding-bottom: 74px; }
+  .pv-laudo-modern-layout > .pv-sidebar, .pv-laudo-modern-layout > .pv-cuidador-sidebar { display: none !important; }
+  .pv-laudo-modern-workspace { min-height: 100dvh; }
+  .pv-laudo-modern-topbar { min-height: 54px; padding: 0 15px; }
+  .pv-laudo-modern-topbar-actions { gap: 8px; }
+  .pv-laudo-modern-topbar-actions > span:first-child { font-size: 10px; }
+  .pv-laudo-modern-content { width: calc(100% - 32px); padding: 25px 0 30px; }
+  .pv-laudo-modern-heading { margin-bottom: 18px; padding-bottom: 19px; }
+  .pv-laudo-modern-heading h1 { font-size: 26px; }
+  .pv-laudo-modern-upload-card { grid-template-columns: minmax(0, 1fr); gap: 13px; padding: 18px; }
+  .pv-laudo-modern-upload-action { grid-column: auto; width: 100%; }
+  .pv-laudo-modern-file-button { width: 100%; }
+  .pv-laudo-modern-viewer-heading { align-items: flex-start; flex-direction: column; padding: 17px; }
+  .pv-laudo-modern-viewer-actions { width: 100%; flex-wrap: wrap; }
+  .pv-laudo-modern-viewer-actions button { flex: 1; }
+  .pv-laudo-modern-frame-wrap { height: 62vh; min-height: 320px; }
+  .pv-laudo-mobile-nav { position: fixed; z-index: 30; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); min-height: 67px; padding: 6px 5px max(6px, env(safe-area-inset-bottom)); border-top: 1px solid #D8E7E7; background: rgba(255,255,255,.97); box-shadow: 0 -5px 22px rgba(17,59,82,.05); }
+  .pv-laudo-mobile-nav.is-acompanhante { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .pv-laudo-mobile-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; padding: 2px; border: 0; border-radius: 8px; background: transparent; color: #597684; font: inherit; font-size: 9px; cursor: pointer; }
+  .pv-laudo-mobile-nav button svg { width: 19px; height: 19px; }
+  .pv-laudo-mobile-nav button.active { color: #00756F; font-weight: 800; }
+  .pv-laudo-modern-back-row { justify-content: stretch; }
+  .pv-laudo-modern-back { width: 100%; }
+}
+
+/* PaliVida: mobile home scroll + logout universal v1 */
+.pv-mobile-logout-item { color: #8A6570 !important; }
+.pv-mobile-logout-item svg { flex: 0 0 auto; stroke: currentColor; }
+.pv-mobile-logout-item span { white-space: nowrap; }
+.pv-mobile-logout-floating { display: none; }
+.pv-mobile-global-logout { display: none; }
+
+@media (max-width: 699px) {
+  /* Em telas pequenas, a Home do paciente deve crescer com o conteúdo e permitir
+     a rolagem da página. O app-shell antigo tinha overflow:hidden e recortava cards. */
+  body.pv-role-paciente.pv-route-home {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0 !important;
+  }
+  body.pv-role-paciente.pv-route-home .app-shell.pv-paciente-dashboard {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  body.pv-role-paciente.pv-route-home #app-main.pv-dashboard-paciente-main {
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  body.pv-role-paciente.pv-route-home #app-main.pv-dashboard-paciente-main > .pv-home-layout {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  body.pv-role-paciente.pv-route-home .pv-home-layout > .pv-home-workspace {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  body.pv-role-paciente.pv-route-home .pv-home-content {
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Item Sair se comporta como os demais itens da navegação inferior. */
+  .pv-home-mobile-nav .pv-mobile-logout-item,
+  .pv-sintomas-mobile-nav .pv-mobile-logout-item,
+  .pv-conteudo-mobile-nav .pv-mobile-logout-item,
+  .pv-sintoma-mobile-nav .pv-mobile-logout-item,
+  .pv-conteudos-mobile-nav .pv-mobile-logout-item,
+  .pv-perfil-conta-mobile-nav .pv-mobile-logout-item,
+  .pv-prontuario-mobile-nav .pv-mobile-logout-item,
+  .pv-cuidador-mobile-nav .pv-mobile-logout-item,
+  .pv-admin-mobile-nav .pv-mobile-logout-item,
+  .pv-dash-mobile-nav .pv-mobile-logout-item {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    color: #8A6570 !important;
+    font-size: 9px !important;
+  }
+  .pv-mobile-logout-item svg { width: 20px !important; height: 20px !important; }
+
+  /* Rodapé global usado por telas antigas: mostra Sair como quarto atalho. */
+  #app-footer .pv-mobile-global-logout {
+    display: flex !important;
+    flex: 1 1 0 !important;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    padding: 7px 2px 6px;
+    color: #8A6570;
+    font-size: 9px;
+    font-weight: 650;
+  }
+  #app-footer .pv-mobile-global-logout svg { width: 20px; height: 20px; }
+
+  /* Rotas sem barra inferior própria ainda terão uma saída acessível. */
+  .pv-mobile-logout-floating {
+    position: fixed !important;
+    right: 12px !important;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 130 !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 13px;
+    border: 1px solid #E5D5DA;
+    border-radius: 999px;
+    background: rgba(255,255,255,.97);
+    box-shadow: 0 4px 15px rgba(20,55,75,.12);
+    color: #8A6570;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .pv-mobile-logout-floating svg { width: 18px; height: 18px; }
+}
+
+/* PaliVida: equalizar itens da navegação mobile v1 */
+@media (max-width: 699px) {
+  /* Distribui o espaço igualmente entre TODOS os atalhos. Antes, apenas o
+     botão Sair tinha flex: 1, por isso ocupava a sobra de espaço da barra. */
+  .pv-home-mobile-nav,
+  .pv-sintomas-mobile-nav,
+  .pv-conteudo-mobile-nav,
+  .pv-sintoma-mobile-nav,
+  .pv-conteudos-mobile-nav,
+  .pv-perfil-conta-mobile-nav,
+  .pv-prontuario-mobile-nav,
+  .pv-cuidador-mobile-nav,
+  .pv-admin-mobile-nav,
+  .pv-dash-mobile-nav {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pv-home-mobile-nav > button,
+  .pv-sintomas-mobile-nav > button,
+  .pv-conteudo-mobile-nav > button,
+  .pv-sintoma-mobile-nav > button,
+  .pv-conteudos-mobile-nav > button,
+  .pv-perfil-conta-mobile-nav > button,
+  .pv-prontuario-mobile-nav > button,
+  .pv-cuidador-mobile-nav > button,
+  .pv-admin-mobile-nav > button,
+  .pv-dash-mobile-nav > button {
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+
+  .pv-mobile-logout-item {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: 0 !important;
+    max-width: none !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 3px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    box-sizing: border-box !important;
+    text-align: center;
+  }
+
+  /* Mantém o botão de saída visualmente discreto, sem alterar sua largura. */
+  .pv-home-mobile-nav > .pv-mobile-logout-item,
+  .pv-sintomas-mobile-nav > .pv-mobile-logout-item,
+  .pv-conteudo-mobile-nav > .pv-mobile-logout-item,
+  .pv-sintoma-mobile-nav > .pv-mobile-logout-item,
+  .pv-conteudos-mobile-nav > .pv-mobile-logout-item,
+  .pv-perfil-conta-mobile-nav > .pv-mobile-logout-item,
+  .pv-prontuario-mobile-nav > .pv-mobile-logout-item,
+  .pv-cuidador-mobile-nav > .pv-mobile-logout-item,
+  .pv-admin-mobile-nav > .pv-mobile-logout-item,
+  .pv-dash-mobile-nav > .pv-mobile-logout-item {
+    color: #8A6570 !important;
+    font-size: inherit !important;
+  }
+
+  .pv-mobile-logout-item svg {
+    display: block;
+    flex: 0 0 auto;
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .pv-mobile-logout-item span {
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+}
+
+/* PaliVida: corrigir nav estável e scroll de sintomas mobile v2 */
+@media (max-width: 699px) {
+  /* O botão Sair usa exatamente a escala dos demais atalhos. */
+  .pv-home-mobile-nav > .pv-mobile-logout-item,
+  .pv-sintomas-mobile-nav > .pv-mobile-logout-item,
+  .pv-conteudo-mobile-nav > .pv-mobile-logout-item,
+  .pv-sintoma-mobile-nav > .pv-mobile-logout-item,
+  .pv-conteudos-mobile-nav > .pv-mobile-logout-item,
+  .pv-perfil-conta-mobile-nav > .pv-mobile-logout-item,
+  .pv-prontuario-mobile-nav > .pv-mobile-logout-item,
+  .pv-cuidador-mobile-nav > .pv-mobile-logout-item,
+  .pv-admin-mobile-nav > .pv-mobile-logout-item,
+  .pv-dash-mobile-nav > .pv-mobile-logout-item {
+    display: flex !important;
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 3px 2px !important;
+    font-family: inherit !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    text-align: center !important;
+  }
+  .pv-mobile-logout-item > svg {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .pv-mobile-logout-item > span {
+    display: block !important;
+    max-width: 100% !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Sintomas: permitir que a página inteira cresça; a nav fica fixa e a lista
+     recebe espaço inferior para o último cartão não ficar por baixo da barra. */
+  html:has(#app-main.pv-menu-sintomas-main),
+  body:has(#app-main.pv-menu-sintomas-main) {
+    height: auto !important;
+    min-height: 100% !important;
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  body:has(#app-main.pv-menu-sintomas-main) .app-shell {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  #app-main.pv-menu-sintomas-main {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  #app-main.pv-menu-sintomas-main .pv-menu-sintomas-modern {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  #app-main.pv-menu-sintomas-main .pv-sintomas-workspace {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  #app-main.pv-menu-sintomas-main .pv-sintomas-content {
+    width: calc(100% - 28px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 22px 0 calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+    overflow: visible !important;
+  }
+  #app-main.pv-menu-sintomas-main .pv-sintomas-mobile-nav {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 120 !important;
+    display: flex !important;
+    width: 100% !important;
+    height: 68px !important;
+    box-sizing: border-box !important;
+    align-items: stretch !important;
+    justify-content: space-around !important;
+    padding: 6px 5px max(6px, env(safe-area-inset-bottom, 0px)) !important;
+    background: rgba(255, 255, 255, .97) !important;
+  }
+  #app-main.pv-menu-sintomas-main .pv-sintomas-mobile-nav > button {
+    display: flex !important;
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 3px 2px !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+  #app-main.pv-menu-sintomas-main .pv-sintomas-mobile-nav > button > span {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* PaliVida: navegação mobile paciente sem atalho Triagem v1 */
+@media (max-width: 699px) {
+  .pv-home-mobile-nav,
+  .pv-conteudos-mobile-nav,
+  .pv-sintomas-mobile-nav,
+  .pv-conteudo-mobile-nav,
+  .pv-sintoma-mobile-nav,
+  .pv-perfil-conta-mobile-nav,
+  .pv-prontuario-mobile-nav {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 0 !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 120 !important;
+    width: 100% !important;
+    height: 68px !important;
+    box-sizing: border-box !important;
+    padding: 5px 3px max(5px, env(safe-area-inset-bottom, 0px)) !important;
+    border-top: 1px solid #D8E6E9 !important;
+    background: rgba(255,255,255,.97) !important;
+    box-shadow: 0 -5px 18px rgba(27,65,83,.05) !important;
+    backdrop-filter: blur(12px);
+    overflow: hidden !important;
+  }
+
+  .pv-home-mobile-nav > button,
+  .pv-conteudos-mobile-nav > button,
+  .pv-sintomas-mobile-nav > button,
+  .pv-conteudo-mobile-nav > button,
+  .pv-sintoma-mobile-nav > button,
+  .pv-perfil-conta-mobile-nav > button,
+  .pv-prontuario-mobile-nav > button {
+    display: flex !important;
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 3px 1px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #6B8494 !important;
+    font-family: inherit !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    cursor: pointer;
+  }
+
+  .pv-home-mobile-nav > button > svg,
+  .pv-conteudos-mobile-nav > button > svg,
+  .pv-sintomas-mobile-nav > button > svg,
+  .pv-conteudo-mobile-nav > button > svg,
+  .pv-sintoma-mobile-nav > button > svg,
+  .pv-perfil-conta-mobile-nav > button > svg,
+  .pv-prontuario-mobile-nav > button > svg {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+  }
+
+  .pv-home-mobile-nav > button > span,
+  .pv-conteudos-mobile-nav > button > span,
+  .pv-sintomas-mobile-nav > button > span,
+  .pv-conteudo-mobile-nav > button > span,
+  .pv-sintoma-mobile-nav > button > span,
+  .pv-perfil-conta-mobile-nav > button > span,
+  .pv-prontuario-mobile-nav > button > span {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+    line-height: 1.15 !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  .pv-home-mobile-nav > button.active,
+  .pv-conteudos-mobile-nav > button.active,
+  .pv-sintomas-mobile-nav > button.active,
+  .pv-conteudo-mobile-nav > button.active,
+  .pv-sintoma-mobile-nav > button.active,
+  .pv-perfil-conta-mobile-nav > button.active,
+  .pv-prontuario-mobile-nav > button.active {
+    color: #087A76 !important;
+    background: #E8F5F4 !important;
+  }
+
+  .pv-home-mobile-nav > button.pv-mobile-logout-item,
+  .pv-conteudos-mobile-nav > button.pv-mobile-logout-item,
+  .pv-sintomas-mobile-nav > button.pv-mobile-logout-item,
+  .pv-conteudo-mobile-nav > button.pv-mobile-logout-item,
+  .pv-sintoma-mobile-nav > button.pv-mobile-logout-item,
+  .pv-perfil-conta-mobile-nav > button.pv-mobile-logout-item,
+  .pv-prontuario-mobile-nav > button.pv-mobile-logout-item {
+    color: #8A6570 !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+  }
+
+  .pv-home-mobile-nav > button.pv-mobile-logout-item > span,
+  .pv-conteudos-mobile-nav > button.pv-mobile-logout-item > span,
+  .pv-sintomas-mobile-nav > button.pv-mobile-logout-item > span,
+  .pv-conteudo-mobile-nav > button.pv-mobile-logout-item > span,
+  .pv-sintoma-mobile-nav > button.pv-mobile-logout-item > span,
+  .pv-perfil-conta-mobile-nav > button.pv-mobile-logout-item > span,
+  .pv-prontuario-mobile-nav > button.pv-mobile-logout-item > span {
+    font-size: 9px !important;
+    font-weight: 600 !important;
+  }
+}
+
+/* PaliVida: navegação mobile unificada do paciente */
+.pv-mobile-nav-paciente { display: none; }
+
+@media (max-width: 699px) {
+  .pv-mobile-nav-paciente {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 300 !important;
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 2px !important;
+    width: 100% !important;
+    height: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: 68px !important;
+    max-height: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 5px 4px calc(5px + env(safe-area-inset-bottom, 0px)) !important;
+    border: 0 !important;
+    border-top: 1px solid #D5E4E8 !important;
+    border-radius: 0 !important;
+    background: rgba(255, 255, 255, .98) !important;
+    box-shadow: 0 -5px 18px rgba(22, 63, 85, .07) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .pv-mobile-nav-paciente > .pv-mobile-nav-item {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    display: flex !important;
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 3px 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #7890A1 !important;
+    font-family: inherit !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    cursor: pointer;
+  }
+
+  .pv-mobile-nav-paciente > .pv-mobile-nav-item > svg {
+    display: block !important;
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    margin: 0 !important;
+    color: currentColor !important;
+    stroke: currentColor !important;
+  }
+
+  .pv-mobile-nav-paciente > .pv-mobile-nav-item > span {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  .pv-mobile-nav-paciente > .pv-mobile-nav-item.active,
+  .pv-mobile-nav-paciente > .pv-mobile-nav-item[aria-current="page"] {
+    background: #E7F4F4 !important;
+    color: #087A76 !important;
+  }
+
+  .pv-mobile-nav-paciente > .pv-mobile-nav-logout {
+    color: #8A6570 !important;
+  }
+  .pv-mobile-nav-paciente > .pv-mobile-nav-logout > span {
+    font-size: 9px !important;
+    font-weight: 600 !important;
+  }
+}
+
+/* PaliVida: ocultar controles legados de logout no mobile do paciente */
+@media (max-width: 699px) {
+  /* A barra unificada é a única responsável pelo logout no mobile do paciente. */
+  body.pv-role-paciente #app-main [data-sair]:not(.pv-mobile-nav-logout),
+  body.pv-role-paciente #app-main .pv-sidebar-logout,
+  body.pv-role-paciente #app-main .pv-home-logout,
+  body.pv-role-paciente #app-main .pv-logout-button,
+  body.pv-role-paciente #app-main .pv-botao-logout:not(.pv-mobile-nav-logout),
+  body.pv-role-paciente #app-header [data-sair] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* Algumas telas antigas mantêm a sidebar no DOM para desktop. Ela não deve
+     deixar sobras visíveis nas laterais depois da carga assíncrona dos dados. */
+  body.pv-role-paciente #app-main > .pv-home-layout > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-menu-sintomas-modern > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-conteudos-modern > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-conteudo-detalhe-modern > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-sintoma-detalhe-layout > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-sintoma-registro-layout > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-perfil-conta-modern > .pv-sidebar,
+  body.pv-role-paciente #app-main .pv-prontuario-modern > .pv-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+/* PaliVida: scroll mobile sintomas via app-main v1 */
+@media (max-width: 699px) {
+  /* Mantém o app na altura da viewport e faz a área principal rolar por dentro.
+     Essa estratégia evita depender da rolagem do body em navegadores mobile. */
+  html,
+  body {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  body:has(#app-main.pv-menu-sintomas-main) .app-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #app-main.pv-menu-sintomas-main {
+    display: block !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    scrollbar-gutter: stable;
+  }
+
+  #app-main.pv-menu-sintomas-main > .pv-menu-sintomas-modern {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #app-main.pv-menu-sintomas-main .pv-sintomas-workspace {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #app-main.pv-menu-sintomas-main .pv-sintomas-topbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 30 !important;
+  }
+
+  #app-main.pv-menu-sintomas-main .pv-sintomas-content {
+    display: block !important;
+    width: calc(100% - 28px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 22px 0 calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+    overflow: visible !important;
+  }
+
+  #app-main.pv-menu-sintomas-main .pv-sintomas-lista,
+  #app-main.pv-menu-sintomas-main #lista-sintomas-slot,
+  #app-main.pv-menu-sintomas-main .pv-sintomas-grid {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #app-main.pv-menu-sintomas-main .pv-sintomas-mobile-nav {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 120 !important;
+  }
+}
+
+/* PaliVida: espaçamento entre cartões do prontuário mobile */
+@media (max-width: 699px) {
+  .pv-prontuario-body #perfil-variante {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+}
+
+/* PaliVida: restaurar rolagem mobile da Home do paciente v1 */
+@media (max-width: 699px) {
+  /* Permite que o documento cresça com os cartões, em vez de recortar o final. */
+  html:has(body.pv-role-paciente.pv-route-home) {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body.pv-role-paciente.pv-route-home {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  body.pv-role-paciente.pv-route-home .app-shell.pv-paciente-dashboard {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.pv-role-paciente.pv-route-home #app-main.pv-dashboard-paciente-main {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.pv-role-paciente.pv-route-home #app-main.pv-dashboard-paciente-main > .pv-home-layout {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.pv-role-paciente.pv-route-home .pv-home-layout > .pv-home-workspace {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.pv-role-paciente.pv-route-home .pv-home-workspace .pv-home-content {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* A barra unificada continua fixa e não participa da rolagem do conteúdo. */
+  body.pv-role-paciente.pv-route-home .pv-mobile-nav-paciente {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 300 !important;
+  }
+}
+
+/* PaliVida: logout mobile consistente do acompanhante v1 */
+
+@media (max-width: 820px) {
+  .pv-cuidador-mobile-nav {
+    width: 100%;
+    box-sizing: border-box;
+    gap: 2px;
+  }
+
+  .pv-cuidador-mobile-nav > button {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    gap: 4px;
+    padding: 3px 1px;
+    font-size: 9px;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .pv-cuidador-mobile-nav > button > svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+  }
+
+  .pv-cuidador-mobile-nav > button > span {
+    display: block;
+    max-width: 100%;
+    font-size: 9px;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .pv-cuidador-mobile-nav > button.pv-cuidador-mobile-logout {
+    color: #9B6976;
+  }
+
+  .pv-cuidador-mobile-nav > button.pv-cuidador-mobile-logout:active {
+    background: #F8EEEE;
+  }
+
+  .pv-cuidador-sidebar .pv-cuidador-logout {
+    display: none !important;
+  }
+}
+
+/* PaliVida: mais espaço após o último cartão da Home mobile do cuidador */
+@media (max-width: 820px) {
+  /* Reserva espaço real abaixo do último cartão para ele não ficar sob a barra fixa. */
+  .pv-cuidador-home-layout .pv-cuidador-content {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+
+/* PaliVida — barra mobile administrativa padronizada
+   Mesma distribuição, ícones e tipografia para todas as telas do administrador. */
+@media (max-width: 620px) {
+  .pv-admin-mobile-nav {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 3px;
+    box-sizing: border-box;
+    padding: 7px 5px max(7px, env(safe-area-inset-bottom));
+  }
+
+  .pv-admin-mobile-nav > button {
+    display: flex;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 3px 1px;
+    text-align: center;
+    font-size: 9px;
+    line-height: 1.15;
+  }
+
+  .pv-admin-mobile-nav > button svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+  }
+
+  .pv-admin-mobile-nav > button small {
+    display: block;
+    max-width: 100%;
+    font-size: 9px;
+    line-height: 1.15;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+
+  .pv-admin-mobile-nav > button.active {
+    background: #E4F3F3;
+    color: #087F80;
+  }
+
+  .pv-admin-mobile-nav > button[data-sair] {
+    color: #98616B;
+  }
+
+  .pv-admin-mobile-nav > button[data-sair]:active {
+    background: #FFF1F0;
+  }
+}
+

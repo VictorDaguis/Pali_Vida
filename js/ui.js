@@ -239,6 +239,41 @@ window.PV = window.PV || {};
       .join('');
   }
 
+
+  /* Navegação mobile única do paciente: mesmos itens, ícones e dimensões em todas as rotas. */
+  function navegacaoMobilePaciente(rotaAtiva = 'home') {
+    const itens = [
+      {
+        chave: 'home', rota: '/home', rotulo: 'Início',
+        icone: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+      },
+      {
+        chave: 'sintomas', rota: '/menu-sintomas', rotulo: 'Sintomas',
+        icone: '<path d="M3 12h4l2-6 4 12 2-6h6"/>',
+      },
+      {
+        chave: 'conteudos', rota: '/busca', rotulo: 'Conteúdos',
+        icone: '<path d="M6 4.5h9.5A2.5 2.5 0 0 1 18 7v12.5H8A2.5 2.5 0 0 1 5.5 17V5A.5.5 0 0 1 6 4.5Z"/><path d="M8.5 8h6M8.5 11.5h6M8.5 15h4"/>',
+      },
+      {
+        chave: 'prontuario', rota: '/perfil', rotulo: 'Prontuário',
+        icone: '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 7.5h6M9 11h6M9 14.5h3"/>',
+      },
+      {
+        chave: 'perfil', rota: '/meu-perfil', rotulo: 'Perfil',
+        icone: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      },
+    ];
+    const desenharIcone = (caminho) =>
+      `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${caminho}</svg>`;
+    const botoes = itens.map((item) => {
+      const ativo = rotaAtiva === item.chave;
+      return `<button type="button" class="pv-mobile-nav-item${ativo ? ' active' : ''}" data-rota="${item.rota}"${ativo ? ' aria-current="page"' : ''}>${desenharIcone(item.icone)}<span>${item.rotulo}</span></button>`;
+    }).join('');
+    const iconeSair = desenharIcone('<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>');
+    return `<nav class="pv-mobile-nav-paciente" aria-label="Navegação principal">${botoes}<button type="button" class="pv-mobile-nav-item pv-mobile-nav-logout" data-sair aria-label="Sair da conta">${iconeSair}<span>Sair</span></button></nav>`;
+  }
+
   window.PV.ui = {
     escaparHtml,
     svgLogo,
@@ -253,6 +288,7 @@ window.PV = window.PV || {};
     ligarNavegacaoInferior,
     montarLayoutPaciente,
     ligarLogout,
+    navegacaoMobilePaciente,
     aviso,
     spinner,
     carregando,

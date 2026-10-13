@@ -846,48 +846,7 @@ function iconeMenuSintomas(nome) {
                MOBILE NAV
                ======================================================= -->
   
-          <nav
-            class="pv-sintomas-mobile-nav"
-            aria-label="Navegação principal"
-          >
-  
-            <button
-              type="button"
-              data-rota="/home"
-            >
-              ${iconeMenuSintomas('inicio')}
-              <span>Início</span>
-            </button>
-  
-  
-            <button
-              type="button"
-              class="active"
-              data-rota="/menu-sintomas"
-            >
-              ${iconeMenuSintomas('sintomas')}
-              <span>Sintomas</span>
-            </button>
-  
-  
-            <button
-              type="button"
-              data-rota="/triagem"
-            >
-              ${iconeMenuSintomas('triagem')}
-              <span>Triagem</span>
-            </button>
-  
-  
-            <button
-              type="button"
-              data-rota="/meu-perfil"
-            >
-              ${iconeMenuSintomas('usuario')}
-              <span>Perfil</span>
-            </button>
-  
-          </nav>
+          ${PV.ui.navegacaoMobilePaciente('sintomas')}
   
         </section>
   
@@ -1128,7 +1087,7 @@ function iconeMenuSintomas(nome) {
              SIDEBAR DESKTOP
              ========================================================= -->
   
-        ${PV.ui.sidebarPaciente('sintomas')}
+        ${PV.ui.sidebarPaciente('conteudos')}
   
   
         <!-- =========================================================
@@ -1535,45 +1494,7 @@ function iconeMenuSintomas(nome) {
                MOBILE NAV
                ======================================================= -->
   
-          <nav
-            class="pv-conteudo-mobile-nav"
-            aria-label="Navegação principal"
-          >
-  
-            <button
-              type="button"
-              data-rota="/home"
-            >
-              ${iconeMenuSintomas('inicio')}
-              <span>Início</span>
-            </button>
-  
-            <button
-              type="button"
-              class="active"
-              data-rota="/menu-sintomas"
-            >
-              ${iconeMenuSintomas('sintomas')}
-              <span>Sintomas</span>
-            </button>
-  
-            <button
-              type="button"
-              data-rota="/triagem"
-            >
-              ${iconeMenuSintomas('sino')}
-              <span>Triagem</span>
-            </button>
-  
-            <button
-              type="button"
-              data-rota="/meu-perfil"
-            >
-              ${iconeMenuSintomas('usuario')}
-              <span>Perfil</span>
-            </button>
-  
-          </nav>
+          ${PV.ui.navegacaoMobilePaciente('conteudos')}
   
         </section>
   
@@ -1723,48 +1644,115 @@ function iconeMenuSintomas(nome) {
 
   /* ================================================== DefinicaoSintomas === */
   async function definicaoSintomas(main, ctx) {
-    main.innerHTML = `<div class="pv-carregando" style="min-height:100%;background:var(--areia)">${PV.ui.spinner()}<span>Carregando...</span></div>`;
+    prepararLayoutFluxoSintoma(main, 'pv-sintoma-detalhe-main');
+    main.innerHTML = `<div class="pv-sintoma-loading">${PV.ui.spinner()}<span>Carregando conteúdo em leitura simplificada...</span></div>`;
 
     let conteudo = null;
     try {
       if (ctx.sub) conteudo = await PV.db.conteudos.buscar(ctx.sub);
-    } catch {
-      conteudo = null;
+    } catch (erro) {
+      console.error('Não foi possível carregar a definição do sintoma:', erro);
     }
 
     if (!conteudo) {
-      main.innerHTML = `<div class="pv-carregando" style="min-height:100%;background:var(--areia)"><span>Conteúdo não encontrado.</span></div>`;
+      desenharEstadoFluxoSintoma(
+        main,
+        'Conteúdo não encontrado',
+        'Não foi possível carregar esta explicação. Volte à lista de sintomas e tente novamente.'
+      );
+      ligarNavegacaoFluxoSintoma(main);
       return;
     }
 
+    const titulo = conteudo.titulo || 'Informações sobre o sintoma';
+    const definicao = conteudo.descricao || conteudo.texto || 'A definição deste conteúdo ainda não foi cadastrada.';
+    const sinaisSintomas = conteudo.SinaisSintomas || conteudo.sinaisSintomas || 'Não há sinais e sintomas adicionais cadastrados para este conteúdo.';
+    const sinaisAlerta = conteudo.SinaisAlerta || conteudo.sinaisAlerta || 'Não há sinais de alerta adicionais cadastrados para este conteúdo.';
+
     main.innerHTML = `
-      <div class="tela-definicao">
-        <div class="conteudo">
-          <h1 class="titulo">${escaparHtml(conteudo.titulo)}</h1>
-          <div class="sublinhado"></div>
+      <div class="pv-sintoma-detalhe-layout pv-definicao-simples-layout">
+        ${PV.ui.sidebarPaciente('sintomas')}
+        <section class="pv-sintoma-workspace">
+          ${desenharTopbarSintoma()}
+          <main class="pv-sintoma-page-content pv-definicao-simples-content">
+            <button type="button" class="pv-sintoma-voltar" data-rota="/menu-sintomas" aria-label="Voltar à lista de sintomas">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+              <span>Voltar aos sintomas</span>
+            </button>
 
-          <div class="titulo-definicao">Definição: <span class="peso-normal">${escaparHtml(conteudo.descricao || conteudo.texto)}</span></div>
+            <header class="pv-sintoma-page-heading">
+              <span class="pv-sintoma-eyebrow">LEITURA SIMPLIFICADA</span>
+              <h1>${escaparHtml(titulo)}</h1>
+              <p>Leia as informações abaixo com calma. Se reconhecer algum sinal, selecione a opção correspondente.</p>
+            </header>
 
-          <div class="secao">
-            <div class="titulo-secao">Sinais e Sintomas: </div>
-            <div class="texto-secao">${escaparHtml(conteudo.SinaisSintomas)}</div>
-          </div>
+            <div class="pv-sintoma-page-divider"></div>
 
-          <button type="button" class="botao-laranja" id="btn-amarelo">Sinto um ou mais
-dos sinais e sintomas</button>
+            <section class="pv-definicao-card pv-definicao-card-info">
+              <div class="pv-definicao-card-heading">
+                <span class="pv-definicao-card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 7.5h.01"></path></svg>
+                </span>
+                <div>
+                  <span class="pv-definicao-card-eyebrow">O QUE É?</span>
+                  <h2>Sobre este sintoma</h2>
+                </div>
+              </div>
+              <p>${escaparHtml(definicao)}</p>
+            </section>
 
-          <div class="secao">
-            <div class="titulo-secao">Sinais de Alerta: </div>
-            <div class="texto-secao">${escaparHtml(conteudo.SinaisAlerta)}</div>
-          </div>
+            <section class="pv-definicao-card pv-definicao-card-amarelo">
+              <div class="pv-definicao-card-heading">
+                <span class="pv-definicao-card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 20h18.4L12 3Z"></path><path d="M12 9v5M12 17h.01"></path></svg>
+                </span>
+                <div>
+                  <span class="pv-definicao-card-eyebrow">ATENÇÃO</span>
+                  <h2>Sinais e sintomas</h2>
+                </div>
+              </div>
+              <p>${escaparHtml(sinaisSintomas)}</p>
+              <button type="button" class="pv-definicao-acao pv-definicao-acao-amarela" id="btn-amarelo">
+                <span>Sinto um ou mais dos sinais e sintomas</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </button>
+            </section>
 
-          <button type="button" class="botao-vermelho" id="btn-vermelho">Sinto um ou mais
-dos sinais de alerta</button>
-        </div>
+            <section class="pv-definicao-card pv-definicao-card-vermelho">
+              <div class="pv-definicao-card-heading">
+                <span class="pv-definicao-card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 20h18.4L12 3Z"></path><path d="M12 9v5M12 17h.01"></path></svg>
+                </span>
+                <div>
+                  <span class="pv-definicao-card-eyebrow">SINAL DE ALERTA</span>
+                  <h2>Sinais de alerta</h2>
+                </div>
+              </div>
+              <p>${escaparHtml(sinaisAlerta)}</p>
+              <button type="button" class="pv-definicao-acao pv-definicao-acao-vermelha" id="btn-vermelho">
+                <span>Sinto um ou mais dos sinais de alerta</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </button>
+            </section>
+
+            <div class="pv-definicao-rodape">
+              <span class="pv-definicao-rodape-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z"></path><path d="M8 7h8M8 11h8M8 15h5"></path></svg>
+              </span>
+              <span><strong>Leia no seu ritmo.</strong><small>Se estiver em dúvida ou perceber piora, procure orientação da equipe de saúde.</small></span>
+              <button type="button" data-rota="/menu-sintomas" aria-label="Voltar aos sintomas">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+          </main>
+          ${desenharMobileNavSintoma('/menu-sintomas')}
+        </section>
       </div>`;
 
-    main.querySelector('#btn-amarelo').addEventListener('click', () => PV.router.navegar('/sinal/amarelo'));
-    main.querySelector('#btn-vermelho').addEventListener('click', () => PV.router.navegar('/sinal/vermelho'));
+    ligarNavegacaoFluxoSintoma(main);
+    preencherNomeSidebarFluxoSintoma(main, ctx);
+    main.querySelector('#btn-amarelo')?.addEventListener('click', () => PV.router.navegar('/sinal/amarelo'));
+    main.querySelector('#btn-vermelho')?.addEventListener('click', () => PV.router.navegar('/sinal/vermelho'));
   }
 
   /* ============================================================= Sinal === */
@@ -1787,22 +1775,80 @@ dos sinais de alerta</button>
   };
 
   async function sinal(main, ctx) {
-    const conteudo = SINAIS[ctx.sub] || SINAIS.verde;
+    const nivel = ['verde', 'amarelo', 'vermelho'].includes(String(ctx.sub || '').toLowerCase())
+      ? String(ctx.sub).toLowerCase()
+      : 'verde';
+    const conteudo = SINAIS[nivel];
+
+    // Reaproveita o mesmo shell visual usado pelo detalhe do sintoma e
+    // mantém header/footer globais ocultos nesta página.
+    prepararLayoutFluxoSintoma(main, 'pv-sintoma-detalhe-main');
+
+    const icones = {
+      verde: '<circle cx="12" cy="12" r="9"></circle><path d="m7.5 12.2 3 3 6-6.4"></path>',
+      amarelo: '<path d="M12 3.5 22 20.5H2z"></path><path d="M12 9v4.8M12 17.2h.01"></path>',
+      vermelho: '<circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.8M12 17h.01"></path>',
+    };
+
     main.innerHTML = `
-      <div class="tela-sinal" style="background:${conteudo.fundo}">
-        <div class="conteudo-scroll">
-          <div class="aviso-topo" style="color:${conteudo.corTitulo}">${escaparHtml(conteudo.aviso)}</div>
-          <div class="card">
-            <div class="titulo">${escaparHtml(conteudo.titulo)}</div>
-            <p class="descricao">${escaparHtml(conteudo.descricao)}</p>
-          </div>
-          <button type="button" class="botao-voltar" id="btn-voltar">Voltar ao início</button>
-        </div>
+      <div class="pv-sintoma-detalhe-layout pv-sinal-layout">
+        ${PV.ui.sidebarPaciente('sintomas')}
+        <section class="pv-sintoma-workspace">
+          ${desenharTopbarSintoma()}
+          <main class="pv-sintoma-page-content pv-sinal-content">
+            <button type="button" class="pv-sintoma-voltar" id="btn-voltar">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+              <span>Voltar ao início</span>
+            </button>
+
+            <header class="pv-sintoma-page-heading">
+              <span class="pv-sintoma-eyebrow">RESULTADO DO ACOMPANHAMENTO</span>
+              <h1>Resumo de hoje</h1>
+              <p>Veja abaixo a orientação correspondente à opção selecionada.</p>
+            </header>
+
+            <div class="pv-sintoma-page-divider"></div>
+
+            <section class="pv-sinal-status-card pv-sinal-status-${nivel}" role="status" aria-live="polite">
+              <div class="pv-sinal-status-head">
+                <span class="pv-sinal-status-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icones[nivel]}</svg>
+                </span>
+                <div>
+                  <span class="pv-sinal-status-eyebrow">${escaparHtml(conteudo.aviso)}</span>
+                  <h2>${escaparHtml(conteudo.titulo)}</h2>
+                </div>
+              </div>
+              <p class="pv-sinal-status-description">${escaparHtml(conteudo.descricao)}</p>
+            </section>
+
+            <section class="pv-sinal-next-step">
+              <span class="pv-sinal-next-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"></path></svg>
+              </span>
+              <div>
+                <strong>Continue acompanhando como você se sente</strong>
+                <p>Você pode voltar à lista de sintomas para consultar as informações disponíveis.</p>
+              </div>
+              <button type="button" class="pv-sintoma-botao-principal" id="btn-voltar-sintomas">Ver sintomas</button>
+            </section>
+          </main>
+          ${desenharMobileNavSintoma('/menu-sintomas')}
+        </section>
       </div>`;
 
-    main.querySelector('#btn-voltar').addEventListener('click', () => PV.router.navegar('/home?alerta=' + (ctx.sub || 'verde')));
-  }
+    ligarNavegacaoFluxoSintoma(main);
+    if (ctx.usuario?.tipo === 'paciente') {
+      preencherNomeSidebarFluxoSintoma(main, ctx);
+    }
 
+    main.querySelector('#btn-voltar')?.addEventListener('click', () => {
+      PV.router.navegar('/home?alerta=' + encodeURIComponent(nivel));
+    });
+    main.querySelector('#btn-voltar-sintomas')?.addEventListener('click', () => {
+      PV.router.navegar('/menu-sintomas');
+    });
+  }
 
   /* =========================================================== Fluxo visual de sintoma === */
 
@@ -1894,12 +1940,7 @@ dos sinais de alerta</button>
     `;
 
     return `
-      <nav class="pv-sintoma-mobile-nav" aria-label="Navegação principal">
-        ${item('/home', 'inicio', 'Início')}
-        ${item('/menu-sintomas', 'sintomas', 'Sintomas')}
-        ${item('/busca', 'conteudos', 'Conteúdos')}
-        ${item('/perfil', 'usuario', 'Perfil')}
-      </nav>
+      ${PV.ui.navegacaoMobilePaciente('sintomas')}
     `;
   }
 

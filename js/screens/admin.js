@@ -92,6 +92,7 @@ window.PV.ui = window.PV.ui || {};
             <button type="button" class="${ativa === 'records' ? 'active' : ''}" data-rota="/admin-registros">${svg('records')}<small>Registros</small></button>
             <button type="button" class="${ativa === 'symptoms' ? 'active' : ''}" data-rota="/admin-sintomas">${svg('symptoms')}<small>Sintomas</small></button>
             <button type="button" class="${ativa === 'contents' ? 'active' : ''}" data-rota="/admin-conteudos">${svg('contents')}<small>Conteúdos</small></button>
+            <button type="button" class="pv-admin-mobile-logout" data-sair aria-label="Sair da conta">${svg('logout')}<small>Sair</small></button>
           </nav>
         </section>
       </div>`;
